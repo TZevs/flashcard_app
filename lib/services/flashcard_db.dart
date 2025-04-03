@@ -1,3 +1,5 @@
+import 'package:flashcard_app/models/deck_model.dart';
+import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -11,7 +13,7 @@ class FlashcardDb {
 
 	static Future<void> createDatabase(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS decks(
+      CREATE TABLE IF NOT EXISTS decks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         isPublic BOOLEAN NOT NULL  
@@ -28,4 +30,22 @@ class FlashcardDb {
       )
     ''');
 	}
+
+  static Future<List<DeckModel>> getDecks() async {
+    final db = await _openDatabase();
+    final List<Map<String, dynamic>> decks = await db.query('decks');
+
+    return List.generate(decks.length, (i) {
+      return DeckModel.fromMap(decks[i]);
+    });
+  }
+
+  static Future<List<FlashcardModel>> getDeckFlashcards(int deckID) async {
+    final db = await _openDatabase();
+    List<Map<String, dynamic>> cards = await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
+
+    return List.generate(cards.length, (i) {
+      return FlashcardModel.fromMap(cards[i]);
+    });
+  }
 }
