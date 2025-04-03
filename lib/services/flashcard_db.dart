@@ -13,7 +13,8 @@ class FlashcardDb {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS decks(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL  
+        title TEXT NOT NULL,
+        isPublic BOOLEAN NOT NULL  
       )
     ''');
 
