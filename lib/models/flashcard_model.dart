@@ -6,6 +6,7 @@ class FlashcardModel {
 
   FlashcardModel({ this.id, required this.deckId, required this.cardFront, required this.cardBack });
 
+  // Converts Flashcard object to a map for sqflite
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -13,5 +14,15 @@ class FlashcardModel {
       'cardFront': cardFront,
       'cardBack': cardBack,
     };
+  }
+
+  // Converts map to a Flashcard object
+  factory FlashcardModel.fromMap(Map<String, dynamic> card) {
+    return FlashcardModel(
+      id: card['id'],
+      deckId: card['deckId'], 
+      cardFront: card['cardFront'], 
+      cardBack: card['cardBack']
+    );
   }
 }

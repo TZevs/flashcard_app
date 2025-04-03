@@ -1,10 +1,25 @@
-import 'package:flashcard_app/models/flashcard_model.dart';
-
 class DeckModel {
   final int id;
   final String title;
-  final List<FlashcardModel>? flashcards;
   final bool isPublic;
 
-  DeckModel({ required this.id, required this.title, this.flashcards, required this.isPublic });
+  DeckModel({ required this.id, required this.title, required this.isPublic });
+
+  // Converts Deck obejct to map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'isPublic': isPublic
+    };
+  }
+
+  // Converts map to a Deck object
+  factory DeckModel.fromMap(Map<String, dynamic> deck) {
+    return DeckModel(
+      id: deck['id'], 
+      title: deck['title'], 
+      isPublic: deck['isPublic']
+    );
+  }
 }
