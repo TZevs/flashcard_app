@@ -1,8 +1,8 @@
 class FlashcardModel {
   final int? id;
   final int deckId;
-  final String cardFront;
-  final String cardBack;
+  final dynamic cardFront;
+  final dynamic cardBack;
 
   FlashcardModel({ this.id, required this.deckId, required this.cardFront, required this.cardBack });
 
