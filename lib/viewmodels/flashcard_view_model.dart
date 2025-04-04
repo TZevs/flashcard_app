@@ -8,8 +8,8 @@ class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _flashcards = [];
 
   // Gets the current deck and flashcard lists
-  List<DeckModel> get decks => _decks;
-  List<FlashcardModel> get cards => _flashcards;
+  List<DeckModel> get currentDecks => _decks;
+  List<FlashcardModel> get currentCards => _flashcards;
   // Possible add a loading bool and an error message string
 
   // Gets the Decks from the DB
