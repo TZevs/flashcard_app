@@ -1,5 +1,5 @@
 class FlashcardModel {
-  final String? id;
+  final int? id;
   final String deckId;
   final dynamic cardFront;
   final dynamic cardBack;
