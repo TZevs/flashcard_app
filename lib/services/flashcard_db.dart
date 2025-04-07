@@ -49,14 +49,13 @@ class FlashcardDb {
     });
   }
 
-  static Future<void> addDeck(DeckModel deck) async {
+  static Future<int> addDeck(DeckModel deck) async {
     final db = await _openDatabase();
     var newDeck = deck.toMap();
-    await db.insert('decks', newDeck);
-    // return await db.insert('decks', newDeck);
+    return await db.insert('decks', newDeck);
   }
 
-  static Future<void> addDeckFlashcards(List<FlashcardModel> cards) async {
+  static Future<int> addDeckFlashcards(List<FlashcardModel> cards) async {
     final db = await _openDatabase();
     List<Map<String, dynamic>> addCards =
         cards.map((card) => card.toMap()).toList();
@@ -68,8 +67,7 @@ class FlashcardDb {
     }
 
     // Inserts all records at once
-    await batch.commit();
-    // List<dynamic> results = await batch.commit();
-    // return results.length;
+    List<dynamic> results = await batch.commit();
+    return results.length;
   }
 }
