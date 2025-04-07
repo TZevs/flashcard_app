@@ -49,18 +49,27 @@ class FlashcardDb {
     });
   }
 
-  static Future<int> addDeck(DeckModel deck) async {
+  static Future<void> addDeck(DeckModel deck) async {
     final db = await _openDatabase();
     var newDeck = deck.toMap();
-    return await db.insert('decks', newDeck);
+    await db.insert('decks', newDeck);
+    // return await db.insert('decks', newDeck);
   }
 
-  static Future<int> addDeckFlashcards(List<FlashcardModel> cards) async {
+  static Future<void> addDeckFlashcards(List<FlashcardModel> cards) async {
     final db = await _openDatabase();
-    final List<Map<String, dynamic>> cardsToAdd = [];
+    List<Map<String, dynamic>> addCards =
+        cards.map((card) => card.toMap()).toList();
 
-    // for (int i = 0; i < cards.length; i++) {
-    //   cardsToAdd.add(FlashcardModel.toMap(cards[i]));
-    // }
+    Batch batch = db.batch();
+
+    for (int i = 0; i < addCards.length; i++) {
+      batch.insert('flashcards', addCards[i]);
+    }
+
+    // Inserts all records at once
+    await batch.commit();
+    // List<dynamic> results = await batch.commit();
+    // return results.length;
   }
 }
