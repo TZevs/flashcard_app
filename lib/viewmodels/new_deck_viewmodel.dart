@@ -34,7 +34,7 @@ class NewDeckViewmodel extends ChangeNotifier {
   }
 
   void editFlashcard(int index, dynamic front, dynamic back) {
-    var toEdit = newFlashcards[index];
+    // var toEdit = newFlashcards[index];
     // Add getters to the flashcard model to change the card front and backs.
   }
 
@@ -51,6 +51,7 @@ class NewDeckViewmodel extends ChangeNotifier {
   }
 
   void reset() {
+    theDeckId = uuid.v4();
     newFlashcards = [];
     deckTitle = "";
     isPublic = false;
