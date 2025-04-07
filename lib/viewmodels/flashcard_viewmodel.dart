@@ -13,13 +13,13 @@ class FlashcardViewModel extends ChangeNotifier {
   // Possible add a loading bool and an error message string
 
   // Gets the Decks from the DB
-  Future<void> fetchDecks() async {
+  void fetchDecks() async {
     // Add try and catch
     _decks = await FlashcardDb.getDecks();
     notifyListeners();
   }
 
-  Future<void> fetchDeckFlashcards(int deckID) async {
+  void fetchDeckFlashcards(int deckID) async {
     _flashcards = await FlashcardDb.getDeckFlashcards(deckID);
     notifyListeners();
   }
