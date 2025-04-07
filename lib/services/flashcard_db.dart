@@ -55,7 +55,12 @@ class FlashcardDb {
     return await db.insert('decks', newDeck);
   }
 
-  // static Future<int> addDeckFlashcards(List<>) async {
-  //   final db = await _openDatabase();
-  // }
+  static Future<int> addDeckFlashcards(List<FlashcardModel> cards) async {
+    final db = await _openDatabase();
+    final List<Map<String, dynamic>> cardsToAdd = [];
+
+    // for (int i = 0; i < cards.length; i++) {
+    //   cardsToAdd.add(FlashcardModel.toMap(cards[i]));
+    // }
+  }
 }
