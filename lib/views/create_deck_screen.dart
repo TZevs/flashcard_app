@@ -41,7 +41,7 @@ class CreateDeckScreen extends StatelessWidget {
                 ),
               ),
               TextField(
-                controller: _cardFrontController,
+                controller: _cardBackController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Card Back",
@@ -53,6 +53,7 @@ class CreateDeckScreen extends StatelessWidget {
                         _cardBackController.text.isNotEmpty) {
                       viewModel.addFlashcard(
                           _cardFrontController.text, _cardBackController.text);
+
                       _cardFrontController.clear();
                       _cardBackController.clear();
                     }
@@ -60,7 +61,7 @@ class CreateDeckScreen extends StatelessWidget {
                   child: Text("Add Flashcard")),
               Expanded(
                   child: ListView.builder(
-                      itemCount: viewModel.newFlashcards.length,
+                      itemCount: viewModel.getFlashcards.length,
                       itemBuilder: (context, index) {
                         final item = viewModel.newFlashcards[index];
                         return ListTile(
@@ -78,6 +79,10 @@ class CreateDeckScreen extends StatelessWidget {
                           ),
                         );
                       })),
+              SizedBox(
+                height: 2,
+                width: MediaQuery.sizeOf(context).width,
+              ),
               ElevatedButton(
                   onPressed: () {
                     viewModel.addNewDeck();

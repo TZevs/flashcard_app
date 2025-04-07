@@ -12,6 +12,8 @@ class NewDeckViewmodel extends ChangeNotifier {
   bool isPublic = false;
   String theDeckId = uuid.v4();
 
+  List<FlashcardModel> get getFlashcards => newFlashcards;
+
   void setDeckTitle(String title) {
     deckTitle = title;
     notifyListeners();
