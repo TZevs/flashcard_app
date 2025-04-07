@@ -4,14 +4,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class FlashcardDb {
+  static Future<Database> _openDatabase() async {
+    final database_path = await getDatabasesPath();
+    final database_file = join(database_path, 'flashcardDatabase.db');
+    return openDatabase(database_file, version: 1, onCreate: createDatabase);
+  }
 
-	static Future<Database> _openDatabase() async {
-		final database_path = await getDatabasesPath();
-		final database_file = join(database_path, 'flashcardDatabase.db');
-		return openDatabase(database_file, version: 1, onCreate: createDatabase);
-	} 
-
-	static Future<void> createDatabase(Database db, int version) async {
+  static Future<void> createDatabase(Database db, int version) async {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS decks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +19,7 @@ class FlashcardDb {
       )
     ''');
 
-    await db.execute(''' 
+    await db.execute('''
       CREATE TABLE IF NOT EXISTS flashcards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         deckId INTEGER NOT NULL,
@@ -29,7 +28,7 @@ class FlashcardDb {
         FOREIGN KEY (deckId) REFERENCES decks (id) ON DELETE CASCADE
       )
     ''');
-	}
+  }
 
   static Future<List<DeckModel>> getDecks() async {
     final db = await _openDatabase();
@@ -42,10 +41,21 @@ class FlashcardDb {
 
   static Future<List<FlashcardModel>> getDeckFlashcards(int deckID) async {
     final db = await _openDatabase();
-    List<Map<String, dynamic>> cards = await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
+    List<Map<String, dynamic>> cards =
+        await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
 
     return List.generate(cards.length, (i) {
       return FlashcardModel.fromMap(cards[i]);
     });
   }
+
+  static Future<int> addDeck(DeckModel deck) async {
+    final db = await _openDatabase();
+    var newDeck = deck.toMap();
+    return await db.insert('decks', newDeck);
+  }
+
+  // static Future<int> addDeckFlashcards(List<>) async {
+  //   final db = await _openDatabase();
+  // }
 }
