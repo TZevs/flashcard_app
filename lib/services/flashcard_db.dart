@@ -41,8 +41,8 @@ class FlashcardDb {
 
   static Future<List<FlashcardModel>> getDeckFlashcards(int deckID) async {
     final db = await _openDatabase();
-    List<Map<String, dynamic>> cards =
-        await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
+    List<Map<String, dynamic>> cards = await db.query('flashcards',
+        where: 'deckId=?', whereArgs: [deckID], limit: 1);
 
     return List.generate(cards.length, (i) {
       return FlashcardModel.fromMap(cards[i]);
