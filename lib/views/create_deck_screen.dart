@@ -16,6 +16,8 @@ class CreateDeckScreen extends StatelessWidget {
         NewDeckViewmodel viewModel) {
       _cardFrontController.text = card.cardFront;
       _cardBackController.text = card.cardBack;
+
+      showDialog(context: context, builder: (_) => AlertDialog());
     }
 
     return Consumer<NewDeckViewmodel>(
