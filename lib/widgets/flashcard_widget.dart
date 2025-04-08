@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-class FlashcardWidget extends StatefulWidget {
-  const FlashcardWidget({super.key});
+class FlashcardWidget extends StatelessWidget {
+  const FlashcardWidget({required this.content});
+  final dynamic content;
 
-  @override
-  State<FlashcardWidget> createState() => _FlashcardWidget();
-}
-
-class _FlashcardWidget extends State<FlashcardWidget> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        
-      )
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Card(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        child: Center(
+          child: Text(content),
+        ),
+      ),
     );
   }
 }
