@@ -17,7 +17,42 @@ class CreateDeckScreen extends StatelessWidget {
       _cardFrontController.text = card.cardFront;
       _cardBackController.text = card.cardBack;
 
-      showDialog(context: context, builder: (_) => AlertDialog());
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text("Edit Flashcard"),
+                icon: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context)),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: _cardFrontController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Card Front",
+                      ),
+                    ),
+                    TextField(
+                      controller: _cardBackController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Card Back",
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          viewModel.editFlashcard(
+                              index,
+                              _cardFrontController.text,
+                              _cardBackController.text);
+                          Navigator.pop(context);
+                        },
+                        child: Text("Save"))
+                  ],
+                ),
+              ));
     }
 
     return Consumer<NewDeckViewmodel>(
@@ -63,8 +98,8 @@ class CreateDeckScreen extends StatelessWidget {
                       viewModel.addFlashcard(
                           _cardFrontController.text, _cardBackController.text);
 
-                      _cardFrontController.clear();
-                      _cardBackController.clear();
+                      _cardFrontController.text = "";
+                      _cardBackController.text = "";
                     }
                   },
                   child: Text("Add Flashcard")),
@@ -80,7 +115,9 @@ class CreateDeckScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                  icon: Icon(Icons.edit), onPressed: () {}),
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () => _showEditBox(
+                                      context, index, item, viewModel)),
                               IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () =>
