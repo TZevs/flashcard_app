@@ -1,3 +1,4 @@
+import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,12 @@ class CreateDeckScreen extends StatelessWidget {
     final _titleController = TextEditingController();
     final _cardFrontController = TextEditingController();
     final _cardBackController = TextEditingController();
+
+    void _showEditBox(BuildContext context, int index, FlashcardModel card,
+        NewDeckViewmodel viewModel) {
+      _cardFrontController.text = card.cardFront;
+      _cardBackController.text = card.cardBack;
+    }
 
     return Consumer<NewDeckViewmodel>(
       builder: (context, viewModel, child) {
