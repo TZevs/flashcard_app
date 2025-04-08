@@ -61,13 +61,14 @@ class CreateDeckScreen extends StatelessWidget {
                   child: Text("Add Flashcard")),
               Expanded(
                   child: ListView.builder(
-                      itemCount: viewModel.getFlashcards.length,
+                      itemCount: viewModel.newFlashcards.length,
                       itemBuilder: (context, index) {
                         final item = viewModel.newFlashcards[index];
                         return ListTile(
                           title: Text(item.cardFront),
                           subtitle: Text(item.cardBack),
                           trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                   icon: Icon(Icons.edit), onPressed: () {}),
@@ -79,10 +80,6 @@ class CreateDeckScreen extends StatelessWidget {
                           ),
                         );
                       })),
-              SizedBox(
-                height: 2,
-                width: MediaQuery.sizeOf(context).width,
-              ),
               ElevatedButton(
                   onPressed: () {
                     viewModel.addNewDeck();
