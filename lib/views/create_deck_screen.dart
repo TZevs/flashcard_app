@@ -82,8 +82,9 @@ class CreateDeckScreen extends StatelessWidget {
                       })),
               ElevatedButton(
                   onPressed: () {
-                    viewModel.addNewDeck();
+                    // viewModel.addNewDeck();
                     viewModel.reset();
+                    Navigator.pop(context);
                   },
                   child: Text("Save Deck")),
             ],
