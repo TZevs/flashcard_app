@@ -19,8 +19,23 @@ class FlashcardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchDeckFlashcards(int deckID) async {
+  void fetchDeckFlashcards(String deckID) async {
     _flashcards = await FlashcardDb.getDeckFlashcards(deckID);
     notifyListeners();
   }
+
+  void removeDeck(int index) async {
+    await FlashcardDb.deleteDeck(currentDecks[index].id);
+    fetchDecks();
+  }
+
+  String getDeckTitle(String id) {
+    DeckModel deck = currentDecks.firstWhere((deck) => deck.id == id);
+    return deck.title;
+  }
+
+  void nextFlashcard(int index) {}
+  void prevFlashcard(int index) {}
+
+  int deckLength() => currentCards.length;
 }
