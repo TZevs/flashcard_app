@@ -36,8 +36,10 @@ class NewDeckViewmodel extends ChangeNotifier {
   }
 
   void editFlashcard(int index, dynamic front, dynamic back) {
-    // var toEdit = newFlashcards[index];
-    // Add getters to the flashcard model to change the card front and backs.
+    var toEdit = newFlashcards[index];
+    toEdit.cardFront = front;
+    toEdit.cardBack = back;
+    notifyListeners();
   }
 
   void addNewDeck() async {
