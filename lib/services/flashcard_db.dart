@@ -13,7 +13,7 @@ class FlashcardDb {
   static Future<void> createDatabase(Database db, int version) async {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS decks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id TEXT PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         isPublic BOOLEAN NOT NULL  
       )
@@ -22,7 +22,7 @@ class FlashcardDb {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS flashcards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        deckId INTEGER NOT NULL,
+        deckId TEXT NOT NULL,
         front TEXT NOT NULL,
         back TEXT NOT NULL,
         FOREIGN KEY (deckId) REFERENCES decks (id) ON DELETE CASCADE
@@ -39,7 +39,7 @@ class FlashcardDb {
     });
   }
 
-  static Future<List<FlashcardModel>> getDeckFlashcards(int deckID) async {
+  static Future<List<FlashcardModel>> getDeckFlashcards(String deckID) async {
     final db = await _openDatabase();
     List<Map<String, dynamic>> cards = await db.query('flashcards',
         where: 'deckId=?', whereArgs: [deckID], limit: 1);
