@@ -1,5 +1,6 @@
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
+import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,11 @@ class DeckScreen extends StatelessWidget {
                                 icon: Icon(Icons.delete), onPressed: () {}),
                           ],
                         ),
-                        onTap: () {},
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) =>
+                                    FlashcardScreen(deckID: deck.id))),
                       );
                     })),
             IconButton(
