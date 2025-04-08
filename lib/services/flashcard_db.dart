@@ -70,4 +70,9 @@ class FlashcardDb {
     List<dynamic> results = await batch.commit();
     return results.length;
   }
+
+  static Future<int> deleteDeck(String deckID) async {
+    final db = await _openDatabase();
+    return await db.delete('decks', where: 'deckId=?', whereArgs: [deckID]);
+  }
 }
