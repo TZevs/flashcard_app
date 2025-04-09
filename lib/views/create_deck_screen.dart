@@ -98,8 +98,8 @@ class CreateDeckScreen extends StatelessWidget {
                       viewModel.addFlashcard(
                           _cardFrontController.text, _cardBackController.text);
 
-                      _cardFrontController.text = "";
-                      _cardBackController.text = "";
+                      _cardFrontController.clear();
+                      _cardBackController.clear();
                     }
                   },
                   child: Text("Add Flashcard")),
@@ -128,7 +128,7 @@ class CreateDeckScreen extends StatelessWidget {
                       })),
               ElevatedButton(
                   onPressed: () {
-                    // viewModel.addNewDeck();
+                    viewModel.addNewDeck();
                     viewModel.reset();
                     Navigator.pop(context);
                   },

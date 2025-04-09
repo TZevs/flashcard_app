@@ -12,15 +12,16 @@ class FlashcardDb {
 
   static Future<void> createDatabase(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS decks (
-        id TEXT PRIMARY KEY AUTOINCREMENT,
+      CREATE TABLE decks (
+        id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
-        isPublic BOOLEAN NOT NULL  
+        isPublic BOOLEAN NOT NULL,
+        cardCount INTEGER NOT NULL
       )
     ''');
 
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS flashcards (
+      CREATE TABLE flashcards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         deckId TEXT NOT NULL,
         front TEXT NOT NULL,
@@ -28,6 +29,12 @@ class FlashcardDb {
         FOREIGN KEY (deckId) REFERENCES decks (id) ON DELETE CASCADE
       )
     ''');
+  }
+
+  static Future<void> deleteDatabaseFile() async {
+    final databasePath = await getDatabasesPath();
+    final databaseFile = join(databasePath, 'flashcardDatabase.db');
+    await deleteDatabase(databaseFile);
   }
 
   static Future<List<DeckModel>> getDecks() async {

@@ -10,6 +10,7 @@ class DeckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<FlashcardViewModel>(builder: (context, viewModel, child) {
+      viewModel.fetchDecks();
       return SafeArea(
           child: Scaffold(
         appBar: AppBar(

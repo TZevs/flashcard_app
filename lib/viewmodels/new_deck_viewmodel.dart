@@ -43,8 +43,11 @@ class NewDeckViewmodel extends ChangeNotifier {
   }
 
   void addNewDeck() async {
-    DeckModel newDeck =
-        DeckModel(id: theDeckId, title: deckTitle, isPublic: isPublic);
+    DeckModel newDeck = DeckModel(
+        id: theDeckId,
+        title: deckTitle,
+        isPublic: isPublic,
+        cardCount: newFlashcards.length);
 
     await FlashcardDb.addDeck(newDeck);
     addFlashcardsToDB();
