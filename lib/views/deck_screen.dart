@@ -1,4 +1,4 @@
-import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
+import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,45 +9,39 @@ class DeckScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FlashcardViewModel>(builder: (context, viewModel, child) {
-      viewModel.fetchDecks();
-      return SafeArea(
-          child: Scaffold(
-        appBar: AppBar(
-          title: Text("Decks"),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-                child: ListView.builder(
-                    itemCount: viewModel.currentDecks.length,
-                    itemBuilder: (context, index) {
-                      final deck = viewModel.currentDecks[index];
-                      return ListTile(
-                        title: Text(deck.title),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                                icon: Icon(Icons.edit), onPressed: () {}),
-                            IconButton(
-                                icon: Icon(Icons.delete), onPressed: () {}),
-                          ],
-                        ),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (ctx) =>
-                                    FlashcardScreen(deckID: deck.id))),
-                      );
-                    })),
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) => CreateDeckScreen()))),
-          ],
-        ),
-      ));
-    });
+    final viewModel = Provider.of<DeckViewModel>(context);
+    viewModel.fetchDecks();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Decks"),
+      ),
+      body: Consumer<DeckViewModel>(builder: (context, viewModel, child) {
+        final decks = viewModel.decks;
+        return ListView.builder(
+            itemCount: decks.length,
+            itemBuilder: (context, index) {
+              final deck = viewModel.decks[index];
+              return ListTile(
+                title: Text(deck.title),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                    IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                  ],
+                ),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ctx) => FlashcardScreen(deck: deck))),
+              );
+            });
+      }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (ctx) => CreateDeckScreen())),
+      ),
+    );
   }
 }

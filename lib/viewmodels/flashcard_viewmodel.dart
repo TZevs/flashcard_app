@@ -4,18 +4,13 @@ import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 
 class FlashcardViewModel extends ChangeNotifier {
-  List<DeckModel> _decks = [];
+  late DeckModel _openDeck;
   List<FlashcardModel> _flashcards = [];
 
-  // Gets the current deck and flashcard lists
-  List<DeckModel> get currentDecks => _decks;
-  List<FlashcardModel> get currentCards => _flashcards;
-  // Possible add a loading bool and an error message string
+  List<FlashcardModel> get flashcards => _flashcards;
 
-  // Gets the Decks from the DB
-  void fetchDecks() async {
-    // Add try and catch
-    _decks = await FlashcardDb.getDecks();
+  void setOpenDeck(DeckModel deck) {
+    _openDeck = deck;
     notifyListeners();
   }
 
@@ -24,18 +19,10 @@ class FlashcardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeDeck(int index) async {
-    await FlashcardDb.deleteDeck(currentDecks[index].id);
-    fetchDecks();
-  }
-
-  String getDeckTitle(String id) {
-    DeckModel deck = currentDecks.firstWhere((deck) => deck.id == id);
-    return deck.title;
-  }
+  String get getDeckTitle => _openDeck.title;
 
   void nextFlashcard(int index) {}
   void prevFlashcard(int index) {}
 
-  int deckLength() => currentCards.length;
+  int deckLength() => flashcards.length;
 }

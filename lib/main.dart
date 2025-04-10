@@ -1,4 +1,4 @@
-import 'package:flashcard_app/services/flashcard_db.dart';
+import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/views/deck_screen.dart';
@@ -19,6 +19,7 @@ class MyFlashCardApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => NewDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => FlashcardViewModel()),
+        ChangeNotifierProvider(create: (context) => DeckViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
