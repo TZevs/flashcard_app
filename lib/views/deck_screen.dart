@@ -4,25 +4,38 @@ import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DeckScreen extends StatelessWidget {
+class DeckScreen extends StatefulWidget {
   const DeckScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = Provider.of<DeckViewModel>(context);
+  State<DeckScreen> createState() => _DeckScreenState();
+}
+
+class _DeckScreenState extends State<DeckScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final viewModel = Provider.of<DeckViewModel>(context, listen: false);
     viewModel.fetchDecks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Decks"),
       ),
       body: Consumer<DeckViewModel>(builder: (context, viewModel, child) {
-        final decks = viewModel.decks;
+        if (viewModel.decks.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
         return ListView.builder(
-            itemCount: decks.length,
+            itemCount: viewModel.decks.length,
             itemBuilder: (context, index) {
               final deck = viewModel.decks[index];
               return ListTile(
                 title: Text(deck.title),
+                subtitle: Text("${deck.cardCount} Flashcards"),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

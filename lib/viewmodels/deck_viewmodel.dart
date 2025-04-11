@@ -6,14 +6,13 @@ class DeckViewModel extends ChangeNotifier {
   List<DeckModel> _decks = [];
   List<DeckModel> get decks => _decks;
 
-  void fetchDecks() async {
+  Future<void> fetchDecks() async {
     _decks = await FlashcardDb.getDecks();
     notifyListeners();
   }
 
-  void removeDeck(int index) async {
+  Future<void> removeDeck(int index) async {
     await FlashcardDb.deleteDeck(decks[index].id);
-    fetchDecks();
     notifyListeners();
   }
 }
