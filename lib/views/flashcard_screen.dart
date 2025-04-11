@@ -17,11 +17,14 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   @override
   void initState() {
     super.initState();
+    final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
+    viewModel.fetchDeckFlashcards(widget.deck.id);
     // Delay to make sure context is available
-    Future.microtask(() {
-      final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
-      viewModel.fetchDeckFlashcards(widget.deck.id);
-    });
+    // Future.microtask(() {
+    //   final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
+    //   viewModel.fetchDeckFlashcards(widget.deck.id);
+    //   print(viewModel.flashcards);
+    // });
   }
 
   @override
@@ -29,18 +32,31 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     return Scaffold(
       body: Consumer<FlashcardViewModel>(
         builder: (context, viewModel, child) {
+          final DeckModel selectedDeck = widget.deck;
           final cards = viewModel.flashcards;
-          print(cards.length);
-          print(cards);
-          print(cards[0].cardFront);
-          final DeckModel selctedDeck = widget.deck;
+
+          if (cards.isEmpty) {
+            return Center(
+              child: CircularProgressIndicator(), // Show loading spinner
+            );
+          }
+
+          // Show a message if no flashcards are found
+          if (cards.isEmpty) {
+            return Center(
+              child: Text(
+                'No flashcards available for this deck.',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          }
 
           return Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  viewModel.getDeckTitle(selctedDeck),
+                  viewModel.getDeckTitle(selectedDeck),
                   style: const TextStyle(fontSize: 24),
                 ),
               ),

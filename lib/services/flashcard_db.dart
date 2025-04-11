@@ -24,8 +24,8 @@ class FlashcardDb {
       CREATE TABLE flashcards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         deckId TEXT NOT NULL,
-        front TEXT NOT NULL,
-        back TEXT NOT NULL,
+        cardFront TEXT NOT NULL,
+        cardBack TEXT NOT NULL,
         FOREIGN KEY (deckId) REFERENCES decks (id) ON DELETE CASCADE
       )
     ''');
@@ -55,12 +55,22 @@ class FlashcardDb {
 
   static Future<List<FlashcardModel>> getDeckFlashcards(String deckID) async {
     final db = await _openDatabase();
-    List<Map<String, dynamic>> cards =
+    final cards =
         await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
+    print("Queried Flashcards: $cards");
+    return cards.map((card) => FlashcardModel.fromMap(card)).toList();
+    // final List<Map<String, dynamic>> cards = await db.rawQuery(
+    //   'SELECT * FROM flashcards WHERE deckId = ?',
+    //   [deckID],
+    // );
+    // final List<Map<String, dynamic>> cards =
+    //     await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
 
-    return List.generate(cards.length, (i) {
-      return FlashcardModel.fromMap(cards[i]);
-    });
+    // print("Queried Flashcards: $cards");
+
+    // return List.generate(cards.length, (i) {
+    //   return FlashcardModel.fromMap(cards[i]);
+    // });
   }
 
   static Future<int> addDeck(DeckModel deck) async {

@@ -144,7 +144,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               ElevatedButton(
                   onPressed: () {
                     viewModel.addNewDeck();
-                    viewModel.reset();
                     Navigator.pop(context);
                   },
                   child: Text("Save Deck")),

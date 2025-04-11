@@ -4,11 +4,22 @@ import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 
 class FlashcardViewModel extends ChangeNotifier {
-  List<FlashcardModel> _flashcards = [];
-  List<FlashcardModel> get flashcards => _flashcards;
+  List<FlashcardModel> _fetchedFlashcards = [];
+  List<FlashcardModel> get flashcards => _fetchedFlashcards;
 
   Future<void> fetchDeckFlashcards(String deckID) async {
-    _flashcards = await FlashcardDb.getDeckFlashcards(deckID);
+    // _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
+    // print("Returned Flashcards: $_fetchedFlashcards");
+    // notifyListeners();
+    print("fetchDeckFlashcards called with deckID: $deckID");
+
+    // Check if this line gets executed
+    final cards = await FlashcardDb.getDeckFlashcards(deckID);
+
+    print("Fetched flashcards: $cards");
+
+    _fetchedFlashcards = cards;
+    print("Updated flashcards list: $_fetchedFlashcards");
     notifyListeners();
   }
 
