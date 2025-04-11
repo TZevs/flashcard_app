@@ -48,29 +48,18 @@ class FlashcardDb {
     final db = await _openDatabase();
     final List<Map<String, dynamic>> decks = await db.query('decks');
 
-    return List.generate(decks.length, (i) {
-      return DeckModel.fromMap(decks[i]);
-    });
+    return decks.map((deck) => DeckModel.fromMap(deck)).toList();
+    // return List.generate(decks.length, (i) {
+    //   return DeckModel.fromMap(decks[i]);
+    // });
   }
 
   static Future<List<FlashcardModel>> getDeckFlashcards(String deckID) async {
     final db = await _openDatabase();
     final cards =
         await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
-    print("Queried Flashcards: $cards");
+
     return cards.map((card) => FlashcardModel.fromMap(card)).toList();
-    // final List<Map<String, dynamic>> cards = await db.rawQuery(
-    //   'SELECT * FROM flashcards WHERE deckId = ?',
-    //   [deckID],
-    // );
-    // final List<Map<String, dynamic>> cards =
-    //     await db.query('flashcards', where: 'deckId=?', whereArgs: [deckID]);
-
-    // print("Queried Flashcards: $cards");
-
-    // return List.generate(cards.length, (i) {
-    //   return FlashcardModel.fromMap(cards[i]);
-    // });
   }
 
   static Future<int> addDeck(DeckModel deck) async {
