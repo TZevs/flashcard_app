@@ -3,58 +3,73 @@ import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateDeckScreen extends StatelessWidget {
+class CreateDeckScreen extends StatefulWidget {
   const CreateDeckScreen({super.key});
 
   @override
+  State<CreateDeckScreen> createState() => _CreateDeckScreenState();
+}
+
+class _CreateDeckScreenState extends State<CreateDeckScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _cardFrontController = TextEditingController();
+  final TextEditingController _cardBackController = TextEditingController();
+
+  void _showEditBox(BuildContext context, int index, FlashcardModel card,
+      NewDeckViewmodel viewModel) {
+    // _cardFrontController.text = card.cardFront;
+    // _cardBackController.text = card.cardBack;
+
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Edit Flashcard"),
+              icon: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _cardFrontController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Card Front",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _cardBackController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Card Back",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextButton(
+                      onPressed: () {
+                        viewModel.editFlashcard(
+                            index,
+                            _cardFrontController.text,
+                            _cardBackController.text);
+                        Navigator.pop(context);
+                      },
+                      child: Text("Save"))
+                ],
+              ),
+            ));
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _cardFrontController.dispose();
+    _cardBackController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _titleController = TextEditingController();
-    final _cardFrontController = TextEditingController();
-    final _cardBackController = TextEditingController();
-
-    void _showEditBox(BuildContext context, int index, FlashcardModel card,
-        NewDeckViewmodel viewModel) {
-      _cardFrontController.text = card.cardFront;
-      _cardBackController.text = card.cardBack;
-
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text("Edit Flashcard"),
-                icon: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context)),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: _cardFrontController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Card Front",
-                      ),
-                    ),
-                    TextField(
-                      controller: _cardBackController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Card Back",
-                      ),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          viewModel.editFlashcard(
-                              index,
-                              _cardFrontController.text,
-                              _cardBackController.text);
-                          Navigator.pop(context);
-                        },
-                        child: Text("Save"))
-                  ],
-                ),
-              ));
-    }
-
     return Consumer<NewDeckViewmodel>(
       builder: (context, viewModel, child) {
         return SafeArea(
@@ -105,9 +120,9 @@ class CreateDeckScreen extends StatelessWidget {
                   child: Text("Add Flashcard")),
               Expanded(
                   child: ListView.builder(
-                      itemCount: viewModel.newFlashcards.length,
+                      itemCount: viewModel.flashcards.length,
                       itemBuilder: (context, index) {
-                        final item = viewModel.newFlashcards[index];
+                        final item = viewModel.flashcards[index];
                         return ListTile(
                           title: Text(item.cardFront),
                           subtitle: Text(item.cardBack),

@@ -12,9 +12,16 @@ class DeckScreen extends StatefulWidget {
 }
 
 class _DeckScreenState extends State<DeckScreen> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final viewModel = Provider.of<DeckViewModel>(context, listen: false);
+  //   viewModel.fetchDecks();
+  // }
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final viewModel = Provider.of<DeckViewModel>(context, listen: false);
     viewModel.fetchDecks();
   }
@@ -27,7 +34,7 @@ class _DeckScreenState extends State<DeckScreen> {
       ),
       body: Consumer<DeckViewModel>(builder: (context, viewModel, child) {
         if (viewModel.decks.isEmpty) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text("No Decks Added"));
         }
         return ListView.builder(
             itemCount: viewModel.decks.length,
@@ -40,7 +47,9 @@ class _DeckScreenState extends State<DeckScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                    IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                    IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () => viewModel.removeDeck(index)),
                   ],
                 ),
                 onTap: () => Navigator.push(
@@ -52,8 +61,10 @@ class _DeckScreenState extends State<DeckScreen> {
       }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (ctx) => CreateDeckScreen())),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (ctx) => CreateDeckScreen())).then((_) {
+          Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+        }),
       ),
     );
   }

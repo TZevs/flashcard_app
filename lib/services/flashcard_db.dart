@@ -37,6 +37,13 @@ class FlashcardDb {
     await deleteDatabase(databaseFile);
   }
 
+  static Future<void> getAllCards() async {
+    final db = await _openDatabase();
+    final cards = await db.query('flashcards');
+    print("Flashcards: $cards");
+    print(cards.length);
+  }
+
   static Future<List<DeckModel>> getDecks() async {
     final db = await _openDatabase();
     final List<Map<String, dynamic>> decks = await db.query('decks');
@@ -62,24 +69,30 @@ class FlashcardDb {
     return await db.insert('decks', newDeck);
   }
 
-  static Future<int> addDeckFlashcards(List<FlashcardModel> cards) async {
+  static Future<void> addDeckFlashcards(List<FlashcardModel> cards) async {
     final db = await _openDatabase();
-    List<Map<String, dynamic>> addCards =
-        cards.map((card) => card.toMap()).toList();
 
-    Batch batch = db.batch();
-
-    for (int i = 0; i < addCards.length; i++) {
-      batch.insert('flashcards', addCards[i]);
+    for (var card in cards) {
+      var newCard = card.toMap();
+      await db.insert('flashcards', newCard);
     }
 
-    // Inserts all records at once
-    List<dynamic> results = await batch.commit();
-    return results.length;
+    // List<Map<String, dynamic>> addCards =
+    //     cards.map((card) => card.toMap()).toList();
+
+    // Batch batch = db.batch();
+
+    // for (int i = 0; i < addCards.length; i++) {
+    //   batch.insert('flashcards', addCards[i]);
+    // }
+
+    // // Inserts all records at once
+    // List<dynamic> results = await batch.commit();
+    // return results.length;
   }
 
   static Future<int> deleteDeck(String deckID) async {
     final db = await _openDatabase();
-    return await db.delete('decks', where: 'deckId=?', whereArgs: [deckID]);
+    return await db.delete('decks', where: 'id=?', whereArgs: [deckID]);
   }
 }

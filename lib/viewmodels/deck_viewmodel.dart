@@ -13,6 +13,6 @@ class DeckViewModel extends ChangeNotifier {
 
   Future<void> removeDeck(int index) async {
     await FlashcardDb.deleteDeck(decks[index].id);
-    notifyListeners();
+    await fetchDecks();
   }
 }
