@@ -19,12 +19,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     super.initState();
     final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
     viewModel.fetchDeckFlashcards(widget.deck.id);
-    // Delay to make sure context is available
-    // Future.microtask(() {
-    //   final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
-    //   viewModel.fetchDeckFlashcards(widget.deck.id);
-    //   print(viewModel.flashcards);
-    // });
   }
 
   @override
@@ -67,7 +61,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   backWidget: FlashcardWidget(content: cards[0].cardBack),
                   controller: FlipCardController(),
                   rotateSide: RotateSide.left,
-                  onTapFlipping: true,
+                  onTapFlipping: false,
                   axis: FlipAxis.horizontal,
                 ),
               ),

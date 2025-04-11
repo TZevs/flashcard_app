@@ -8,18 +8,7 @@ class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> get flashcards => _fetchedFlashcards;
 
   Future<void> fetchDeckFlashcards(String deckID) async {
-    // _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
-    // print("Returned Flashcards: $_fetchedFlashcards");
-    // notifyListeners();
-    print("fetchDeckFlashcards called with deckID: $deckID");
-
-    // Check if this line gets executed
-    final cards = await FlashcardDb.getDeckFlashcards(deckID);
-
-    print("Fetched flashcards: $cards");
-
-    _fetchedFlashcards = cards;
-    print("Updated flashcards list: $_fetchedFlashcards");
+    _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
     notifyListeners();
   }
 
