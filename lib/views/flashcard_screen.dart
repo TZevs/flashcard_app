@@ -30,6 +30,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Consumer<FlashcardViewModel>(
         builder: (context, viewModel, child) {
           final DeckModel selectedDeck = widget.deck;
