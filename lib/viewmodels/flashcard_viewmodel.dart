@@ -7,6 +7,9 @@ class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _fetchedFlashcards = [];
   List<FlashcardModel> get flashcards => _fetchedFlashcards;
 
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
+
   Future<void> fetchDeckFlashcards(String deckID) async {
     _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
     notifyListeners();

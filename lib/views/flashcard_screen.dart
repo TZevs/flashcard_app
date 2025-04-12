@@ -57,11 +57,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               ),
               Center(
                 child: FlipCard(
-                  frontWidget: FlashcardWidget(content: cards[0].cardFront),
-                  backWidget: FlashcardWidget(content: cards[0].cardBack),
+                  frontWidget: FlashcardWidget(
+                      content: cards[viewModel.currentIndex].cardFront),
+                  backWidget: FlashcardWidget(
+                      content: cards[viewModel.currentIndex].cardBack),
                   controller: FlipCardController(),
                   rotateSide: RotateSide.left,
-                  onTapFlipping: false,
+                  onTapFlipping: true,
                   axis: FlipAxis.horizontal,
                 ),
               ),
