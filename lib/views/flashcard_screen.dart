@@ -1,4 +1,5 @@
 import 'package:flashcard_app/models/deck_model.dart';
+import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/widgets/flashcard_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   @override
   void initState() {
     super.initState();
-    final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
-    viewModel.fetchDeckFlashcards(widget.deck.id);
+
+    // So that multiple notifierListeners() can be used in the same function.
+    Future.microtask(() {
+      final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
+      viewModel.fetchDeckFlashcards(widget.deck.id);
+    });
   }
 
   @override
@@ -30,13 +35,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           final DeckModel selectedDeck = widget.deck;
           final cards = viewModel.flashcards;
 
-          if (cards.isEmpty) {
+          if (viewModel.isLoading) {
             return Center(
-              child: CircularProgressIndicator(), // Show loading spinner
+              child: CircularProgressIndicator(),
             );
           }
 
-          // Show a message if no flashcards are found
           if (cards.isEmpty) {
             return Center(
               child: Text(
@@ -45,6 +49,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               ),
             );
           }
+
+          FlashcardModel currentCard = cards[viewModel.currentIndex];
 
           return Column(
             children: [
@@ -57,10 +63,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               ),
               Center(
                 child: FlipCard(
-                  frontWidget: FlashcardWidget(
-                      content: cards[viewModel.currentIndex].cardFront),
-                  backWidget: FlashcardWidget(
-                      content: cards[viewModel.currentIndex].cardBack),
+                  frontWidget: FlashcardWidget(content: currentCard.cardFront),
+                  backWidget: FlashcardWidget(content: currentCard.cardBack),
                   controller: FlipCardController(),
                   rotateSide: RotateSide.left,
                   onTapFlipping: true,
