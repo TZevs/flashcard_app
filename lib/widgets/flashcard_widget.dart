@@ -6,11 +6,11 @@ class FlashcardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      width: 300,
-      color: Colors.blue,
-      child: Center(child: Text(content)),
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Card(
+        child: Center(child: Text(content)),
+      ),
     );
   }
 }

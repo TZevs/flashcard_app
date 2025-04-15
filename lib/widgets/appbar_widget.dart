@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  final Widget? leading;
-  final List<Widget>? actions;
   final Widget? trailing;
-  const AppbarWidget(
-      {super.key, this.title, this.leading, this.actions, this.trailing});
+  const AppbarWidget({super.key, this.title, this.trailing});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.all(20),
       child: AppBar(
         elevation: 0,
-        title: Text("Decks"),
+        title: Text(title ?? ""),
       ),
     );
   }

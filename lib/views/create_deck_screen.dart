@@ -1,5 +1,6 @@
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
+import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,10 +75,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
       builder: (context, viewModel, child) {
         return SafeArea(
             child: Scaffold(
-          appBar: AppBar(
-            title: Text("New Deck"),
-            centerTitle: true,
-          ),
+          appBar: AppbarWidget(title: "New Deck"),
           body: Column(
             children: [
               TextField(
@@ -88,10 +86,12 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                 ),
                 onChanged: viewModel.setDeckTitle,
               ),
+              SizedBox(height: 10),
               SwitchListTile(
                   title: Text("Make Public?"),
                   value: viewModel.isPublic,
                   onChanged: viewModel.setIsPublic),
+              SizedBox(height: 10),
               TextField(
                 controller: _cardFrontController,
                 decoration: InputDecoration(
@@ -99,6 +99,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   labelText: "Card Front",
                 ),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _cardBackController,
                 decoration: InputDecoration(
@@ -106,6 +107,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   labelText: "Card Back",
                 ),
               ),
+              SizedBox(height: 10),
               ElevatedButton(
                   onPressed: () {
                     if (_cardFrontController.text.isNotEmpty &&

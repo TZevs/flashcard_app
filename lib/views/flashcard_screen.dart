@@ -1,6 +1,7 @@
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
+import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/flashcard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
@@ -29,7 +30,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppbarWidget(),
       body: Consumer<FlashcardViewModel>(
         builder: (context, viewModel, child) {
           final DeckModel selectedDeck = widget.deck;

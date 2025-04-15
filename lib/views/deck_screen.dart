@@ -1,6 +1,7 @@
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
+import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,20 +23,20 @@ class _DeckScreenState extends State<DeckScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Decks"),
-      ),
+      appBar: AppbarWidget(title: "Decks"),
       body: Consumer<DeckViewModel>(builder: (context, viewModel, child) {
         if (viewModel.decks.isEmpty) {
           return Center(child: Text("No Decks Added"));
         }
+
         return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: viewModel.decks.length,
             itemBuilder: (context, index) {
               final deck = viewModel.decks[index];
               return ListTile(
                 title: Text(deck.title),
-                subtitle: Text("${deck.cardCount} Flashcards"),
+                subtitle: Text("${deck.cardCount} Cards"),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
