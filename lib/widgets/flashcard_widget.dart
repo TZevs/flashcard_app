@@ -6,15 +6,11 @@ class FlashcardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(100.0),
-      child: Card(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        child: Center(
-          child: Text(content),
-        ),
-      ),
+    return Container(
+      height: 300,
+      width: 300,
+      color: Colors.blue,
+      child: Center(child: Text(content)),
     );
   }
 }

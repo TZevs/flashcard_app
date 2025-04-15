@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _fetchedFlashcards = [];
+  late FlashcardModel _currentFlashcard;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -23,6 +24,12 @@ class FlashcardViewModel extends ChangeNotifier {
   }
 
   List<FlashcardModel> get flashcards => _fetchedFlashcards;
+
+  FlashcardModel getCurrentFlashcard() {
+    _currentFlashcard = flashcards[_currentIndex];
+    notifyListeners();
+    return _currentFlashcard;
+  }
 
   String getDeckTitle(DeckModel deck) => deck.title;
   int get deckLength => flashcards.length;
