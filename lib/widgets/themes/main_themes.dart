@@ -15,6 +15,11 @@ final ThemeData globalTheme = ThemeData(
       fontSize: 16,
     ),
   ),
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStatePropertyAll(Color(0xFFEBE4C2)),
+    trackColor: WidgetStatePropertyAll(Color(0xFF30253e)),
+    trackOutlineColor: WidgetStatePropertyAll(Color(0xFF30253e)),
+  ),
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xFF30253e),
       iconTheme: IconThemeData(color: Color(0xFFEBE4C2)),
@@ -28,5 +33,25 @@ final ThemeData globalTheme = ThemeData(
   cardTheme: CardTheme(
     color: Color(0xFF5c8966),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    clipBehavior: Clip.hardEdge,
+    shadowColor: const Color(0xFFEBE4C2),
+  ),
+);
+
+final TextTheme mainTextTheme = TextTheme(
+  displayLarge: TextStyle(
+    color: Color(0xFFEBE4C2),
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+  displayMedium: TextStyle(
+    color: Color(0xFFEBE4C2),
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  ),
+  displaySmall: TextStyle(
+    color: Color(0xFFEBE4C2),
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
   ),
 );
