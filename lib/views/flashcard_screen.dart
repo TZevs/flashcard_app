@@ -51,9 +51,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             );
           }
 
-          bool isSwiping = false;
-
           return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
@@ -65,10 +64,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               Expanded(
                   child: GestureDetector(
                 onHorizontalDragStart: (_) {
-                  isSwiping = true;
+                  viewModel.isSwiping = true;
                 },
                 onHorizontalDragEnd: (_) {
-                  isSwiping = false;
+                  viewModel.isSwiping = false;
                 },
                 child: PageView.builder(
                     controller:
@@ -85,7 +84,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                             FlashcardWidget(content: currentCard.cardBack),
                         controller: FlipCardController(),
                         rotateSide: RotateSide.left,
-                        onTapFlipping: !isSwiping,
+                        onTapFlipping: !viewModel.isSwiping,
                         axis: FlipAxis.horizontal,
                       );
                     }),

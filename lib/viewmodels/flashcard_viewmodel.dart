@@ -7,6 +7,8 @@ class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _fetchedFlashcards = [];
   late FlashcardModel _currentFlashcard;
 
+  bool isSwiping = false;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
