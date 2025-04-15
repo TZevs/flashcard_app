@@ -5,6 +5,7 @@ import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/flashcard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
+import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:provider/provider.dart';
 
 class FlashcardScreen extends StatefulWidget {
@@ -52,7 +53,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           }
 
           return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
@@ -89,16 +89,19 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       );
                     }),
               )),
-              SizedBox(height: 20),
-              Expanded(
-                  child: Center(
-                      child: Text(
-                          '${viewModel.currentIndex + 1} / ${viewModel.deckLength}'))),
-              LinearProgressIndicator(
-                value: viewModel.currentIndex / viewModel.deckLength,
-                backgroundColor: Colors.grey,
-                color: Colors.blue,
-              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: LinearProgressBar(
+                  maxSteps: viewModel.deckLength,
+                  currentStep: viewModel.currentIndex + 1,
+                  progressType: LinearProgressBar.progressTypeLinear,
+                  backgroundColor: Color(0xFF30253e),
+                  progressColor: Color(0xFFEEA83B),
+                  minHeight: 15,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              )
             ],
           );
         },
