@@ -50,8 +50,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             );
           }
 
-          // FlashcardModel currentCard = cards[viewModel.currentIndex];
-
           bool isSwiping = false;
 
           return Column(
@@ -79,20 +77,28 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                     itemBuilder: (context, index) {
                       FlashcardModel currentCard = cards[index];
 
-                      return Center(
-                        child: FlipCard(
-                          frontWidget:
-                              FlashcardWidget(content: currentCard.cardFront),
-                          backWidget:
-                              FlashcardWidget(content: currentCard.cardBack),
-                          controller: FlipCardController(),
-                          rotateSide: RotateSide.left,
-                          onTapFlipping: !isSwiping,
-                          axis: FlipAxis.horizontal,
-                        ),
+                      return FlipCard(
+                        frontWidget:
+                            FlashcardWidget(content: currentCard.cardFront),
+                        backWidget:
+                            FlashcardWidget(content: currentCard.cardBack),
+                        controller: FlipCardController(),
+                        rotateSide: RotateSide.left,
+                        onTapFlipping: !isSwiping,
+                        axis: FlipAxis.horizontal,
                       );
                     }),
               )),
+              SizedBox(height: 20),
+              Expanded(
+                  child: Center(
+                      child: Text(
+                          '${viewModel.currentIndex + 1} / ${viewModel.deckLength}'))),
+              LinearProgressIndicator(
+                value: viewModel.currentIndex / viewModel.deckLength,
+                backgroundColor: Colors.grey,
+                color: Colors.blue,
+              ),
             ],
           );
         },
