@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 void main() async {
   runApp(const MyFlashCardApp());
   // await FlashcardDb.deleteDatabaseFile();
-  // await FlashcardDb.getAllCards();
 }
 
 class MyFlashCardApp extends StatelessWidget {
