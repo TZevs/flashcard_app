@@ -21,7 +21,7 @@ final ThemeData globalTheme = ThemeData(
   ),
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xFF30253e),
-      iconTheme: IconThemeData(color: Color(0xFFEBE4C2)),
+      iconTheme: IconThemeData(color: Color(0xFFEBE4C2), weight: 20),
       titleTextStyle: TextStyle(
           color: Color(0xFFEBE4C2), fontSize: 35, fontWeight: FontWeight.bold)),
   scaffoldBackgroundColor: Color(0xFF2D4B48),
@@ -67,8 +67,5 @@ final TextTheme mainTextTheme = TextTheme(
     fontWeight: FontWeight.bold,
   ),
   displaySmall: TextStyle(
-    color: Color(0xFFEBE4C2),
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-  ),
+      color: Color(0xFFEBE4C2), fontSize: 18, fontWeight: FontWeight.normal),
 );

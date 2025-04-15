@@ -1,3 +1,4 @@
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 
 class FlashcardWidget extends StatelessWidget {
@@ -9,7 +10,7 @@ class FlashcardWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(20),
       child: Card(
-        child: Center(child: Text(content)),
+        child: Center(child: Text(content, style: mainTextTheme.displayMedium)),
       ),
     );
   }

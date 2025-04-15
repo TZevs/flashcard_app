@@ -59,7 +59,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   viewModel.getDeckTitle(selectedDeck),
-                  style: mainTextTheme.displayMedium,
+                  style: mainTextTheme.displayLarge,
                 ),
               ),
               Expanded(
@@ -90,20 +90,20 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       );
                     }),
               )),
-              SizedBox(height: 5),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(25),
                 child: Column(
                   children: [
                     Text(
-                        "${viewModel.currentIndex + 1} / ${viewModel.deckLength}"),
+                        "${viewModel.currentIndex + 1} / ${viewModel.deckLength}",
+                        style: mainTextTheme.displaySmall),
                     LinearProgressBar(
                       maxSteps: viewModel.deckLength,
                       currentStep: viewModel.currentIndex + 1,
                       progressType: LinearProgressBar.progressTypeLinear,
                       backgroundColor: Color(0xFF30253e),
                       progressColor: Color(0xFFEEA83B),
-                      minHeight: 15,
+                      minHeight: 20,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ],
