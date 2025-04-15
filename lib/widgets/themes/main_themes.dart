@@ -18,7 +18,6 @@ final ThemeData globalTheme = ThemeData(
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStatePropertyAll(Color(0xFFEBE4C2)),
     trackColor: WidgetStatePropertyAll(Color(0xFF30253e)),
-    trackOutlineColor: WidgetStatePropertyAll(Color(0xFF30253e)),
   ),
   appBarTheme: AppBarTheme(
       backgroundColor: Color(0xFF30253e),
@@ -27,26 +26,44 @@ final ThemeData globalTheme = ThemeData(
           color: Color(0xFFEBE4C2), fontSize: 35, fontWeight: FontWeight.bold)),
   scaffoldBackgroundColor: Color(0xFF2D4B48),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF7BB497),
-    foregroundColor: Color(0xFF30253e),
-  ),
+      backgroundColor: Color(0xFFEEA83B),
+      foregroundColor: Color(0xFF30253e),
+      iconSize: 40),
   cardTheme: CardTheme(
     color: Color(0xFF5c8966),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     clipBehavior: Clip.hardEdge,
-    shadowColor: const Color(0xFFEBE4C2),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(color: Color(0xFFEEA83B)),
+    ),
+    floatingLabelStyle:
+        TextStyle(color: Color(0xFFEEA83B), fontWeight: FontWeight.bold),
+    labelStyle: TextStyle(
+      color: Color(0xFFEEA83B),
+    ),
+    outlineBorder: BorderSide(
+      color: Color(0xFFEEA83B),
+    ),
+    activeIndicatorBorder: BorderSide(
+      color: Color(0xFFEEA83B),
+    ),
+    focusColor: Color(0xFFEEA83B),
+  ),
+  textTheme: mainTextTheme,
 );
 
 final TextTheme mainTextTheme = TextTheme(
   displayLarge: TextStyle(
     color: Color(0xFFEBE4C2),
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: FontWeight.bold,
   ),
   displayMedium: TextStyle(
     color: Color(0xFFEBE4C2),
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: FontWeight.bold,
   ),
   displaySmall: TextStyle(
