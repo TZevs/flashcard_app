@@ -2,6 +2,7 @@ import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/views/deck_screen.dart';
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:flashcard_app/services/flashcard_db.dart';
@@ -26,6 +27,7 @@ class MyFlashCardApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: DeckScreen(),
+        theme: globalTheme,
       ),
     );
   }
