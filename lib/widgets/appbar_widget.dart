@@ -1,9 +1,9 @@
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  final Widget? trailing;
-  const AppbarWidget({super.key, this.title, this.trailing});
+  const AppbarWidget({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,18 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.all(20),
       child: AppBar(
         elevation: 0,
-        title: Text(title ?? ""),
+        title: Text(
+          title ?? "",
+          style: mainTextTheme.displayLarge,
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              // Navigate to profile screen or perform any action
+            },
+          ),
+        ],
       ),
     );
   }
