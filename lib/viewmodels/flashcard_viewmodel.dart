@@ -17,8 +17,10 @@ class FlashcardViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
+    await Future.delayed(Duration(seconds: 1));
     _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
 
+    _currentIndex = 0;
     _isLoading = false;
     notifyListeners();
   }
@@ -34,6 +36,10 @@ class FlashcardViewModel extends ChangeNotifier {
   String getDeckTitle(DeckModel deck) => deck.title;
   int get deckLength => flashcards.length;
 
-  void nextFlashcard(int index) {}
-  void prevFlashcard(int index) {}
+  void updateCurrentIndex(int index) {
+    if (index >= 0 && index < flashcards.length) {
+      _currentIndex = index;
+      notifyListeners();
+    }
+  }
 }

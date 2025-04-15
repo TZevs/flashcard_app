@@ -50,7 +50,9 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             );
           }
 
-          FlashcardModel currentCard = cards[viewModel.currentIndex];
+          // FlashcardModel currentCard = cards[viewModel.currentIndex];
+
+          bool isSwiping = false;
 
           return Column(
             children: [
@@ -61,16 +63,36 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   style: const TextStyle(fontSize: 24),
                 ),
               ),
-              Center(
-                child: FlipCard(
-                  frontWidget: FlashcardWidget(content: currentCard.cardFront),
-                  backWidget: FlashcardWidget(content: currentCard.cardBack),
-                  controller: FlipCardController(),
-                  rotateSide: RotateSide.left,
-                  onTapFlipping: true,
-                  axis: FlipAxis.horizontal,
-                ),
-              ),
+              Expanded(
+                  child: GestureDetector(
+                onHorizontalDragStart: (_) {
+                  isSwiping = true;
+                },
+                onHorizontalDragEnd: (_) {
+                  isSwiping = false;
+                },
+                child: PageView.builder(
+                    controller:
+                        PageController(initialPage: viewModel.currentIndex),
+                    itemCount: viewModel.deckLength,
+                    onPageChanged: viewModel.updateCurrentIndex,
+                    itemBuilder: (context, index) {
+                      FlashcardModel currentCard = cards[index];
+
+                      return Center(
+                        child: FlipCard(
+                          frontWidget:
+                              FlashcardWidget(content: currentCard.cardFront),
+                          backWidget:
+                              FlashcardWidget(content: currentCard.cardBack),
+                          controller: FlipCardController(),
+                          rotateSide: RotateSide.left,
+                          onTapFlipping: !isSwiping,
+                          axis: FlipAxis.horizontal,
+                        ),
+                      );
+                    }),
+              )),
             ],
           );
         },
