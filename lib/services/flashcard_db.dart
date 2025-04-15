@@ -49,9 +49,6 @@ class FlashcardDb {
     final List<Map<String, dynamic>> decks = await db.query('decks');
 
     return decks.map((deck) => DeckModel.fromMap(deck)).toList();
-    // return List.generate(decks.length, (i) {
-    //   return DeckModel.fromMap(decks[i]);
-    // });
   }
 
   static Future<List<FlashcardModel>> getDeckFlashcards(String deckID) async {
@@ -75,19 +72,6 @@ class FlashcardDb {
       var newCard = card.toMap();
       await db.insert('flashcards', newCard);
     }
-
-    // List<Map<String, dynamic>> addCards =
-    //     cards.map((card) => card.toMap()).toList();
-
-    // Batch batch = db.batch();
-
-    // for (int i = 0; i < addCards.length; i++) {
-    //   batch.insert('flashcards', addCards[i]);
-    // }
-
-    // // Inserts all records at once
-    // List<dynamic> results = await batch.commit();
-    // return results.length;
   }
 
   static Future<int> deleteDeck(String deckID) async {
