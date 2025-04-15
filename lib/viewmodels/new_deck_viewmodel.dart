@@ -7,10 +7,12 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class NewDeckViewmodel extends ChangeNotifier {
+  String theDeckId = uuid.v4();
+
   List<FlashcardModel> _newFlashcards = [];
   String deckTitle = "";
   bool isPublic = false;
-  String theDeckId = uuid.v4();
+  String publicOrPrivateLabel = "Make Public?";
 
   List<FlashcardModel> get flashcards => _newFlashcards;
 
@@ -21,6 +23,11 @@ class NewDeckViewmodel extends ChangeNotifier {
 
   void setIsPublic(bool value) {
     isPublic = value;
+    if (isPublic) {
+      publicOrPrivateLabel = "Make Private?";
+    } else {
+      publicOrPrivateLabel = "Make Public?";
+    }
     notifyListeners();
   }
 

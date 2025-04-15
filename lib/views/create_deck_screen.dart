@@ -18,8 +18,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       NewDeckViewmodel viewModel) {
-    // _cardFrontController.text = card.cardFront;
-    // _cardBackController.text = card.cardBack;
+    _cardFrontController.text = card.cardFront;
+    _cardBackController.text = card.cardBack;
 
     showDialog(
         context: context,
@@ -34,7 +34,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   TextField(
                     controller: _cardFrontController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: "Card Front",
                     ),
                   ),
@@ -42,7 +41,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   TextField(
                     controller: _cardBackController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: "Card Back",
                     ),
                   ),
@@ -78,36 +76,41 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
           appBar: AppbarWidget(title: "New Deck"),
           body: Column(
             children: [
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Deck Title",
-                ),
-                onChanged: viewModel.setDeckTitle,
-              ),
-              SizedBox(height: 10),
-              SwitchListTile(
-                  title: Text("Make Public?"),
-                  value: viewModel.isPublic,
-                  onChanged: viewModel.setIsPublic),
-              SizedBox(height: 10),
-              TextField(
-                controller: _cardFrontController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Card Front",
+              Padding(
+                padding: const EdgeInsets.all(7.5),
+                child: TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: "Deck Title",
+                  ),
+                  onChanged: viewModel.setDeckTitle,
                 ),
               ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _cardBackController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Card Back",
+              Padding(
+                padding: const EdgeInsets.all(7.5),
+                child: SwitchListTile(
+                    title: Text(viewModel.publicOrPrivateLabel),
+                    value: viewModel.isPublic,
+                    onChanged: viewModel.setIsPublic),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(7.5),
+                child: TextField(
+                  controller: _cardFrontController,
+                  decoration: InputDecoration(
+                    labelText: "Card Front",
+                  ),
                 ),
               ),
-              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(7.5),
+                child: TextField(
+                  controller: _cardBackController,
+                  decoration: InputDecoration(
+                    labelText: "Card Back",
+                  ),
+                ),
+              ),
               ElevatedButton(
                   onPressed: () {
                     if (_cardFrontController.text.isNotEmpty &&
