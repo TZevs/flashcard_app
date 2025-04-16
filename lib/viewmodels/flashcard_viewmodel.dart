@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _fetchedFlashcards = [];
   late FlashcardModel _currentFlashcard;
+  late DeckModel deck;
 
   bool isSwiping = false;
 
@@ -36,7 +37,7 @@ class FlashcardViewModel extends ChangeNotifier {
   }
 
   String getDeckTitle(DeckModel deck) => deck.title;
-  int get deckLength => flashcards.length;
+  int get getDeckCardCount => deck.cardCount;
 
   void updateCurrentIndex(int index) {
     if (index >= 0 && index < flashcards.length) {

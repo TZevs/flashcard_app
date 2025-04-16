@@ -15,4 +15,8 @@ class DeckViewModel extends ChangeNotifier {
     await FlashcardDb.deleteDeck(decks[index].id);
     await fetchDecks();
   }
+
+  int getCardCount(int index) {
+    return _decks[index].cardCount;
+  }
 }
