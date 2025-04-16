@@ -1,4 +1,5 @@
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
+import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/views/deck_screen.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 void main() async {
   runApp(const MyFlashCardApp());
   // await FlashcardDb.deleteDatabaseFile();
+  // await FlashcardDb.getAllCards();
 }
 
 class MyFlashCardApp extends StatelessWidget {
@@ -22,6 +24,7 @@ class MyFlashCardApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => NewDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => FlashcardViewModel()),
         ChangeNotifierProvider(create: (context) => DeckViewModel()),
+        ChangeNotifierProvider(create: (context) => EditDeckViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
