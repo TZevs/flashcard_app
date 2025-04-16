@@ -44,10 +44,6 @@ class EditDeckViewmodel extends ChangeNotifier {
       isPublic: isPublic,
       cardCount: _flashcards.length,
     );
-
-    // print("Edited deck: ${deckTitle}");
-    // print("Edited deck: ${isPublic}");
-    // print("Edited deck: ${_flashcards.length}");
     await FlashcardDb.updateDeck(newDeck);
     notifyListeners();
   }
