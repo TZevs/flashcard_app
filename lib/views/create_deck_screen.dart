@@ -18,9 +18,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       NewDeckViewmodel viewModel) {
-    _cardFrontController.text = card.cardFront;
-    _cardBackController.text = card.cardBack;
-
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -128,21 +125,24 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                       itemCount: viewModel.flashcards.length,
                       itemBuilder: (context, index) {
                         final item = viewModel.flashcards[index];
-                        return ListTile(
-                          title: Text(item.cardFront),
-                          subtitle: Text(item.cardBack),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () => _showEditBox(
-                                      context, index, item, viewModel)),
-                              IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () =>
-                                      viewModel.removeFlashcard(index)),
-                            ],
+                        return Padding(
+                          padding: const EdgeInsets.all(7.5),
+                          child: ListTile(
+                            title: Text(item.cardFront),
+                            subtitle: Text(item.cardBack),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () => _showEditBox(
+                                        context, index, item, viewModel)),
+                                IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () =>
+                                        viewModel.removeFlashcard(index)),
+                              ],
+                            ),
                           ),
                         );
                       })),
