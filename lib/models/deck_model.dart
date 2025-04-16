@@ -4,8 +4,8 @@ var uuid = Uuid();
 
 class DeckModel {
   final String id;
-  final String title;
-  final bool isPublic;
+  String title;
+  bool isPublic;
   int cardCount;
 
   DeckModel(
