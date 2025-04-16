@@ -55,8 +55,12 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       onPressed: () {
                         viewModel.editFlashcard(
                             index,
-                            _cardFrontController.text,
-                            _cardBackController.text);
+                            _cardFrontController.text.isEmpty
+                                ? card.cardFront
+                                : _cardFrontController.text,
+                            _cardBackController.text.isEmpty
+                                ? card.cardBack
+                                : _cardBackController.text);
                         Navigator.pop(context);
                       },
                       child: Text("Save"))
