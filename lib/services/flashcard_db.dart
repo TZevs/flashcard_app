@@ -7,7 +7,14 @@ class FlashcardDb {
   static Future<Database> _openDatabase() async {
     final database_path = await getDatabasesPath();
     final database_file = join(database_path, 'flashcardDatabase.db');
-    return openDatabase(database_file, version: 1, onCreate: createDatabase);
+    return openDatabase(
+      database_file,
+      version: 1,
+      onCreate: createDatabase,
+      onOpen: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
+    );
   }
 
   static Future<void> createDatabase(Database db, int version) async {
@@ -44,6 +51,14 @@ class FlashcardDb {
     print(cards.length);
   }
 
+  static Future<void> getAllDecks() async {
+    final db = await _openDatabase();
+    final decks = await db.query('decks');
+    print("Decks: $decks");
+    print(decks.length);
+    print(decks[0]['cardCount']);
+  }
+
   static Future<List<DeckModel>> getDecks() async {
     final db = await _openDatabase();
     final List<Map<String, dynamic>> decks = await db.query('decks');
@@ -77,5 +92,35 @@ class FlashcardDb {
   static Future<int> deleteDeck(String deckID) async {
     final db = await _openDatabase();
     return await db.delete('decks', where: 'id=?', whereArgs: [deckID]);
+  }
+
+  static Future<int> deleteFlashcards(List<int> cardIds) async {
+    final db = await _openDatabase();
+    for (int id in cardIds) {
+      await db.delete('flashcards', where: 'id=?', whereArgs: [id]);
+    }
+    return cardIds.length;
+  }
+
+  static Future<int> updateFlashcards(FlashcardModel card) async {
+    final db = await _openDatabase();
+
+    return await db.update(
+      'flashcards',
+      card.toMap(),
+      where: 'id=?',
+      whereArgs: [card.id],
+    );
+  }
+
+  static Future<int> updateDeck(DeckModel deck) async {
+    final db = await _openDatabase();
+
+    return await db.update(
+      'decks',
+      deck.toMap(),
+      where: 'id=?',
+      whereArgs: [deck.id],
+    );
   }
 }
