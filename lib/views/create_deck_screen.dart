@@ -18,6 +18,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       NewDeckViewmodel viewModel) {
+    _cardFrontController.text = card.cardFront;
+    _cardBackController.text = card.cardBack;
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
