@@ -1,7 +1,9 @@
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
+import 'package:flashcard_app/views/edit_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,11 @@ class _DeckScreenState extends State<DeckScreen> {
       appBar: AppbarWidget(title: "Decks"),
       body: Consumer<DeckViewModel>(builder: (context, viewModel, child) {
         if (viewModel.decks.isEmpty) {
-          return Center(child: Text("No Decks Added"));
+          return Center(
+              child: Text(
+            "No Decks Added",
+            style: mainTextTheme.bodyMedium,
+          ));
         }
 
         return ListView.builder(
@@ -36,11 +42,20 @@ class _DeckScreenState extends State<DeckScreen> {
               final deck = viewModel.decks[index];
               return ListTile(
                 title: Text(deck.title),
-                subtitle: Text("${deck.cardCount} Cards"),
+                subtitle: Text("${viewModel.getCardCount(index)} Cards"),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                    IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        EditDeckScreen(deck: deck))).then((_) {
+                              Provider.of<DeckViewModel>(context, listen: false)
+                                  .fetchDecks();
+                            })),
                     IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () => viewModel.removeDeck(index)),
