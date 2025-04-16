@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final ThemeData globalTheme = ThemeData(
+  textTheme: mainTextTheme,
   primaryColor: Color(0xFF2D4B48),
   listTileTheme: ListTileThemeData(
     tileColor: Color(0xFF5c8966),
@@ -52,7 +53,10 @@ final ThemeData globalTheme = ThemeData(
     ),
     focusColor: Color(0xFFEEA83B),
   ),
-  textTheme: mainTextTheme,
+  dialogTheme: DialogTheme(
+    backgroundColor: Color(0xFF30253e),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  ),
 );
 
 final TextTheme mainTextTheme = TextTheme(
