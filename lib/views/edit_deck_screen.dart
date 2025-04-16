@@ -27,6 +27,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
         builder: (context) => AlertDialog(
               title: Text("Edit Flashcard"),
               icon: IconButton(
+                  alignment: Alignment.topRight,
                   icon: Icon(Icons.close),
                   onPressed: () => Navigator.pop(context)),
               content: Column(
@@ -50,7 +51,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       ),
                     ),
                   ),
-                  TextButton(
+                  ElevatedButton(
                       onPressed: () {
                         viewModel.editFlashcard(
                             index,
