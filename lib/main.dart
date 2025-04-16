@@ -12,6 +12,7 @@ void main() async {
   runApp(const MyFlashCardApp());
   // await FlashcardDb.deleteDatabaseFile();
   // await FlashcardDb.getAllCards();
+  // await FlashcardDb.getAllDecks();
 }
 
 class MyFlashCardApp extends StatelessWidget {
