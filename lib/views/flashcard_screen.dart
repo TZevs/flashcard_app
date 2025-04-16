@@ -25,6 +25,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     // So that multiple notifierListeners() can be used in the same function.
     Future.microtask(() {
       final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
+      viewModel.deck = widget.deck;
       viewModel.fetchDeckFlashcards(widget.deck.id);
     });
   }
@@ -73,7 +74,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 child: PageView.builder(
                     controller:
                         PageController(initialPage: viewModel.currentIndex),
-                    itemCount: viewModel.deckLength,
+                    itemCount: viewModel.getDeckCardCount,
                     onPageChanged: viewModel.updateCurrentIndex,
                     itemBuilder: (context, index) {
                       FlashcardModel currentCard = cards[index];
@@ -95,10 +96,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 child: Column(
                   children: [
                     Text(
-                        "${viewModel.currentIndex + 1} / ${viewModel.deckLength}",
+                        "${viewModel.currentIndex + 1} / ${viewModel.getDeckCardCount}",
                         style: mainTextTheme.displaySmall),
                     LinearProgressBar(
-                      maxSteps: viewModel.deckLength,
+                      maxSteps: viewModel.getDeckCardCount,
                       currentStep: viewModel.currentIndex + 1,
                       progressType: LinearProgressBar.progressTypeLinear,
                       backgroundColor: Color(0xFF30253e),
