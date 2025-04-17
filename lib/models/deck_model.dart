@@ -1,7 +1,3 @@
-import 'package:uuid/uuid.dart';
-
-var uuid = Uuid();
-
 class DeckModel {
   final String id;
   String title;
