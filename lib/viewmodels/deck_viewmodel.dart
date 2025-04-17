@@ -16,6 +16,10 @@ class DeckViewModel extends ChangeNotifier {
     await fetchDecks();
   }
 
+  bool isDeckPublic(int index) {
+    return _decks[index].isPublic;
+  }
+
   int getCardCount(int index) {
     return _decks[index].cardCount;
   }

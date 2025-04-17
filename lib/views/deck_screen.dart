@@ -41,6 +41,9 @@ class _DeckScreenState extends State<DeckScreen> {
             itemBuilder: (context, index) {
               final deck = viewModel.decks[index];
               return ListTile(
+                leading: viewModel.isDeckPublic(index)
+                    ? Icon(Icons.public)
+                    : Icon(Icons.lock_outline),
                 title: Text(deck.title),
                 subtitle: Text("${viewModel.getCardCount(index)} Cards"),
                 trailing: Row(
