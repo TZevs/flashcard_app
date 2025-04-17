@@ -53,6 +53,15 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+  String setIsPublicLabel() {
+    if (isPublic) {
+      publicOrPrivateLabel = "Make Private?";
+    } else {
+      publicOrPrivateLabel = "Make Public?";
+    }
+    return publicOrPrivateLabel;
+  }
+
   void setIsPublic(bool value) {
     isPublic = value;
     if (isPublic) {

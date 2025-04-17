@@ -77,8 +77,6 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
     viewModel.deckToEdit = widget.deck;
     viewModel.deckTitle = widget.deck.title;
     viewModel.isPublic = widget.deck.isPublic;
-    viewModel.publicOrPrivateLabel =
-        viewModel.isPublic ? "Make Private?" : "Make Public?";
     _titleController.text = viewModel.deckTitle;
   }
 
@@ -114,8 +112,8 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
             Padding(
               padding: const EdgeInsets.all(7.5),
               child: SwitchListTile(
-                  value: viewModel.deckToEdit.isPublic,
-                  title: Text(viewModel.publicOrPrivateLabel),
+                  value: viewModel.isPublic,
+                  title: Text(viewModel.setIsPublicLabel()),
                   onChanged: viewModel.setIsPublic),
             ),
             Padding(
