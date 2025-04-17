@@ -16,58 +16,60 @@ class RegisterScreen extends StatelessWidget {
     final auth = Provider.of<AuthViewModel>(context);
 
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: "Username"),
+      body: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(7.5),
+              child: TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: "Username"),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: "Email"),
+            Padding(
+              padding: const EdgeInsets.all(7.5),
+              child: TextField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: "Email"),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
+            Padding(
+              padding: const EdgeInsets.all(7.5),
+              child: TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: "Password"),
+                obscureText: true,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextField(
-              controller: _confirmPasswordController,
-              decoration: InputDecoration(labelText: "Confirm Password"),
-              obscureText: true,
+            Padding(
+              padding: const EdgeInsets.all(7.5),
+              child: TextField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(labelText: "Confirm Password"),
+                obscureText: true,
+              ),
             ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                if (_passwordController.text ==
-                    _confirmPasswordController.text) {
-                  auth.register(_emailController.text, _passwordController.text,
-                      _usernameController.text);
-                  Navigator.pop(context);
-                } else {
-                  print("Passwords do not match");
-                }
-              },
-              child: Text('Register')),
-          TextButton(
-              onPressed: () {},
-              child: Text("Already have an account? Login here")),
-          ElevatedButton.icon(
-              onPressed: () {},
-              label: Text("Sign in with Google"),
-              icon: Icon(Icons.g_mobiledata)),
-        ],
+            ElevatedButton(
+                onPressed: () {
+                  if (_passwordController.text ==
+                      _confirmPasswordController.text) {
+                    auth.register(_emailController.text,
+                        _passwordController.text, _usernameController.text);
+                    Navigator.pop(context);
+                  } else {
+                    print("Passwords do not match");
+                  }
+                },
+                child: Text('Register')),
+            TextButton(
+                onPressed: () {},
+                child: Text("Already have an account? Login here")),
+            ElevatedButton.icon(
+                onPressed: () {},
+                label: Text("Sign in with Google"),
+                icon: Icon(Icons.g_mobiledata)),
+          ],
+        ),
       ),
     );
   }
