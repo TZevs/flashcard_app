@@ -1,7 +1,9 @@
 import 'package:flashcard_app/models/flashcard_model.dart';
+import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
+// import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class CreateDeckScreen extends StatefulWidget {
@@ -68,6 +70,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userID = Provider.of<AuthViewModel>(context).userId;
+
     return Consumer<NewDeckViewmodel>(
       builder: (context, viewModel, child) {
         return SafeArea(
@@ -150,7 +154,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                       })),
               ElevatedButton(
                   onPressed: () {
-                    viewModel.addNewDeck();
+                    viewModel.addNewDeck(userID!);
                     Navigator.pop(context);
                   },
                   child: Text("Save Deck")),
