@@ -1,8 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard_app/models/firebase_deck_model.dart';
+import 'package:flashcard_app/models/flashcard_model.dart';
 
 class FirebaseDb {
-  FirebaseFirestore db = FirebaseFirestore.instance;
+  static Future<void> addPublicDeck(FirebaseDeckModel newDeck, String userId,
+      List<FlashcardModel> cards) async {
+    Map<String, dynamic> deckData = newDeck.toFirestore();
+    final deckRef =
+        FirebaseFirestore.instance.collection('decks').doc(newDeck.id);
+    await deckRef.set(deckData);
 
-  Future<void> addPublicDeck() async {}
-  Future<void> deletePublicDeck() async {}
+    final flashcardsRef = deckRef.collection('flashcards');
+    for (var card in cards) {
+      Map<String, dynamic> cardData = card.toMap();
+      await flashcardsRef.add(cardData);
+    }
+  }
+
+  static Future<void> deletePublicDeck(String deckId) async {}
 }
