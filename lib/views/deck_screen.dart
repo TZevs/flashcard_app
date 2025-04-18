@@ -40,34 +40,39 @@ class _DeckScreenState extends State<DeckScreen> {
             itemCount: viewModel.decks.length,
             itemBuilder: (context, index) {
               final deck = viewModel.decks[index];
-              return ListTile(
-                leading: viewModel.isDeckPublic(index)
-                    ? Icon(Icons.public)
-                    : Icon(Icons.lock_outline),
-                title: Text(deck.title),
-                subtitle: Text("${viewModel.getCardCount(index)} Cards"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        EditDeckScreen(deck: deck))).then((_) {
-                              Provider.of<DeckViewModel>(context, listen: false)
-                                  .fetchDecks();
-                            })),
-                    IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () => viewModel.removeDeck(index)),
-                  ],
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: ListTile(
+                  leading: viewModel.isDeckPublic(index)
+                      ? Icon(Icons.public)
+                      : Icon(Icons.lock_outline),
+                  title: Text(deck.title),
+                  subtitle: Text("${viewModel.getCardCount(index)} Cards"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (ctx) =>
+                                              EditDeckScreen(deck: deck)))
+                                  .then((_) {
+                                Provider.of<DeckViewModel>(context,
+                                        listen: false)
+                                    .fetchDecks();
+                              })),
+                      IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => viewModel.removeDeck(index)),
+                    ],
+                  ),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) => FlashcardScreen(deck: deck))),
                 ),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (ctx) => FlashcardScreen(deck: deck))),
               );
             });
       }),
