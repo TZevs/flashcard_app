@@ -1,4 +1,5 @@
 import 'package:flashcard_app/models/deck_model.dart';
+import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,11 @@ class DeckViewModel extends ChangeNotifier {
   }
 
   Future<void> removeDeck(int index) async {
-    await FlashcardDb.deleteDeck(decks[index].id);
+    final id = _decks[index].id;
+    if (_decks[index].isPublic) {
+      await FirebaseDb.deletePublicDeck(id);
+    }
+    await FlashcardDb.deleteDeck(id);
     await fetchDecks();
   }
 
