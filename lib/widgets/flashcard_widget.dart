@@ -9,8 +9,18 @@ class FlashcardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(20),
-      child: Card(
-        child: Center(child: Text(content, style: mainTextTheme.displayMedium)),
+      child: Column(
+        children: [
+          Card(
+            child: Center(
+                child: Text(content, style: mainTextTheme.displayMedium)),
+          ),
+          IconButton(
+              onPressed: () {
+                print("Play Sound");
+              },
+              icon: Icon(Icons.speaker))
+        ],
       ),
     );
   }
