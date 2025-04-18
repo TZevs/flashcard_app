@@ -17,5 +17,19 @@ class FirebaseDb {
     }
   }
 
-  static Future<void> deletePublicDeck(String deckId) async {}
+  static Future<void> deletePublicDeck(String deckId) async {
+    final deckRef =
+        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    await deckRef.delete();
+
+    await deckRef.collection('flashcards').get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
+  }
+
+  // static Future<List<FirebaseDeckModel>> getPublicDecks() async {
+  //   final decksRef = FirebaseFirestore.instance.collection('decks');
+  // }
 }
