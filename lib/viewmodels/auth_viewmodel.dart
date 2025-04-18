@@ -7,6 +7,7 @@ class AuthViewModel extends ChangeNotifier {
   User? _user;
 
   User? get user => _user;
+  String? get userId => _user?.uid;
   bool get isLoggedIn => _user != null;
 
   AuthViewModel() {
