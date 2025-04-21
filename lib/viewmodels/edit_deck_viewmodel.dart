@@ -1,5 +1,8 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flashcard_app/models/deck_model.dart';
+import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
+import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 
@@ -37,14 +40,38 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateDeck() async {
+  Future<void> updateDeck(String id) async {
     DeckModel newDeck = DeckModel(
       id: deckToEdit.id,
       title: deckTitle,
       isPublic: isPublic,
       cardCount: _flashcards.length,
     );
+
+    if (!deckToEdit.isPublic && isPublic) {
+      newPublicDeck(newDeck, id);
+    } else if (deckToEdit.isPublic && isPublic == false) {
+      await FirebaseDb.deletePublicDeck(newDeck.id);
+    } else if (deckToEdit.isPublic && isPublic) {
+      if (deckToEdit.title != deckTitle) {
+        await FirebaseDb.updateDeck(newDeck.id, deckTitle);
+      } else if (deletedCards.isNotEmpty ||
+          editedCards.isNotEmpty ||
+          _newFlashcards.isNotEmpty) {
+        await FirebaseDb.updateDeckCards(
+            newDeck.id, _flashcards, newDeck.cardCount);
+      }
+    }
+
     await FlashcardDb.updateDeck(newDeck);
+    updateCards();
+    notifyListeners();
+  }
+
+  Future<void> newPublicDeck(DeckModel deck, String id) async {
+    FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, id);
+
+    await FirebaseDb.addPublicDeck(newDeck, id, _newFlashcards);
     notifyListeners();
   }
 

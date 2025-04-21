@@ -29,6 +29,29 @@ class FirebaseDb {
     });
   }
 
+  static Future<void> updateDeck(String deckId, String deckTitle) async {
+    final deckRef =
+        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    await deckRef.update({'title': deckTitle});
+  }
+
+  static Future<void> updateDeckCards(
+      String deckId, List<FlashcardModel> cards, int count) async {
+    final deckRef =
+        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    await deckRef.update({'cardCount': count});
+    final flashcardsRef = deckRef.collection('flashcards');
+    await flashcardsRef.get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
+    for (var card in cards) {
+      Map<String, dynamic> cardData = card.toMap();
+      await flashcardsRef.add(cardData);
+    }
+  }
+
   // static Future<List<FirebaseDeckModel>> getPublicDecks() async {
   //   final decksRef = FirebaseFirestore.instance.collection('decks');
   // }

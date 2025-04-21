@@ -16,8 +16,8 @@ class DeckScreen extends StatefulWidget {
 
 class _DeckScreenState extends State<DeckScreen> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     final viewModel = Provider.of<DeckViewModel>(context, listen: false);
     viewModel.fetchDecks();
   }
