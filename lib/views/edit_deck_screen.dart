@@ -21,8 +21,8 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       EditDeckViewmodel viewModel) {
-    _cardFrontController.text = card.cardFront;
-    _cardBackController.text = card.cardBack;
+    _cardFrontController.text = card.cardFront!;
+    _cardBackController.text = card.cardBack!;
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -57,10 +57,10 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                         viewModel.editFlashcard(
                             index,
                             _cardFrontController.text.isEmpty
-                                ? card.cardFront
+                                ? card.cardFront!
                                 : _cardFrontController.text,
                             _cardBackController.text.isEmpty
-                                ? card.cardBack
+                                ? card.cardBack!
                                 : _cardBackController.text);
                         Navigator.pop(context);
                       },
@@ -156,8 +156,8 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       return Padding(
                         padding: const EdgeInsets.all(7.5),
                         child: ListTile(
-                          title: Text(item.cardFront),
-                          subtitle: Text(item.cardBack),
+                          title: Text(item.cardFront!),
+                          subtitle: Text(item.cardBack!),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

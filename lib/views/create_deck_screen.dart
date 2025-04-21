@@ -20,8 +20,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       NewDeckViewmodel viewModel) {
-    _cardFrontController.text = card.cardFront;
-    _cardBackController.text = card.cardBack;
+    _cardFrontController.text = card.cardFront!;
+    _cardBackController.text = card.cardBack!;
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -107,6 +107,23 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(7.5),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          viewModel.captureImg(isFront: true);
+                        },
+                        icon: Icon(Icons.camera_alt)),
+                    IconButton(
+                        onPressed: () {
+                          viewModel.galleryImg(isFront: true);
+                        },
+                        icon: Icon(Icons.image)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(7.5),
                 child: TextField(
                   controller: _cardBackController,
                   decoration: InputDecoration(
@@ -114,16 +131,30 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(7.5),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          viewModel.captureImg(isFront: false);
+                        },
+                        icon: Icon(Icons.camera_alt)),
+                    IconButton(
+                        onPressed: () {
+                          viewModel.galleryImg(isFront: false);
+                        },
+                        icon: Icon(Icons.image)),
+                  ],
+                ),
+              ),
               ElevatedButton(
                   onPressed: () {
-                    if (_cardFrontController.text.isNotEmpty &&
-                        _cardBackController.text.isNotEmpty) {
-                      viewModel.addFlashcard(
-                          _cardFrontController.text, _cardBackController.text);
+                    viewModel.addFlashcard(
+                        _cardFrontController.text, _cardBackController.text);
 
-                      _cardFrontController.clear();
-                      _cardBackController.clear();
-                    }
+                    _cardFrontController.clear();
+                    _cardBackController.clear();
                   },
                   child: Text("Add Flashcard")),
               Expanded(
@@ -134,8 +165,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                         return Padding(
                           padding: const EdgeInsets.all(7.5),
                           child: ListTile(
-                            title: Text(item.cardFront),
-                            subtitle: Text(item.cardBack),
+                            title: Text(item.cardFront!),
+                            subtitle: Text(item.cardBack!),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

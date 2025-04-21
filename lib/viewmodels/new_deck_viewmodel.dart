@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -15,8 +18,12 @@ class NewDeckViewmodel extends ChangeNotifier {
   String deckTitle = "";
   bool isPublic = false;
   String publicOrPrivateLabel = "Make Public?";
+  File? _frontImg;
+  File? _backImg;
 
   List<FlashcardModel> get flashcards => _newFlashcards;
+  File? get frontImg => _frontImg;
+  File? get backImg => _backImg;
 
   void setDeckTitle(String title) {
     deckTitle = title;
@@ -36,6 +43,38 @@ class NewDeckViewmodel extends ChangeNotifier {
   void addFlashcard(String front, String back) {
     _newFlashcards.add(
         FlashcardModel(deckId: theDeckId, cardFront: front, cardBack: back));
+    notifyListeners();
+  }
+
+  Future<void> galleryImg({required bool isFront}) async {
+    final XFile? pickedImg =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImg == null) return;
+
+    final file = File(pickedImg.path);
+    if (isFront) {
+      _frontImg = file;
+    } else {
+      _backImg = file;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> captureImg({required bool isFront}) async {
+    final XFile? pickedImg =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedImg == null) return;
+
+    final file = File(pickedImg.path);
+    if (isFront) {
+      _frontImg = file;
+    } else {
+      _backImg = file;
+    }
+
     notifyListeners();
   }
 
