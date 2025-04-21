@@ -59,7 +59,7 @@ class NewDeckViewmodel extends ChangeNotifier {
         cardCount: _newFlashcards.length);
 
     if (newDeck.isPublic) {
-      setPublicDeck(newDeck, id);
+      await setPublicDeck(newDeck, id);
     }
 
     await FlashcardDb.addDeck(newDeck);
