@@ -1,14 +1,22 @@
 class FlashcardModel {
   final int? id;
   final String deckId;
-  dynamic cardFront;
-  dynamic cardBack;
+  String? cardFront;
+  String? cardBack;
+  String? frontImgPath;
+  String? backImgPath;
+  String? frontImgUrl;
+  String? backImgUrl;
 
   FlashcardModel(
       {this.id,
       required this.deckId,
-      required this.cardFront,
-      required this.cardBack});
+      this.cardFront,
+      this.cardBack,
+      this.frontImgPath,
+      this.backImgPath,
+      this.frontImgUrl,
+      this.backImgUrl});
 
   // Converts Flashcard object to a map for sqflite
   Map<String, dynamic> toMap() {
@@ -17,8 +25,23 @@ class FlashcardModel {
       'deckId': deckId,
       'cardFront': cardFront,
       'cardBack': cardBack,
+      'frontImgPath': frontImgPath,
+      'backImgPath': backImgPath,
+      'frontImgUrl': frontImgUrl,
+      'backImgUrl': backImgUrl,
     };
   }
+
+  // Map<String, dynamic> toFirestoreMap() {
+  //   return {
+  //     'id': id,
+  //     'deckId': deckId,
+  //     'cardFront': cardFront,
+  //     'cardBack': cardBack,
+  //     'frontImgUrl': frontImgUrl,
+  //     'backImgUrl': backImgUrl,
+  //   };
+  // }
 
   // Converts map to a Flashcard object
   factory FlashcardModel.fromMap(Map<String, dynamic> card) {
@@ -26,6 +49,8 @@ class FlashcardModel {
         id: card['id'],
         deckId: card['deckId'],
         cardFront: card['cardFront'],
-        cardBack: card['cardBack']);
+        cardBack: card['cardBack'],
+        frontImgPath: card['frontImgPath'],
+        backImgPath: card['backImgPath']);
   }
 }
