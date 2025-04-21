@@ -30,11 +30,13 @@ class EditDeckViewmodel extends ChangeNotifier {
   Future<void> updateCards() async {
     if (deletedCards.isNotEmpty) {
       await FlashcardDb.deleteFlashcards(deletedCards);
-    } else if (editedCards.isNotEmpty) {
+    }
+    if (editedCards.isNotEmpty) {
       for (var card in editedCards) {
         await FlashcardDb.updateFlashcards(card);
       }
-    } else if (_newFlashcards.isNotEmpty) {
+    }
+    if (_newFlashcards.isNotEmpty) {
       await FlashcardDb.addDeckFlashcards(_newFlashcards);
     }
     notifyListeners();
@@ -49,11 +51,13 @@ class EditDeckViewmodel extends ChangeNotifier {
     );
 
     if (!deckToEdit.isPublic && isPublic) {
-      newPublicDeck(newDeck, id);
-    } else if (deckToEdit.isPublic && isPublic == false) {
+      await newPublicDeck(newDeck, id);
+    }
+    if (deckToEdit.isPublic && isPublic == false) {
       await FirebaseDb.deletePublicDeck(newDeck.id);
-    } else if (deckToEdit.isPublic && isPublic) {
-      if (deckToEdit.title != deckTitle) {
+    }
+    if (deckToEdit.isPublic && isPublic) {
+      if (deckTitle != "") {
         await FirebaseDb.updateDeck(newDeck.id, deckTitle);
       } else if (deletedCards.isNotEmpty ||
           editedCards.isNotEmpty ||
@@ -64,14 +68,14 @@ class EditDeckViewmodel extends ChangeNotifier {
     }
 
     await FlashcardDb.updateDeck(newDeck);
-    updateCards();
+    await updateCards();
     notifyListeners();
   }
 
   Future<void> newPublicDeck(DeckModel deck, String id) async {
     FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, id);
 
-    await FirebaseDb.addPublicDeck(newDeck, id, _newFlashcards);
+    await FirebaseDb.addPublicDeck(newDeck, id, _flashcards);
     notifyListeners();
   }
 
@@ -126,6 +130,16 @@ class EditDeckViewmodel extends ChangeNotifier {
     toEdit = _flashcards[index];
     toEdit.cardFront = front;
     toEdit.cardBack = back;
+    notifyListeners();
+  }
+
+  void reset() {
+    _newFlashcards.clear();
+    editedCards.clear();
+    deletedCards.clear();
+    _flashcards.clear();
+    deckTitle = "";
+    isPublic = false;
     notifyListeners();
   }
 }

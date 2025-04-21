@@ -76,9 +76,8 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
     final viewModel = Provider.of<EditDeckViewmodel>(context, listen: false);
     viewModel.fetchDeckFlashcards(widget.deck.id);
     viewModel.deckToEdit = widget.deck;
-    viewModel.deckTitle = widget.deck.title;
     viewModel.isPublic = widget.deck.isPublic;
-    _titleController.text = viewModel.deckTitle;
+    _titleController.text = widget.deck.title;
   }
 
   @override
@@ -176,9 +175,10 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       );
                     })),
             ElevatedButton(
-                onPressed: () {
-                  viewModel.updateDeck(userID!);
-                  Navigator.pop(context);
+                onPressed: () async {
+                  await viewModel.updateDeck(userID!);
+                  viewModel.reset();
+                  Navigator.pop(context, true);
                 },
                 child: Text("Update Deck")),
           ],

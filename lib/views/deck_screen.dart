@@ -53,16 +53,16 @@ class _DeckScreenState extends State<DeckScreen> {
                     children: [
                       IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (ctx) =>
-                                              EditDeckScreen(deck: deck)))
-                                  .then((_) {
-                                Provider.of<DeckViewModel>(context,
-                                        listen: false)
-                                    .fetchDecks();
-                              })),
+                          onPressed: () async {
+                            final updated = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => EditDeckScreen(deck: deck)),
+                            );
+                            if (updated == true) {
+                              viewModel.fetchDecks();
+                            }
+                          }),
                       IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () => viewModel.removeDeck(index)),
