@@ -8,7 +8,6 @@ class FirebaseDeckModel {
   final Timestamp createdAt;
   final bool isPublic;
   final int cardCount;
-  // final String? frontImgUrl;
 
   FirebaseDeckModel({
     required this.id,
@@ -17,7 +16,6 @@ class FirebaseDeckModel {
     required this.createdAt,
     required this.isPublic,
     required this.cardCount,
-    // this.frontImgUrl,
   });
 
   factory FirebaseDeckModel.fromFirestore(
