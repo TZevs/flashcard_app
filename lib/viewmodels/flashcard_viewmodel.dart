@@ -2,11 +2,13 @@ import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class FlashcardViewModel extends ChangeNotifier {
   List<FlashcardModel> _fetchedFlashcards = [];
   late FlashcardModel _currentFlashcard;
   late DeckModel deck;
+  final tts = FlutterTts();
 
   bool isSwiping = false;
 
@@ -43,6 +45,16 @@ class FlashcardViewModel extends ChangeNotifier {
     if (index >= 0 && index < flashcards.length) {
       _currentIndex = index;
       notifyListeners();
+    }
+  }
+
+  Future<void> speak(String text) async {
+    await tts.setLanguage("en-US");
+    await tts.setPitch(1.0);
+    await tts.setSpeechRate(0.5);
+
+    if (text.isNotEmpty) {
+      await tts.speak(text);
     }
   }
 }
