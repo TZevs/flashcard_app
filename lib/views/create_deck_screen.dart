@@ -108,13 +108,16 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               Padding(
                 padding: const EdgeInsets.all(7.5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
+                        color: Color(0xFFEEA83B),
                         onPressed: () {
                           viewModel.captureImg(isFront: true);
                         },
                         icon: Icon(Icons.camera_alt)),
                     IconButton(
+                        color: Color(0xFFEEA83B),
                         onPressed: () {
                           viewModel.galleryImg(isFront: true);
                         },
@@ -134,13 +137,16 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               Padding(
                 padding: const EdgeInsets.all(7.5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
+                        color: Color(0xFFEEA83B),
                         onPressed: () {
                           viewModel.captureImg(isFront: false);
                         },
                         icon: Icon(Icons.camera_alt)),
                     IconButton(
+                        color: Color(0xFFEEA83B),
                         onPressed: () {
                           viewModel.galleryImg(isFront: false);
                         },
