@@ -168,8 +168,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                           ...viewModel.flashcards.map((item) {
                             int index = viewModel.flashcards.indexOf(item);
                             return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              padding: const EdgeInsets.all(7.5),
                               child: ListTile(
                                 title: Text(item.cardFront ?? ''),
                                 subtitle: Text(item.cardBack ?? ''),
