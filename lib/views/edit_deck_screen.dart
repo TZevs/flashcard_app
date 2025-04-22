@@ -3,6 +3,7 @@ import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -125,6 +126,26 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       labelText: "Card Front",
                     ),
                   ),
+                  Container(
+                    decoration: addImgContainer,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.captureImg(isFront: true);
+                            },
+                            icon: Icon(Icons.camera_alt)),
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.galleryImg(isFront: true);
+                            },
+                            icon: Icon(Icons.image)),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 10),
                   TextField(
                     controller: _cardBackController,
@@ -133,6 +154,26 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  Container(
+                    decoration: addImgContainer,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.captureImg(isFront: false);
+                            },
+                            icon: Icon(Icons.camera_alt)),
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.galleryImg(isFront: false);
+                            },
+                            icon: Icon(Icons.image)),
+                      ],
+                    ),
+                  ),
                   ElevatedButton(
                       onPressed: () {
                         viewModel.addFlashcard(_cardFrontController.text,
