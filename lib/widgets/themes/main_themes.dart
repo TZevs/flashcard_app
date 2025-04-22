@@ -36,6 +36,7 @@ final ThemeData globalTheme = ThemeData(
     clipBehavior: Clip.hardEdge,
   ),
   inputDecorationTheme: InputDecorationTheme(
+    fillColor: Color(0xFFEEA83B),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: Color(0xFFEEA83B)),
@@ -57,6 +58,15 @@ final ThemeData globalTheme = ThemeData(
     backgroundColor: Color(0xFF30253e),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+    backgroundColor: WidgetStatePropertyAll(Color(0xFFEEA83B)),
+    foregroundColor: WidgetStatePropertyAll(Color(0xFF30253e)),
+    textStyle: WidgetStatePropertyAll(TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.bold,
+    )),
+  )),
 );
 
 final TextTheme mainTextTheme = TextTheme(
@@ -72,4 +82,9 @@ final TextTheme mainTextTheme = TextTheme(
   ),
   displaySmall: TextStyle(
       color: Color(0xFFEBE4C2), fontSize: 18, fontWeight: FontWeight.normal),
+);
+
+final BoxDecoration addImgContainer = BoxDecoration(
+  color: Color(0xFF30253e),
+  borderRadius: BorderRadius.circular(10),
 );

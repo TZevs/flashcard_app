@@ -14,11 +14,11 @@ class FlashcardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(10),
       child: Card(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           img != null
-              ? Image.file(File(img), width: 200, height: 200)
+              ? Image.file(File(img), width: 300, height: 300)
               : Container(),
           Center(child: Text(content!, style: mainTextTheme.displayMedium)),
           IconButton(
