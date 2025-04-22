@@ -4,7 +4,6 @@ import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
-// import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class CreateDeckScreen extends StatefulWidget {
