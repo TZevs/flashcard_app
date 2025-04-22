@@ -16,6 +16,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(const MyFlashCardApp());
   // await FlashcardDb.deleteDatabaseFile();
+  // await FlashcardDb.getAllCards();
 }
 
 class MyFlashCardApp extends StatelessWidget {

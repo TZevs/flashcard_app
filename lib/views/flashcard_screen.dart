@@ -80,10 +80,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       FlashcardModel currentCard = cards[index];
 
                       return FlipCard(
-                        frontWidget:
-                            FlashcardWidget(content: currentCard.cardFront),
-                        backWidget:
-                            FlashcardWidget(content: currentCard.cardBack),
+                        frontWidget: FlashcardWidget(
+                            content: currentCard.cardFront,
+                            img: currentCard.frontImgPath),
+                        backWidget: FlashcardWidget(
+                            content: currentCard.cardBack,
+                            img: currentCard.backImgPath),
                         controller: FlipCardController(),
                         rotateSide: RotateSide.left,
                         onTapFlipping: !viewModel.isSwiping,
@@ -104,7 +106,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       progressType: LinearProgressBar.progressTypeLinear,
                       backgroundColor: Color(0xFF30253e),
                       progressColor: Color(0xFFEEA83B),
-                      minHeight: 20,
+                      minHeight: 15,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ],

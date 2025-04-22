@@ -27,8 +27,6 @@ class FlashcardModel {
       'cardBack': cardBack,
       'frontImgPath': frontImgPath,
       'backImgPath': backImgPath,
-      'frontImgUrl': frontImgUrl,
-      'backImgUrl': backImgUrl,
     };
   }
 

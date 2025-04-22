@@ -7,6 +7,7 @@ import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -40,9 +41,26 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addFlashcard(String front, String back) {
-    _newFlashcards.add(
-        FlashcardModel(deckId: theDeckId, cardFront: front, cardBack: back));
+  void addFlashcard(String front, String back) async {
+    String? frontPath;
+    String? backPath;
+
+    if (_frontImg != null) {
+      frontPath = await _saveImgPath(_frontImg!, "front");
+    }
+    if (_backImg != null) {
+      backPath = await _saveImgPath(_backImg!, "back");
+    }
+
+    _newFlashcards.add(FlashcardModel(
+        deckId: theDeckId,
+        cardFront: front,
+        cardBack: back,
+        frontImgPath: frontPath,
+        backImgPath: backPath));
+
+    _frontImg = null;
+    _backImg = null;
     notifyListeners();
   }
 
@@ -78,6 +96,14 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> _saveImgPath(File imageFile, String label) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final newPath =
+        '${dir.path}/${DateTime.now().millisecondsSinceEpoch}_$label.jpg';
+    final savedPath = await imageFile.copy(newPath);
+    return savedPath.path;
+  }
+
   void removeFlashcard(int index) {
     _newFlashcards.removeAt(index);
     notifyListeners();
@@ -98,7 +124,7 @@ class NewDeckViewmodel extends ChangeNotifier {
         cardCount: _newFlashcards.length);
 
     if (newDeck.isPublic) {
-      await setPublicDeck(newDeck, id);
+      await _setPublicDeck(newDeck, id);
     }
 
     await FlashcardDb.addDeck(newDeck);
@@ -106,10 +132,26 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setPublicDeck(DeckModel deck, String id) async {
-    FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, id);
+  Future<void> _setPublicDeck(DeckModel deck, String userId) async {
+    FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, userId);
+    List<FlashcardModel> _updatedFlashcards = [];
 
-    await FirebaseDb.addPublicDeck(newDeck, id, _newFlashcards);
+    for (var card in _newFlashcards) {
+      if (card.frontImgPath != null) {
+        String frontUrl = await FirebaseDb.uploadImgToFirebase(
+            File(card.frontImgPath!), userId);
+        card.frontImgUrl = frontUrl;
+      }
+      if (card.backImgPath != null) {
+        String backUrl = await FirebaseDb.uploadImgToFirebase(
+            File(card.frontImgPath!), userId);
+        card.frontImgUrl = backUrl;
+      }
+
+      _updatedFlashcards.add(card);
+    }
+
+    await FirebaseDb.addPublicDeck(newDeck, userId, _updatedFlashcards);
     notifyListeners();
   }
 

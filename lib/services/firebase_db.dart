@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
+import 'package:path/path.dart';
 
 class FirebaseDb {
   static Future<void> addPublicDeck(FirebaseDeckModel newDeck, String userId,
@@ -52,7 +56,13 @@ class FirebaseDb {
     }
   }
 
-  // static Future<List<FirebaseDeckModel>> getPublicDecks() async {
-  //   final decksRef = FirebaseFirestore.instance.collection('decks');
-  // }
+  static Future<String> uploadImgToFirebase(File imgFile, String userId) async {
+    final fileName = basename(imgFile.path);
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('flashcardImages/$userId/$fileName');
+
+    await ref.putFile(imgFile);
+    return await ref.getDownloadURL();
+  }
 }

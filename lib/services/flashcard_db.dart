@@ -33,6 +33,8 @@ class FlashcardDb {
         deckId TEXT NOT NULL,
         cardFront TEXT NOT NULL,
         cardBack TEXT NOT NULL,
+        frontImgPath TEXT,
+        backImgPath TEXT,
         FOREIGN KEY (deckId) REFERENCES decks (id) ON DELETE CASCADE
       )
     ''');
