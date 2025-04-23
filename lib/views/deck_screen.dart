@@ -1,5 +1,4 @@
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
-import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/edit_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
