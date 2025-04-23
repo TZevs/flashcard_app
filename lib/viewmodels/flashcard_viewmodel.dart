@@ -1,6 +1,7 @@
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
+import 'package:flashcard_app/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -41,9 +42,17 @@ class FlashcardViewModel extends ChangeNotifier {
   String getDeckTitle(DeckModel deck) => deck.title;
   int get getDeckCardCount => deck.cardCount;
 
-  void updateCurrentIndex(int index) {
+  void updateCurrentIndex(int index) async {
     if (index >= 0 && index < flashcards.length) {
       _currentIndex = index;
+      notifyListeners();
+    }
+    if (index == flashcards.length) {
+      await Future.delayed(Duration(seconds: 40));
+      await Notifications.displayEndOfDeckNotification(
+        notificationTitle: "Congratulations! You reached the end",
+        notificationBody: "Click here to go back to the decks screen",
+      );
       notifyListeners();
     }
   }
