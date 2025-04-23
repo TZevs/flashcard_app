@@ -76,11 +76,63 @@ class FirebaseDb {
       }
     });
 
-    print(decks);
     return decks;
   }
 
-  static Future<void> fetchUserData(String userID) async {}
+  static Future<String> fetchUsername(String userID) async {
+    String username = '';
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) {
+        username = snapshot.data()!['username'];
+      }
+    });
+    return username;
+  }
 
-  static Future<void> updateDeckSaveCount(String deckID) async {}
+  static Future<void> addSavedDeck(String userId, String deckID) async {
+    final userRef =
+        await FirebaseFirestore.instance.collection('users').doc(userId);
+
+    final deckData = {'deckID': deckID};
+    await userRef.collection('savedDecks').add(deckData);
+
+    final deckRef =
+        await FirebaseFirestore.instance.collection('decks').doc(deckID);
+    await deckRef.update({
+      'savedCount': FieldValue.increment(1),
+    });
+  }
+
+  static Future<void> removeSavedDeck(String userId, String deckId) async {}
+
+  static Future<void> fetchSavedDecks(String userId) async {
+    final userRef =
+        await FirebaseFirestore.instance.collection('users').doc(userId);
+    List<FirebaseDeckModel> savedDecks = [];
+  }
+
+  static Future<List<FirebaseDeckModel>> getQueriedDecks(String query) async {
+    final decksRef = FirebaseFirestore.instance.collection('decks');
+    List<FirebaseDeckModel> queriedDecks = [];
+    List<String> queryList = query.split(' ');
+
+    await decksRef
+        .where(Filter.or(
+          Filter('title', isEqualTo: query),
+          Filter('title', whereIn: queryList),
+        ))
+        .get()
+        .then((snapshot) {
+      for (var doc in snapshot.docs) {
+        FirebaseDeckModel deck = FirebaseDeckModel.fromFirestore(doc);
+        queriedDecks.add(deck);
+      }
+    });
+
+    return queriedDecks;
+  }
 }
