@@ -109,10 +109,28 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editFlashcard(int index, String front, String back) {
-    var toEdit = _newFlashcards[index];
-    toEdit.cardFront = front;
-    toEdit.cardBack = back;
+  void editFlashcard(int index, String front, String back) async {
+    FlashcardModel toEdit = _newFlashcards[index];
+    String? frontPath;
+    String? backPath;
+
+    if (_frontImg != null) {
+      frontPath = await _saveImgPath(_frontImg!, "front");
+      toEdit.frontImgPath = frontPath;
+    }
+    if (_backImg != null) {
+      backPath = await _saveImgPath(_backImg!, "back");
+      toEdit.backImgPath = backPath;
+    }
+    if (front.isNotEmpty) {
+      toEdit.cardFront = front;
+    }
+    if (back.isNotEmpty) {
+      toEdit.cardBack = back;
+    }
+
+    _frontImg = null;
+    _backImg = null;
     notifyListeners();
   }
 

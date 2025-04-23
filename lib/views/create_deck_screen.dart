@@ -23,7 +23,10 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text("Edit Flashcard"),
+              title: Text(
+                "Edit Flashcard",
+                style: mainTextTheme.displayMedium,
+              ),
               icon: IconButton(
                   icon: Icon(Icons.close),
                   onPressed: () => Navigator.pop(context)),
@@ -37,10 +40,50 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.captureImg(isFront: true);
+                            },
+                            icon: Icon(Icons.camera_alt)),
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.galleryImg(isFront: true);
+                            },
+                            icon: Icon(Icons.image)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
                   TextField(
                     controller: _cardBackController,
                     decoration: InputDecoration(
                       labelText: "Card Back",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.captureImg(isFront: false);
+                            },
+                            icon: Icon(Icons.camera_alt)),
+                        IconButton(
+                            color: Color(0xFFEEA83B),
+                            onPressed: () {
+                              viewModel.galleryImg(isFront: false);
+                            },
+                            icon: Icon(Icons.image)),
+                      ],
                     ),
                   ),
                   SizedBox(height: 10),
