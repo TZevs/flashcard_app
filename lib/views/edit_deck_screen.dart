@@ -90,7 +90,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
-    final viewModel = Provider.of<EditDeckViewmodel>(context, listen: false);
+    final viewModel = Provider.of<EditDeckViewmodel>(context);
 
     return Scaffold(
       appBar: AppbarWidget(
