@@ -122,12 +122,9 @@ class NewDeckViewmodel extends ChangeNotifier {
       backPath = await _saveImgPath(_backImg!, "back");
       toEdit.backImgPath = backPath;
     }
-    if (front.isNotEmpty) {
-      toEdit.cardFront = front;
-    }
-    if (back.isNotEmpty) {
-      toEdit.cardBack = back;
-    }
+
+    toEdit.cardFront = front;
+    toEdit.cardBack = back;
 
     _frontImg = null;
     _backImg = null;
