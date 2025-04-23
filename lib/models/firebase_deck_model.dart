@@ -19,9 +19,8 @@ class FirebaseDeckModel {
   });
 
   factory FirebaseDeckModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> deckSnapshot,
-      SnapshotOptions? options) {
-    final data = deckSnapshot.data()!;
+      QueryDocumentSnapshot<Map<String, dynamic>> deckSnapshot) {
+    final data = deckSnapshot.data();
     return FirebaseDeckModel(
       id: data['id'],
       title: data['title'],

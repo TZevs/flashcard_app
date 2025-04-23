@@ -65,4 +65,22 @@ class FirebaseDb {
     await ref.putFile(imgFile);
     return await ref.getDownloadURL();
   }
+
+  static Future<List<FirebaseDeckModel>> fetchDecks() async {
+    final decksRef = FirebaseFirestore.instance.collection('decks');
+    List<FirebaseDeckModel> decks = [];
+    await decksRef.get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        FirebaseDeckModel deck = FirebaseDeckModel.fromFirestore(doc);
+        decks.add(deck);
+      }
+    });
+
+    print(decks);
+    return decks;
+  }
+
+  static Future<void> fetchUserData(String userID) async {}
+
+  static Future<void> updateDeckSaveCount(String deckID) async {}
 }
