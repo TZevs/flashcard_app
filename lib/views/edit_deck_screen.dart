@@ -75,8 +75,9 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
     final viewModel = Provider.of<EditDeckViewmodel>(context, listen: false);
     viewModel.fetchDeckFlashcards(widget.deck.id);
     viewModel.deckToEdit = widget.deck;
-    viewModel.isPublic = widget.deck.isPublic;
-    _titleController.text = widget.deck.title;
+    viewModel.deckTitle = viewModel.deckToEdit.title;
+    viewModel.isPublic = viewModel.deckToEdit.isPublic;
+    _titleController.text = viewModel.deckToEdit.title;
   }
 
   @override

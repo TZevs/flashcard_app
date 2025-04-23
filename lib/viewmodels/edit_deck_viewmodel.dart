@@ -84,7 +84,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, userId);
     List<FlashcardModel> _updatedFlashcards = [];
 
-    for (var card in _newFlashcards) {
+    for (var card in _flashcards) {
       if (card.frontImgPath != null) {
         String frontUrl = await FirebaseDb.uploadImgToFirebase(
             File(card.frontImgPath!), userId);
