@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
@@ -20,6 +22,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   void _showEditBox(BuildContext context, int index, FlashcardModel card,
       NewDeckViewmodel viewModel) {
+    _cardFrontController.text = card.cardFront ?? '';
+    _cardBackController.text = card.cardBack ?? '';
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -28,12 +32,19 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                 style: mainTextTheme.displayMedium,
               ),
               icon: IconButton(
+                  color: Color(0xFFEBE4C2),
+                  alignment: Alignment.topRight,
                   icon: Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context)),
+                  onPressed: () {
+                    _cardFrontController.clear();
+                    _cardBackController.clear();
+                    Navigator.pop(context);
+                  }),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
+                    style: TextStyle(color: Color(0xFFEBE4C2)),
                     controller: _cardFrontController,
                     decoration: InputDecoration(
                       labelText: "Card Front",
@@ -41,6 +52,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   ),
                   SizedBox(height: 10),
                   Container(
+                    color: Color(0xFF5c8966),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -61,6 +73,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   ),
                   SizedBox(height: 10),
                   TextField(
+                    style: TextStyle(color: Color(0xFFEBE4C2)),
                     controller: _cardBackController,
                     decoration: InputDecoration(
                       labelText: "Card Back",
@@ -68,6 +81,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   ),
                   SizedBox(height: 10),
                   Container(
+                    color: Color(0xFF5c8966),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -93,9 +107,56 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                             index,
                             _cardFrontController.text,
                             _cardBackController.text);
+
+                        _cardFrontController.clear();
+                        _cardBackController.clear();
                         Navigator.pop(context);
                       },
                       child: Text("Save"))
+                ],
+              ),
+            ));
+  }
+
+  void _ShowPreview(
+      BuildContext context, FlashcardModel card, NewDeckViewmodel viewModel) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                "Preview",
+                style: mainTextTheme.displayMedium,
+                textAlign: TextAlign.center,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Card(
+                    child: Column(
+                      children: [
+                        card.frontImgPath != null
+                            ? Image.file(File(card.frontImgPath!),
+                                width: 100, height: 100)
+                            : Container(),
+                        Text(card.cardFront ?? '',
+                            style: mainTextTheme.displaySmall),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Card(
+                    child: Column(
+                      children: [
+                        card.backImgPath != null
+                            ? Image.file(File(card.backImgPath!),
+                                width: 100, height: 100)
+                            : Container(),
+                        Text(card.cardBack ?? '',
+                            style: mainTextTheme.displaySmall),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ));
@@ -127,6 +188,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextField(
+                      style: TextStyle(color: Color(0xFFEBE4C2)),
                       controller: _titleController,
                       decoration: InputDecoration(labelText: "Deck Title"),
                       onChanged: viewModel.setDeckTitle,
@@ -139,6 +201,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                     ),
                     SizedBox(height: 10),
                     TextField(
+                      style: TextStyle(color: Color(0xFFEBE4C2)),
                       controller: _cardFrontController,
                       decoration: InputDecoration(labelText: "Card Front"),
                     ),
@@ -212,6 +275,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                             return Padding(
                               padding: const EdgeInsets.all(7.5),
                               child: ListTile(
+                                onTap: () =>
+                                    _ShowPreview(context, item, viewModel),
                                 title: Text(item.cardFront ?? ''),
                                 subtitle: Text(item.cardBack ?? ''),
                                 trailing: Row(
