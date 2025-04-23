@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flashcard_app/services/notifications.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
+import 'package:flashcard_app/views/deck_screen.dart';
 import 'package:flashcard_app/views/landing_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 // import 'package:flashcard_app/services/flashcard_db.dart';
 
 void main() async {
+  await Notifications.initializeNotification();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyFlashCardApp());
@@ -32,6 +35,10 @@ class MyFlashCardApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => EditDeckViewmodel()),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
+        routes: {
+          '/decks_screen': (context) => DeckScreen(),
+        },
         debugShowCheckedModeBanner: false,
         home: LandingScreen(),
         theme: globalTheme,
