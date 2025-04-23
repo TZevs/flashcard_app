@@ -228,6 +228,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                       labelText: "Card Front",
                     ),
                   ),
+                  SizedBox(height: 10),
                   Container(
                     decoration: addImgContainer,
                     child: Row(
@@ -245,6 +246,35 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                               viewModel.galleryImg(isFront: true);
                             },
                             icon: Icon(Icons.image)),
+                        if (viewModel.frontImg != null)
+                          Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  viewModel.frontImg!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  viewModel.clearFrontImg();
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(Icons.close,
+                                      size: 16, color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
                       ],
                     ),
                   ),
@@ -273,6 +303,35 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                               viewModel.galleryImg(isFront: false);
                             },
                             icon: Icon(Icons.image)),
+                        if (viewModel.backImg != null)
+                          Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  viewModel.backImg!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  viewModel.clearBackImg();
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(Icons.close,
+                                      size: 16, color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
                       ],
                     ),
                   ),

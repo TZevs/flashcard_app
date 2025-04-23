@@ -127,6 +127,16 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearFrontImg() {
+    _frontImg = null;
+    notifyListeners();
+  }
+
+  void clearBackImg() {
+    _backImg = null;
+    notifyListeners();
+  }
+
   Future<void> galleryImg({required bool isFront}) async {
     final XFile? pickedImg =
         await ImagePicker().pickImage(source: ImageSource.gallery);

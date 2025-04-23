@@ -41,6 +41,16 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearFrontImg() {
+    _frontImg = null;
+    notifyListeners();
+  }
+
+  void clearBackImg() {
+    _backImg = null;
+    notifyListeners();
+  }
+
   void addFlashcard(String front, String back) async {
     String? frontPath;
     String? backPath;
