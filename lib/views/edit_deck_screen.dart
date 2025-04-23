@@ -294,8 +294,16 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                           return Padding(
                             padding: const EdgeInsets.all(7.5),
                             child: ListTile(
+                              subtitleTextStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                               onTap: () =>
                                   _ShowPreview(context, item, viewModel),
+                              leading: Icon(item.frontImgPath != null ||
+                                      item.backImgPath != null
+                                  ? Icons.image_outlined
+                                  : Icons.hide_image_outlined),
                               title: Text(item.cardFront ?? ''),
                               subtitle: Text(item.cardBack ?? ''),
                               trailing: Row(
