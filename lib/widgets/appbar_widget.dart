@@ -17,6 +17,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
       padding: const EdgeInsets.all(20),
       child: AppBar(
+        backgroundColor: Color(0xFF30253e),
         elevation: 0,
         title: Text(
           title ?? "",
@@ -24,7 +25,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person_outline),
             onPressed: () {
               // Navigate to profile screen or perform any action
             },

@@ -3,6 +3,7 @@ import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/edit_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/navbar_widget.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,13 +77,14 @@ class _DeckScreenState extends State<DeckScreen> {
               );
             });
       }),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (ctx) => CreateDeckScreen())).then((_) {
-          Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
-        }),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () => Navigator.push(context,
+      //       MaterialPageRoute(builder: (ctx) => CreateDeckScreen())).then((_) {
+      //     Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+      //   }),
+      // ),
+      bottomNavigationBar: NavbarWidget(),
     );
   }
 }
