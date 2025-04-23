@@ -69,7 +69,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
-    final viewModel = Provider.of<NewDeckViewmodel>(context, listen: false);
+    final viewModel = Provider.of<NewDeckViewmodel>(context);
 
     return Scaffold(
       appBar: AppbarWidget(title: "New Deck"),
