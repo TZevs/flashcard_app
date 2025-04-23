@@ -8,6 +8,7 @@ class FirebaseDeckModel {
   final Timestamp createdAt;
   final bool isPublic;
   final int cardCount;
+  int? savedCount;
 
   FirebaseDeckModel({
     required this.id,
@@ -16,6 +17,7 @@ class FirebaseDeckModel {
     required this.createdAt,
     required this.isPublic,
     required this.cardCount,
+    this.savedCount = 0,
   });
 
   factory FirebaseDeckModel.fromFirestore(
@@ -28,6 +30,7 @@ class FirebaseDeckModel {
       createdAt: data['createdAt'],
       isPublic: data['isPublic'],
       cardCount: data['cardCount'],
+      savedCount: data['savedCount'],
     );
   }
 
@@ -50,6 +53,7 @@ class FirebaseDeckModel {
       'createdAt': createdAt,
       'isPublic': isPublic,
       'cardCount': cardCount,
+      'savedCount': savedCount,
     };
   }
 }
