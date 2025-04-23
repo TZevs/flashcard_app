@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +10,9 @@ class AuthViewModel extends ChangeNotifier {
   User? get user => _user;
   String? get userId => _user?.uid;
   bool get isLoggedIn => _user != null;
+
+  late String? _username;
+  String? get username => _username;
 
   AuthViewModel() {
     _auth.authStateChanges().listen((User? user) {
@@ -25,6 +29,7 @@ class AuthViewModel extends ChangeNotifier {
       );
 
       final user = newUser.user!.uid;
+      _username = username;
 
       await FirebaseFirestore.instance.collection('users').doc(user).set({
         'username': username,
@@ -50,5 +55,9 @@ class AuthViewModel extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> getUsername() async {
+    _username = await FirebaseDb.fetchUsername(userId!);
   }
 }
