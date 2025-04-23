@@ -208,6 +208,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     if (_flashcards[index].id != null) {
       editedCards.add(_flashcards[index]);
     }
+
     FlashcardModel toEdit = _flashcards[index];
     toEdit.cardFront = front;
     toEdit.cardBack = back;
@@ -218,6 +219,9 @@ class EditDeckViewmodel extends ChangeNotifier {
     if (_backImg != null) {
       toEdit.backImgPath = await _saveImgPath(_backImg!, "back");
     }
+
+    _frontImg = null;
+    _backImg = null;
 
     notifyListeners();
   }

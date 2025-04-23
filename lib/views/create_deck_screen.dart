@@ -135,10 +135,13 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   Card(
                     child: Column(
                       children: [
-                        card.frontImgPath != null
-                            ? Image.file(File(card.frontImgPath!),
-                                width: 100, height: 100)
-                            : Container(),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: card.frontImgPath != null
+                              ? Image.file(File(card.frontImgPath!),
+                                  width: 200, height: 200)
+                              : Container(),
+                        ),
                         Text(card.cardFront ?? '',
                             style: mainTextTheme.displaySmall),
                       ],
@@ -148,10 +151,13 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                   Card(
                     child: Column(
                       children: [
-                        card.backImgPath != null
-                            ? Image.file(File(card.backImgPath!),
-                                width: 100, height: 100)
-                            : Container(),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: card.backImgPath != null
+                              ? Image.file(File(card.backImgPath!),
+                                  width: 200, height: 200)
+                              : Container(),
+                        ),
                         Text(card.cardBack ?? '',
                             style: mainTextTheme.displaySmall),
                       ],

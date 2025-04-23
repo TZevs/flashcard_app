@@ -111,16 +111,12 @@ class NewDeckViewmodel extends ChangeNotifier {
 
   void editFlashcard(int index, String front, String back) async {
     FlashcardModel toEdit = _newFlashcards[index];
-    String? frontPath;
-    String? backPath;
 
     if (_frontImg != null) {
-      frontPath = await _saveImgPath(_frontImg!, "front");
-      toEdit.frontImgPath = frontPath;
+      toEdit.frontImgPath = await _saveImgPath(_frontImg!, "front");
     }
     if (_backImg != null) {
-      backPath = await _saveImgPath(_backImg!, "back");
-      toEdit.backImgPath = backPath;
+      toEdit.backImgPath = await _saveImgPath(_backImg!, "back");
     }
 
     toEdit.cardFront = front;
@@ -128,6 +124,7 @@ class NewDeckViewmodel extends ChangeNotifier {
 
     _frontImg = null;
     _backImg = null;
+
     notifyListeners();
   }
 
