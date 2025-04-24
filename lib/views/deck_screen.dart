@@ -1,5 +1,6 @@
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
+import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/edit_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
@@ -139,6 +140,15 @@ class _DeckScreenState extends State<DeckScreen> {
             }
           }))
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => CreateDeckScreen()))
+              .then((_) => viewModel.fetchDecks());
+        },
+        child: Icon(Icons.add),
       ),
       bottomNavigationBar: NavbarWidget(),
     );

@@ -88,3 +88,5 @@ final BoxDecoration addImgContainer = BoxDecoration(
   color: Color(0xFF30253e),
   borderRadius: BorderRadius.circular(10),
 );
+
+final BottomAppBarTheme navbarTheme = BottomAppBarTheme();
