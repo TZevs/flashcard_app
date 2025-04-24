@@ -101,10 +101,28 @@ class FirebaseDb {
 
   static Future<void> removeSavedDeck(String userId, String deckId) async {}
 
-  static Future<void> fetchSavedDecks(String userId) async {
-    final userRef =
-        await FirebaseFirestore.instance.collection('users').doc(userId);
+  static Future<List<FirebaseDeckModel>?> fetchSavedDecks(String userId) async {
     List<FirebaseDeckModel> savedDecks = [];
+
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    List<dynamic> deckIds = userDoc['savedDecks'] ?? [];
+
+    if (deckIds.isEmpty) return [];
+
+    await FirebaseFirestore.instance
+        .collection('decks')
+        .where(FieldPath.documentId, whereIn: deckIds)
+        .get()
+        .then((snapshot) {
+      for (var s in snapshot.docs) {
+        FirebaseDeckModel deck = FirebaseDeckModel.fromFirestore(s);
+        savedDecks.add(deck);
+      }
+    });
+
+    return savedDecks;
   }
 
   static Future<List<FirebaseDeckModel>> getQueriedDecks(String query) async {
