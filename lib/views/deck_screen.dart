@@ -29,31 +29,27 @@ class _DeckScreenState extends State<DeckScreen> {
     final userID = Provider.of<AuthViewModel>(context, listen: false).userId;
 
     return Scaffold(
-      appBar: AppbarWidget(title: "Decks"),
+      appBar: AppbarWidget(
+        title: viewModel.currentCategory == DeckCategory.myDecks
+            ? "My Decks"
+            : "Saved Decks",
+        actions: [
+          Switch(
+              activeColor: Color(0xFFEEA83B),
+              inactiveTrackColor: Color(0xFFEEA83B),
+              inactiveThumbColor: Color(0xFF30253e),
+              trackOutlineColor: WidgetStatePropertyAll(Color(0xFFEEA83B)),
+              value: viewModel.currentCategory == DeckCategory.savedDecks,
+              onChanged: (value) {
+                viewModel.switchCategory(
+                  value ? DeckCategory.savedDecks : DeckCategory.myDecks,
+                  userId: userID,
+                );
+              })
+        ],
+      ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  viewModel.currentCategory == DeckCategory.myDecks
-                      ? "My Decks"
-                      : "Saved Decks",
-                  style: mainTextTheme.displayMedium,
-                ),
-                Switch(
-                    value: viewModel.currentCategory == DeckCategory.savedDecks,
-                    onChanged: (value) {
-                      viewModel.switchCategory(
-                        value ? DeckCategory.savedDecks : DeckCategory.myDecks,
-                        userId: userID,
-                      );
-                    })
-              ],
-            ),
-          ),
           Expanded(
               child: Consumer<DeckViewModel>(builder: (context, viewModel, _) {
             if (viewModel.currentCategory == DeckCategory.myDecks) {

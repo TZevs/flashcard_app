@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  const AppbarWidget({super.key, this.title});
+  final List<Widget>? actions;
+  const AppbarWidget({super.key, this.title, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +24,11 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
           title ?? "",
           style: mainTextTheme.displayLarge,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {
-              // Navigate to profile screen or perform any action
-            },
-          ),
-        ],
+        actions: actions,
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 50);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 20);
 }

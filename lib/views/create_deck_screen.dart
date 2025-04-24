@@ -202,7 +202,14 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                     ),
                     SizedBox(height: 10),
                     SwitchListTile(
-                      title: Text(viewModel.publicOrPrivateLabel),
+                      tileColor: Color(0xFFEEA83B),
+                      activeColor: Color(0xFFEEA83B),
+                      inactiveTrackColor: Color(0xFFEEA83B),
+                      inactiveThumbColor: Color(0xFF30253e),
+                      trackOutlineColor:
+                          WidgetStatePropertyAll(Color(0xFF30253e)),
+                      title: Text(viewModel.publicOrPrivateLabel,
+                          style: TextStyle(color: Color(0xFF30253e))),
                       value: viewModel.isPublic,
                       onChanged: viewModel.setIsPublic,
                     ),
