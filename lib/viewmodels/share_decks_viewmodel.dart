@@ -18,10 +18,6 @@ class ShareDecksViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getUsername(String userId) async {
-    await FirebaseDb.fetchUsername(userId);
-  }
-
   Future<void> saveDeck(String deckId, String userId) async {
     await FirebaseDb.addSavedDeck(deckId, userId);
     notifyListeners();

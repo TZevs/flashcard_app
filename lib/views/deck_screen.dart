@@ -31,7 +31,7 @@ class _DeckScreenState extends State<DeckScreen> {
           return Center(
               child: Text(
             "No Decks Added",
-            style: mainTextTheme.bodyMedium,
+            style: mainTextTheme.displayMedium,
           ));
         }
 
