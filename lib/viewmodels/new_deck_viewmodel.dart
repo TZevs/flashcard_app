@@ -138,7 +138,7 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addNewDeck(String id) async {
+  Future<void> addNewDeck(String id, String username) async {
     DeckModel newDeck = DeckModel(
         id: theDeckId,
         title: deckTitle,
@@ -146,7 +146,7 @@ class NewDeckViewmodel extends ChangeNotifier {
         cardCount: _newFlashcards.length);
 
     if (newDeck.isPublic) {
-      await _setPublicDeck(newDeck, id);
+      await _setPublicDeck(newDeck, id, username);
     }
 
     await FlashcardDb.addDeck(newDeck);
@@ -154,8 +154,10 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _setPublicDeck(DeckModel deck, String userId) async {
-    FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, userId);
+  Future<void> _setPublicDeck(
+      DeckModel deck, String userId, String username) async {
+    FirebaseDeckModel newDeck =
+        FirebaseDeckModel.fromLocal(deck, userId, username);
     List<FlashcardModel> _updatedFlashcards = [];
 
     for (var card in _newFlashcards) {

@@ -192,6 +192,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
+    final userName = Provider.of<AuthViewModel>(context).username;
     final viewModel = Provider.of<EditDeckViewmodel>(context);
 
     return Scaffold(
@@ -393,7 +394,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
             padding: const EdgeInsets.all(15),
             child: ElevatedButton(
                 onPressed: () async {
-                  await viewModel.updateDeck(userID!);
+                  await viewModel.updateDeck(userID!, userName!);
                   viewModel.reset();
                   Navigator.pop(context, true);
                 },

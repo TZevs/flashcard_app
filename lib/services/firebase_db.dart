@@ -79,18 +79,10 @@ class FirebaseDb {
     return decks;
   }
 
-  static Future<String> fetchUsername(String userID) async {
-    String username = '';
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .get()
-        .then((snapshot) {
-      if (snapshot.exists) {
-        username = snapshot.data()!['username'];
-      }
-    });
-    return username;
+  static Future<String?> fetchUsername(String userID) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    return doc.data()?['username'];
   }
 
   static Future<void> addSavedDeck(String userId, String deckID) async {

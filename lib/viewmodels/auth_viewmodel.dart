@@ -15,8 +15,13 @@ class AuthViewModel extends ChangeNotifier {
   String? get username => _username;
 
   AuthViewModel() {
-    _auth.authStateChanges().listen((User? user) {
+    _auth.authStateChanges().listen((User? user) async {
       _user = user;
+      if (_user != null) {
+        await getUsername();
+      } else {
+        _username = null;
+      }
       notifyListeners();
     });
   }
@@ -29,7 +34,6 @@ class AuthViewModel extends ChangeNotifier {
       );
 
       final user = newUser.user!.uid;
-      _username = username;
 
       await FirebaseFirestore.instance.collection('users').doc(user).set({
         'username': username,
@@ -44,6 +48,7 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await getUsername();
     } catch (e) {
       rethrow;
     }
@@ -59,5 +64,6 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> getUsername() async {
     _username = await FirebaseDb.fetchUsername(userId!);
+    notifyListeners();
   }
 }

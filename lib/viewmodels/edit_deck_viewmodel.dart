@@ -50,7 +50,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateDeck(String id) async {
+  Future<void> updateDeck(String id, String username) async {
     DeckModel newDeck = DeckModel(
       id: deckToEdit.id,
       title: deckTitle,
@@ -59,7 +59,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     );
 
     if (!deckToEdit.isPublic && isPublic) {
-      await newPublicDeck(newDeck, id);
+      await newPublicDeck(newDeck, id, username);
     }
     if (deckToEdit.isPublic && isPublic == false) {
       await FirebaseDb.deletePublicDeck(newDeck.id);
@@ -80,8 +80,10 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> newPublicDeck(DeckModel deck, String userId) async {
-    FirebaseDeckModel newDeck = FirebaseDeckModel.fromLocal(deck, userId);
+  Future<void> newPublicDeck(
+      DeckModel deck, String userId, String username) async {
+    FirebaseDeckModel newDeck =
+        FirebaseDeckModel.fromLocal(deck, userId, username);
     List<FlashcardModel> _updatedFlashcards = [];
 
     for (var card in _flashcards) {

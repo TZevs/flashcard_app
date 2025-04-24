@@ -179,6 +179,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
   @override
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
+    final userName = Provider.of<AuthViewModel>(context).username;
     final viewModel = Provider.of<NewDeckViewmodel>(context);
 
     return Scaffold(
@@ -380,7 +381,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
             padding: const EdgeInsets.all(15),
             child: ElevatedButton(
               onPressed: () {
-                viewModel.addNewDeck(userID!);
+                viewModel.addNewDeck(userID!, userName!);
                 Navigator.pop(context);
               },
               child: Text("Save Deck"),

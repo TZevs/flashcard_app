@@ -5,6 +5,7 @@ class FirebaseDeckModel {
   final String id;
   final String title;
   final String userId;
+  final String username;
   final Timestamp createdAt;
   final bool isPublic;
   final int cardCount;
@@ -14,6 +15,7 @@ class FirebaseDeckModel {
     required this.id,
     required this.title,
     required this.userId,
+    required this.username,
     required this.createdAt,
     required this.isPublic,
     required this.cardCount,
@@ -27,6 +29,7 @@ class FirebaseDeckModel {
       id: data['id'],
       title: data['title'],
       userId: data['userId'],
+      username: data['username'],
       createdAt: data['createdAt'],
       isPublic: data['isPublic'],
       cardCount: data['cardCount'],
@@ -34,11 +37,13 @@ class FirebaseDeckModel {
     );
   }
 
-  factory FirebaseDeckModel.fromLocal(DeckModel local, String userId) {
+  factory FirebaseDeckModel.fromLocal(
+      DeckModel local, String userId, String userName) {
     return FirebaseDeckModel(
       id: local.id,
       title: local.title,
       userId: userId,
+      username: userName,
       createdAt: Timestamp.fromDate(DateTime.now()),
       isPublic: local.isPublic,
       cardCount: local.cardCount,
@@ -50,6 +55,7 @@ class FirebaseDeckModel {
       'id': id,
       'title': title,
       'userId': userId,
+      'username': username,
       'createdAt': createdAt,
       'isPublic': isPublic,
       'cardCount': cardCount,
