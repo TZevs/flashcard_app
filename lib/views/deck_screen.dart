@@ -25,6 +25,7 @@ class _DeckScreenState extends State<DeckScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DeckViewModel>(context);
+    final userID = Provider.of<AuthViewModel>(context, listen: false).userId;
 
     return Scaffold(
       appBar: AppbarWidget(title: "Decks"),
@@ -44,10 +45,6 @@ class _DeckScreenState extends State<DeckScreen> {
                 Switch(
                     value: viewModel.currentCategory == DeckCategory.savedDecks,
                     onChanged: (value) {
-                      final userID =
-                          Provider.of<AuthViewModel>(context, listen: false)
-                              .userId;
-
                       viewModel.switchCategory(
                         value ? DeckCategory.savedDecks : DeckCategory.myDecks,
                         userId: userID,
@@ -63,7 +60,7 @@ class _DeckScreenState extends State<DeckScreen> {
                 return Center(
                   child: Text(
                     "No Decks Available",
-                    style: mainTextTheme.displayMedium,
+                    style: mainTextTheme.displaySmall,
                   ),
                 );
               }
@@ -98,7 +95,8 @@ class _DeckScreenState extends State<DeckScreen> {
                                 }),
                             IconButton(
                                 icon: Icon(Icons.delete),
-                                onPressed: () => viewModel.removeDeck(index)),
+                                onPressed: () =>
+                                    viewModel.unSaveDeck(deck.id, userID!)),
                           ],
                         ),
                         onTap: () => Navigator.push(
@@ -113,7 +111,7 @@ class _DeckScreenState extends State<DeckScreen> {
                 return Center(
                   child: Text(
                     "No Decks Saved",
-                    style: mainTextTheme.displayMedium,
+                    style: mainTextTheme.displaySmall,
                   ),
                 );
               }

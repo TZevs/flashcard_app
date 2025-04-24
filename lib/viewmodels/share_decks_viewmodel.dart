@@ -8,6 +8,9 @@ class ShareDecksViewmodel extends ChangeNotifier {
   List<FirebaseDeckModel> _queriedDecks = [];
   List<FirebaseDeckModel> get getQueriedDecks => _queriedDecks;
 
+  List<String> _savedIDs = [];
+  List<String> get savedIDs => _savedIDs;
+
   Future<void> fetchPublicDecks() async {
     _publicDecks = await FirebaseDb.fetchDecks();
     notifyListeners();
@@ -19,7 +22,12 @@ class ShareDecksViewmodel extends ChangeNotifier {
   }
 
   Future<void> saveDeck(String deckId, String userId) async {
-    await FirebaseDb.addSavedDeck(deckId, userId);
+    await FirebaseDb.addSavedDeck(userId, deckId);
+    notifyListeners();
+  }
+
+  Future<void> getSavedIDs(String userID) async {
+    _savedIDs = await FirebaseDb.getSavedDeckIDs(userID);
     notifyListeners();
   }
 }

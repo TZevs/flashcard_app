@@ -11,6 +11,7 @@ class ShareDecksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
     final viewModel = Provider.of<ShareDecksViewmodel>(context);
+    viewModel.getSavedIDs(userID!);
 
     viewModel.fetchPublicDecks();
     return Scaffold(
@@ -44,9 +45,11 @@ class ShareDecksScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                viewModel.saveDeck(deck.id, userID!);
+                                viewModel.saveDeck(deck.id, userID);
                               },
-                              icon: Icon(Icons.favorite_border)),
+                              icon: Icon(viewModel.savedIDs.contains(deck.id)
+                                  ? Icons.favorite
+                                  : Icons.favorite_border)),
                           Container(
                             height: 5,
                             width: 5,

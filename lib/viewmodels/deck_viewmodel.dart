@@ -34,7 +34,7 @@ class DeckViewModel extends ChangeNotifier {
 
   Future<void> fetchSavedDecks(String userId) async {
     if (_savedDecksFetched) return;
-    _savedDecks = (await FirebaseDb.fetchSavedDecks(userId))!;
+    _savedDecks = await FirebaseDb.fetchSavedDecks(userId);
     _savedDecksFetched = true;
     notifyListeners();
   }
@@ -50,6 +50,11 @@ class DeckViewModel extends ChangeNotifier {
       await fetchSavedDecks(userId);
     }
 
+    notifyListeners();
+  }
+
+  Future<void> unSaveDeck(String deckId, String userId) async {
+    await FirebaseDb.removeSavedDeck(userId, deckId);
     notifyListeners();
   }
 }

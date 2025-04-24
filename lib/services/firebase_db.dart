@@ -86,22 +86,31 @@ class FirebaseDb {
   }
 
   static Future<void> addSavedDeck(String userId, String deckID) async {
-    final userRef =
+    final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+
+    await userRef.set({
+      'savedDecks': FieldValue.arrayUnion([deckID])
+    }, SetOptions(merge: true));
+
+    await FirebaseFirestore.instance.collection('decks').doc(deckID).set({
+      'savedCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+  }
+
+  static Future<void> removeSavedDeck(String userId, String deckId) async {
+    final userDoc =
         await FirebaseFirestore.instance.collection('users').doc(userId);
 
-    final deckData = {'deckID': deckID};
-    await userRef.collection('savedDecks').add(deckData);
+    await userDoc.update({
+      'savedDecks': FieldValue.arrayRemove([deckId])
+    });
 
-    final deckRef =
-        await FirebaseFirestore.instance.collection('decks').doc(deckID);
-    await deckRef.update({
+    await FirebaseFirestore.instance.collection('decks').doc(deckId).update({
       'savedCount': FieldValue.increment(1),
     });
   }
 
-  static Future<void> removeSavedDeck(String userId, String deckId) async {}
-
-  static Future<List<FirebaseDeckModel>?> fetchSavedDecks(String userId) async {
+  static Future<List<FirebaseDeckModel>> fetchSavedDecks(String userId) async {
     List<FirebaseDeckModel> savedDecks = [];
 
     final userDoc =
@@ -128,6 +137,14 @@ class FirebaseDb {
     }
 
     return savedDecks;
+  }
+
+  static Future<List<String>> getSavedDeckIDs(String userID) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+
+    List<String> deckIds = List<String>.from(userDoc['savedDecks'] ?? []);
+    return deckIds;
   }
 
   static Future<List<FirebaseDeckModel>> getQueriedDecks(String query) async {
