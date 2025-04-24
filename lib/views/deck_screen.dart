@@ -76,7 +76,7 @@ class _DeckScreenState extends State<DeckScreen> {
                             ? Icon(Icons.public)
                             : Icon(Icons.lock_outline),
                         title: Text(deck.title),
-                        subtitle: Text("${deck.cardCount} Cards"),
+                        subtitle: Text(deck.cardCount as String),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
