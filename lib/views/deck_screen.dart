@@ -76,13 +76,6 @@ class _DeckScreenState extends State<DeckScreen> {
               );
             });
       }),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () => Navigator.push(context,
-      //       MaterialPageRoute(builder: (ctx) => CreateDeckScreen())).then((_) {
-      //     Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
-      //   }),
-      // ),
       bottomNavigationBar: NavbarWidget(),
     );
   }
