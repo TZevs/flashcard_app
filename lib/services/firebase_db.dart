@@ -107,20 +107,25 @@ class FirebaseDb {
     final userDoc =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
-    List<dynamic> deckIds = userDoc['savedDecks'] ?? [];
+    List<String> deckIds = List<String>.from(userDoc['savedDecks'] ?? []);
 
     if (deckIds.isEmpty) return [];
 
-    await FirebaseFirestore.instance
-        .collection('decks')
-        .where(FieldPath.documentId, whereIn: deckIds)
-        .get()
-        .then((snapshot) {
+    const int batchSize = 10;
+    for (int i = 0; i < deckIds.length; i += batchSize) {
+      final batch = deckIds.sublist(
+          i, i + batchSize > deckIds.length ? deckIds.length : i + batchSize);
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('decks')
+          .where('id', whereIn: batch)
+          .get();
+
       for (var s in snapshot.docs) {
         FirebaseDeckModel deck = FirebaseDeckModel.fromFirestore(s);
         savedDecks.add(deck);
       }
-    });
+    }
 
     return savedDecks;
   }

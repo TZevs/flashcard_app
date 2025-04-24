@@ -4,12 +4,18 @@ import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flutter/material.dart';
 
+enum DeckCategory { myDecks, savedDecks }
+
 class DeckViewModel extends ChangeNotifier {
+  DeckCategory _currentCategory = DeckCategory.myDecks;
+  DeckCategory get currentCategory => _currentCategory;
+
   List<DeckModel> _decks = [];
   List<DeckModel> get decks => _decks;
 
   List<FirebaseDeckModel> _savedDecks = [];
   List<FirebaseDeckModel> get savedDecks => _savedDecks;
+  bool _savedDecksFetched = false;
 
   Future<void> fetchDecks() async {
     _decks = await FlashcardDb.getDecks();
@@ -27,15 +33,23 @@ class DeckViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchSavedDecks(String userId) async {
+    if (_savedDecksFetched) return;
     _savedDecks = (await FirebaseDb.fetchSavedDecks(userId))!;
+    _savedDecksFetched = true;
     notifyListeners();
   }
 
-  bool isDeckPublic(int index) {
-    return _decks[index].isPublic;
-  }
+  void switchCategory(DeckCategory category, {String? userId}) async {
+    _currentCategory = category;
 
-  int getCardCount(int index) {
-    return _decks[index].cardCount;
+    if (category == DeckCategory.myDecks && decks.isEmpty) {
+      await fetchDecks();
+    } else if (category == DeckCategory.savedDecks &&
+        userId != null &&
+        savedDecks.isEmpty) {
+      await fetchSavedDecks(userId);
+    }
+
+    notifyListeners();
   }
 }
