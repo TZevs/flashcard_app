@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FlashcardWidget extends StatelessWidget {
-  const FlashcardWidget({required this.content, this.img});
+  const FlashcardWidget({super.key, required this.content, this.img});
   final dynamic img;
   final String? content;
 

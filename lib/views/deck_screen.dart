@@ -70,13 +70,13 @@ class _DeckScreenState extends State<DeckScreen> {
                   itemBuilder: (context, index) {
                     final deck = viewModel.decks[index];
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
                         leading: deck.isPublic
                             ? Icon(Icons.public)
                             : Icon(Icons.lock_outline),
                         title: Text(deck.title),
-                        subtitle: Text(deck.cardCount as String),
+                        subtitle: Text("${deck.cardCount} Cards"),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -95,8 +95,7 @@ class _DeckScreenState extends State<DeckScreen> {
                                 }),
                             IconButton(
                                 icon: Icon(Icons.delete),
-                                onPressed: () =>
-                                    viewModel.unSaveDeck(deck.id, userID!)),
+                                onPressed: () => viewModel.removeDeck(index)),
                           ],
                         ),
                         onTap: () => Navigator.push(
@@ -121,14 +120,19 @@ class _DeckScreenState extends State<DeckScreen> {
                   itemBuilder: (context, index) {
                     final deck = viewModel.savedDecks[index];
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
-                        leading: Text("${deck.cardCount} Cards"),
+                        leading: Text("${deck.cardCount}"),
                         title: Text(deck.title),
                         subtitle: Text("By ${deck.username}"),
                         trailing: IconButton(
                             icon: Icon(Icons.delete),
-                            onPressed: () => viewModel.removeDeck(index)),
+                            onPressed: () =>
+                                viewModel.unSaveDeck(deck.id, userID!)),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => FlashcardScreen(deck: deck))),
                       ),
                     );
                   });

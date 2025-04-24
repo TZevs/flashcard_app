@@ -1,4 +1,4 @@
-import 'package:flashcard_app/models/deck_model.dart';
+// import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
@@ -10,7 +10,7 @@ import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:provider/provider.dart';
 
 class FlashcardScreen extends StatefulWidget {
-  final DeckModel deck;
+  final dynamic deck;
   const FlashcardScreen({super.key, required this.deck});
 
   @override
@@ -36,7 +36,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       appBar: AppbarWidget(),
       body: Consumer<FlashcardViewModel>(
         builder: (context, viewModel, child) {
-          final DeckModel selectedDeck = widget.deck;
+          final dynamic selectedDeck = widget.deck;
           final cards = viewModel.flashcards;
 
           if (viewModel.isLoading) {
@@ -82,10 +82,12 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       return FlipCard(
                         frontWidget: FlashcardWidget(
                             content: currentCard.cardFront,
-                            img: currentCard.frontImgPath),
+                            img: currentCard.frontImgPath ??
+                                currentCard.frontImgUrl),
                         backWidget: FlashcardWidget(
                             content: currentCard.cardBack,
-                            img: currentCard.backImgPath),
+                            img: currentCard.backImgPath ??
+                                currentCard.backImgUrl),
                         controller: FlipCardController(),
                         rotateSide: RotateSide.left,
                         onTapFlipping: !viewModel.isSwiping,
