@@ -56,8 +56,10 @@ class FirebaseDb {
     }
   }
 
-  static Future<String> uploadImgToFirebase(File imgFile, String userId) async {
+  static Future<String> uploadImgToFirebase(
+      File imgFile, String userId, bool isProfileImg) async {
     final fileName = basename(imgFile.path);
+
     final ref = FirebaseStorage.instance
         .ref()
         .child('flashcardImages/$userId/$fileName');
@@ -166,5 +168,19 @@ class FirebaseDb {
     });
 
     return queriedDecks;
+  }
+
+  static Future<void> setProfileImg(String userID, String imgURL) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID);
+
+    await userDoc.set({'profilePic': imgURL});
+  }
+
+  static Future<void> setProfileBio(String userID, String bio) async {
+    final userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userID);
+
+    await userDoc.set({'profileBio': bio});
   }
 }
