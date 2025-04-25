@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flashcard_app/services/notifications.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
@@ -14,8 +15,18 @@ import 'package:provider/provider.dart';
 // import 'package:flashcard_app/services/flashcard_db.dart';
 
 void main() async {
-  await Notifications.initializeNotification();
   WidgetsFlutterBinding.ensureInitialized();
+
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
+  isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (isAllowed) {
+    await Notifications.initializeNotification();
+  }
+
   await Firebase.initializeApp();
   runApp(const MyFlashCardApp());
   // await FlashcardDb.deleteDatabaseFile();
