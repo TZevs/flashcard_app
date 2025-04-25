@@ -12,8 +12,8 @@ class ShareDecksScreen extends StatelessWidget {
     final userID = Provider.of<AuthViewModel>(context).userId;
     final viewModel = Provider.of<ShareDecksViewmodel>(context);
     viewModel.getSavedIDs(userID!);
-
     viewModel.fetchPublicDecks();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppbarWidget(title: "Community"),

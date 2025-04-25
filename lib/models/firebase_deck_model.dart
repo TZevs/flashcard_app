@@ -10,7 +10,7 @@ class FirebaseDeckModel {
   final bool isPublic;
   final int cardCount;
   int? savedCount;
-  List<String>? tags;
+  List<dynamic>? tags;
 
   FirebaseDeckModel({
     required this.id,

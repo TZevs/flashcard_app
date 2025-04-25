@@ -33,8 +33,8 @@ class NewDeckViewmodel extends ChangeNotifier {
     "Languages",
     "Other",
   ];
-  List<String> _selectedTags = [];
-  List<String> get selectedTags => _selectedTags;
+  List<dynamic> _selectedTags = [];
+  List<dynamic> get selectedTags => _selectedTags;
 
   List<FlashcardModel> _newFlashcards = [];
   String deckTitle = "";

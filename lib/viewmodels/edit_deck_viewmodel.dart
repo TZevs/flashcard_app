@@ -200,8 +200,8 @@ class EditDeckViewmodel extends ChangeNotifier {
     "Languages",
     "Other",
   ];
-  List<String> _selectedTags = [];
-  List<String> get selectedTags => _selectedTags;
+  List<dynamic> _selectedTags = [];
+  List<dynamic> get selectedTags => _selectedTags;
 
   void addTag(String tag) {
     if (!selectedTags.contains(tag)) {
