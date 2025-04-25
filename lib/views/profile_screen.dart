@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                       ),
                     ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.upload))
+                    IconButton(onPressed: () {}, icon: Icon(Icons.add_a_photo))
                   ],
                 ),
                 Text(
