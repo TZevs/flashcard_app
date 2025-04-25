@@ -1,3 +1,4 @@
+import 'package:flashcard_app/views/profile_screen.dart';
 import 'package:flashcard_app/views/share_decks_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,10 @@ class NavbarWidget extends StatelessWidget {
           IconButton(
             iconSize: 30,
             color: Color(0xFFEEA83B),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => ProfileScreen()));
+            },
             icon: Icon(Icons.person),
           ),
         ],
