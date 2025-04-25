@@ -13,9 +13,9 @@ class LandingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthViewModel>(context);
 
-    // if (auth.isLoggedIn) {
-    //   return DeckScreen();
-    // }
+    if (auth.isLoggedIn) {
+      return DeckScreen();
+    }
 
     return SafeArea(
       child: Scaffold(
