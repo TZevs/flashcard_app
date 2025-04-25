@@ -271,6 +271,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                     ),
                     SizedBox(height: 10),
                     TextField(
+                      style: TextStyle(color: Color(0xFFEBE4C2)),
                       controller: _cardBackController,
                       decoration: InputDecoration(labelText: "Card Back"),
                     ),
