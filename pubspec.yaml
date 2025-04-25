@@ -49,6 +49,7 @@ dependencies:
   path_provider: ^2.1.5
   firebase_storage: ^12.4.5
   awesome_notifications: ^0.10.1
+  awesome_snackbar_content: ^0.1.1
 
 dev_dependencies:
   flutter_test:

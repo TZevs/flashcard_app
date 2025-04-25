@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/views/register_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
@@ -5,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  // const LoginScreen({super.key});
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -16,7 +15,10 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text("LOGIN",
+              style: mainTextTheme.displayLarge, textAlign: TextAlign.center),
           Padding(
             padding: const EdgeInsets.all(5),
             child: TextField(
@@ -37,13 +39,27 @@ class LoginScreen extends StatelessWidget {
                 try {
                   if (_emailController.text.isEmpty ||
                       _passwordController.text.isEmpty) {
-                    print("Please fill in all fields");
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: AwesomeSnackbarContent(
+                        title: "Warning",
+                        message: "Both fields must be filled.",
+                        contentType: ContentType.warning,
+                      ),
+                    );
                     return;
                   } else {
                     auth.login(_emailController.text, _passwordController.text);
                   }
                 } catch (e) {
-                  print(e);
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: AwesomeSnackbarContent(
+                      title: "Error",
+                      message: e.toString(),
+                      contentType: ContentType.failure,
+                    ),
+                  );
                 }
               },
               child: Text('Login', style: mainTextTheme.displayMedium)),
@@ -52,7 +68,10 @@ class LoginScreen extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (ctx) => RegisterScreen()));
               },
-              child: Text("Don't have an account? Register here")),
+              child: Text(
+                "Don't have an account? Register here",
+                style: mainTextTheme.displaySmall,
+              )),
           ElevatedButton.icon(
               onPressed: () {},
               label: Text("Login with Google"),
