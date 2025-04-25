@@ -10,6 +10,7 @@ class FirebaseDeckModel {
   final bool isPublic;
   final int cardCount;
   int? savedCount;
+  List<String>? tags;
 
   FirebaseDeckModel({
     required this.id,
@@ -20,6 +21,7 @@ class FirebaseDeckModel {
     required this.isPublic,
     required this.cardCount,
     this.savedCount = 0,
+    this.tags,
   });
 
   factory FirebaseDeckModel.fromFirestore(

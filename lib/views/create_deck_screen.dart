@@ -168,6 +168,61 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
             ));
   }
 
+  void _addTags(BuildContext context, NewDeckViewmodel viewModel) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Select Tags",
+                  style: mainTextTheme.displayMedium,
+                  textAlign: TextAlign.center),
+              content: Consumer<NewDeckViewmodel>(
+                  builder: (context, viewModel, child) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Wrap(
+                      spacing: 8,
+                      children: viewModel.topics.map((tag) {
+                        return ChoiceChip(
+                          label: Text(tag),
+                          selected: viewModel.selectedTags.contains(tag),
+                          selectedColor: Color(0xFFEEA83B),
+                          disabledColor: Color(0xFFEBE4C2),
+                          onSelected: (isSelected) {
+                            if (isSelected) {
+                              viewModel.addTag(tag);
+                            } else {
+                              viewModel.removeTag(tag);
+                            }
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              viewModel.clearTags();
+                            },
+                            child: Text("Clear")),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Done")),
+                      ],
+                    ),
+                  ],
+                );
+              }),
+            ));
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -202,17 +257,21 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                     ),
                     SizedBox(height: 10),
                     SwitchListTile(
-                      tileColor: Color(0xFFEEA83B),
-                      activeColor: Color(0xFFEEA83B),
-                      inactiveTrackColor: Color(0xFFEEA83B),
-                      inactiveThumbColor: Color(0xFF30253e),
-                      trackOutlineColor:
-                          WidgetStatePropertyAll(Color(0xFF30253e)),
-                      title: Text(viewModel.publicOrPrivateLabel,
-                          style: TextStyle(color: Color(0xFF30253e))),
-                      value: viewModel.isPublic,
-                      onChanged: viewModel.setIsPublic,
-                    ),
+                        tileColor: Color(0xFFEEA83B),
+                        activeColor: Color(0xFFEEA83B),
+                        inactiveTrackColor: Color(0xFFEEA83B),
+                        inactiveThumbColor: Color(0xFF30253e),
+                        trackOutlineColor:
+                            WidgetStatePropertyAll(Color(0xFF30253e)),
+                        title: Text(viewModel.publicOrPrivateLabel,
+                            style: TextStyle(color: Color(0xFF30253e))),
+                        value: viewModel.isPublic,
+                        onChanged: (bool value) async {
+                          viewModel.setIsPublic(value);
+                          if (viewModel.isPublic) {
+                            _addTags(context, viewModel);
+                          }
+                        }),
                     SizedBox(height: 10),
                     TextField(
                       style: TextStyle(color: Color(0xFFEBE4C2)),

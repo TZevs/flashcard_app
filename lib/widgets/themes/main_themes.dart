@@ -89,4 +89,7 @@ final BoxDecoration addImgContainer = BoxDecoration(
   borderRadius: BorderRadius.circular(10),
 );
 
-final BottomAppBarTheme navbarTheme = BottomAppBarTheme();
+final DialogTheme tagDialog = DialogTheme(
+  backgroundColor: Color(0xFF30253e),
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+);

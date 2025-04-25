@@ -15,6 +15,27 @@ var uuid = Uuid();
 class NewDeckViewmodel extends ChangeNotifier {
   String theDeckId = uuid.v4();
 
+  List<String> topics = [
+    "Maths",
+    "History",
+    "Literature",
+    "Psychology",
+    "Sociology",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Geography",
+    "Health and Medicine",
+    "Architecture",
+    "Education",
+    "Law",
+    "Linguistics",
+    "Languages",
+    "Other",
+  ];
+  List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
+
   List<FlashcardModel> _newFlashcards = [];
   String deckTitle = "";
   bool isPublic = false;
@@ -48,6 +69,23 @@ class NewDeckViewmodel extends ChangeNotifier {
 
   void clearBackImg() {
     _backImg = null;
+    notifyListeners();
+  }
+
+  void addTag(String tag) {
+    if (!selectedTags.contains(tag)) {
+      _selectedTags.add(tag);
+      notifyListeners();
+    }
+  }
+
+  void removeTag(String tag) {
+    _selectedTags.remove(tag);
+    notifyListeners();
+  }
+
+  void clearTags() {
+    _selectedTags.clear();
     notifyListeners();
   }
 
