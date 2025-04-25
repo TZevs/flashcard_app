@@ -19,6 +19,7 @@ class RegisterScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF30253e),
         body: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -70,6 +71,7 @@ class RegisterScreen extends StatelessWidget {
                     if (!validEmail) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
+                        elevation: 0,
                         backgroundColor: Colors.transparent,
                         content: AwesomeSnackbarContent(
                           title: "Warning",
@@ -83,6 +85,7 @@ class RegisterScreen extends StatelessWidget {
                     if (email.isEmpty || password.isEmpty || username.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
+                        elevation: 0,
                         backgroundColor: Colors.transparent,
                         content: AwesomeSnackbarContent(
                           title: "Warning",

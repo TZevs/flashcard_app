@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF30253e),
         body: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
