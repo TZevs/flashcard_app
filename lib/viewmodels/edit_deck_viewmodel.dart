@@ -84,6 +84,9 @@ class EditDeckViewmodel extends ChangeNotifier {
       DeckModel deck, String userId, String username) async {
     FirebaseDeckModel newDeck =
         FirebaseDeckModel.fromLocal(deck, userId, username);
+
+    newDeck.tags = _selectedTags;
+
     List<FlashcardModel> _updatedFlashcards = [];
 
     for (var card in _flashcards) {
@@ -179,6 +182,44 @@ class EditDeckViewmodel extends ChangeNotifier {
     return savedPath.path;
   }
 
+  List<String> topics = [
+    "Maths",
+    "History",
+    "Literature",
+    "Psychology",
+    "Sociology",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Geography",
+    "Health and Medicine",
+    "Architecture",
+    "Education",
+    "Law",
+    "Linguistics",
+    "Languages",
+    "Other",
+  ];
+  List<String> _selectedTags = [];
+  List<String> get selectedTags => _selectedTags;
+
+  void addTag(String tag) {
+    if (!selectedTags.contains(tag)) {
+      _selectedTags.add(tag);
+      notifyListeners();
+    }
+  }
+
+  void removeTag(String tag) {
+    _selectedTags.remove(tag);
+    notifyListeners();
+  }
+
+  void clearTags() {
+    _selectedTags.clear();
+    notifyListeners();
+  }
+
   void addFlashcard(String front, String back) async {
     String? frontPath;
     String? backPath;
@@ -240,6 +281,7 @@ class EditDeckViewmodel extends ChangeNotifier {
 
   void reset() {
     _newFlashcards.clear();
+    _selectedTags.clear();
     editedCards.clear();
     deletedCards.clear();
     _flashcards.clear();

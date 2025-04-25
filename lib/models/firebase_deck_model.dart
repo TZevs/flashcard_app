@@ -36,6 +36,7 @@ class FirebaseDeckModel {
       isPublic: data['isPublic'],
       cardCount: data['cardCount'],
       savedCount: data['savedCount'],
+      tags: data['tags'],
     );
   }
 
@@ -62,6 +63,7 @@ class FirebaseDeckModel {
       'isPublic': isPublic,
       'cardCount': cardCount,
       'savedCount': savedCount,
+      'tags': tags,
     };
   }
 }

@@ -196,6 +196,9 @@ class NewDeckViewmodel extends ChangeNotifier {
       DeckModel deck, String userId, String username) async {
     FirebaseDeckModel newDeck =
         FirebaseDeckModel.fromLocal(deck, userId, username);
+
+    newDeck.tags = _selectedTags;
+
     List<FlashcardModel> _updatedFlashcards = [];
 
     for (var card in _newFlashcards) {
