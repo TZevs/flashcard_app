@@ -20,6 +20,7 @@ class FlashcardWidget extends StatelessWidget {
           img != null
               ? Image.file(File(img), width: 300, height: 300)
               : Container(),
+          SizedBox(height: 10),
           Center(child: Text(content!, style: mainTextTheme.displayMedium)),
           IconButton(
               onPressed: () {
