@@ -163,12 +163,12 @@ class NewDeckViewmodel extends ChangeNotifier {
     for (var card in _newFlashcards) {
       if (card.frontImgPath != null) {
         String frontUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.frontImgPath!), userId);
+            File(card.frontImgPath!), userId, false);
         card.frontImgUrl = frontUrl;
       }
       if (card.backImgPath != null) {
         String backUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.frontImgPath!), userId);
+            File(card.frontImgPath!), userId, false);
         card.frontImgUrl = backUrl;
       }
 

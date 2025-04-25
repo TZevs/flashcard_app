@@ -219,8 +219,17 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                   ),
                   SizedBox(height: 10),
                   SwitchListTile(
+                      tileColor: Color(0xFFEEA83B),
+                      activeColor: Color(0xFFEEA83B),
+                      inactiveTrackColor: Color(0xFFEEA83B),
+                      inactiveThumbColor: Color(0xFF30253e),
+                      trackOutlineColor:
+                          WidgetStatePropertyAll(Color(0xFF30253e)),
                       value: viewModel.isPublic,
-                      title: Text(viewModel.setIsPublicLabel()),
+                      title: Text(
+                        viewModel.setIsPublicLabel(),
+                        style: TextStyle(color: Color(0xFF30253e)),
+                      ),
                       onChanged: viewModel.setIsPublic),
                   SizedBox(height: 10),
                   TextField(

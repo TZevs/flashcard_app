@@ -388,8 +388,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
           Container(
             padding: const EdgeInsets.all(15),
             child: ElevatedButton(
-              onPressed: () {
-                viewModel.addNewDeck(userID!, userName!);
+              onPressed: () async {
+                await viewModel.addNewDeck(userID!, userName!);
                 Navigator.pop(context);
               },
               child: Text("Save Deck"),
