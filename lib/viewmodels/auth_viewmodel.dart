@@ -46,12 +46,8 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      await getUsername();
-    } catch (e) {
-      rethrow;
-    }
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await getUsername();
   }
 
   Future<void> logout() async {

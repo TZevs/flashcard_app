@@ -19,79 +19,121 @@ class RegisterScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Text("REGISTER",
-                style: mainTextTheme.displayLarge, textAlign: TextAlign.center),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: "Username"),
+        body: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "REGISTER",
+                style: mainTextTheme.displayLarge,
+                textAlign: TextAlign.center,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: "Email"),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
                 controller: _emailController,
                 decoration: InputDecoration(labelText: "Email"),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: "Password"),
                 obscureText: true,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
                 controller: _confirmPasswordController,
                 decoration: InputDecoration(labelText: "Confirm Password"),
                 obscureText: true,
               ),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  try {
-                    if (_passwordController.text ==
-                        _confirmPasswordController.text) {
-                      auth.register(_emailController.text,
-                          _passwordController.text, _usernameController.text);
-                      Navigator.pop(context);
-                    } else if (_passwordController.text !=
-                        _confirmPasswordController.text) {
-                      SnackBar(
+              SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text;
+                    final confirmPassword = _confirmPasswordController.text;
+                    final username = _usernameController.text.trim();
+
+                    final validEmail =
+                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(email);
+
+                    if (!validEmail) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: "Warning",
+                          message: "Invalid Email Address",
+                          contentType: ContentType.help,
+                        ),
+                      ));
+                      return;
+                    }
+
+                    if (email.isEmpty || password.isEmpty || username.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: "Warning",
+                          message: "All fields must be filled.",
+                          contentType: ContentType.help,
+                        ),
+                      ));
+                      return;
+                    }
+
+                    if (password != confirmPassword) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
                         content: AwesomeSnackbarContent(
                           title: "Warning",
                           message: "Passwords do not match.",
-                          contentType: ContentType.warning,
+                          contentType: ContentType.help,
                         ),
-                      );
+                      ));
+                      return;
                     }
-                  } catch (ex) {
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: AwesomeSnackbarContent(
-                        title: "Error",
-                        message: ex.toString(),
-                        contentType: ContentType.failure,
-                      ),
-                    );
-                  }
-                },
-                child: Text('Register')),
-            TextButton(
-                onPressed: () {},
-                child: Text("Already have an account? Login here")),
-            ElevatedButton.icon(
-                onPressed: () {},
-                label: Text("Sign in with Google"),
-                icon: Icon(Icons.g_mobiledata)),
-          ],
+
+                    try {
+                      auth.register(email, password, username);
+                    } catch (ex) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        content: AwesomeSnackbarContent(
+                          title: "Error",
+                          message: ex.toString(),
+                          contentType: ContentType.failure,
+                        ),
+                      ));
+                    }
+                  },
+                  child: Text('Register')),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Already have an account? Login here",
+                    style: mainTextTheme.displaySmall,
+                  )),
+              ElevatedButton.icon(
+                  onPressed: () {},
+                  label: Text("Sign in with Google"),
+                  icon: Icon(Icons.g_mobiledata)),
+            ],
+          ),
         ),
       ),
     );

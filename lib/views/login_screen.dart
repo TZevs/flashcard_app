@@ -15,70 +15,97 @@ class LoginScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("LOGIN",
-                style: mainTextTheme.displayLarge, textAlign: TextAlign.center),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
+        body: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "LOGIN",
+                style: mainTextTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
                 controller: _emailController,
                 decoration: InputDecoration(labelText: "Email"),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(color: Color(0xFFEBE4C2)),
                 controller: _passwordController,
                 decoration: InputDecoration(labelText: "Password"),
                 obscureText: true,
               ),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  try {
-                    if (_emailController.text.isEmpty ||
-                        _passwordController.text.isEmpty) {
-                      SnackBar(
+              SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text;
+
+                    final validEmail =
+                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(email);
+
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.transparent,
                         content: AwesomeSnackbarContent(
                           title: "Warning",
                           message: "Both fields must be filled.",
-                          contentType: ContentType.warning,
+                          contentType: ContentType.help,
                         ),
-                      );
+                      ));
                       return;
-                    } else {
-                      auth.login(
-                          _emailController.text, _passwordController.text);
                     }
-                  } catch (e) {
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: AwesomeSnackbarContent(
-                        title: "Error",
-                        message: e.toString(),
-                        contentType: ContentType.failure,
-                      ),
-                    );
-                  }
-                },
-                child: Text('Login', style: mainTextTheme.displayMedium)),
-            TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => RegisterScreen()));
-                },
-                child: Text(
-                  "Don't have an account? Register here",
-                  style: mainTextTheme.displaySmall,
-                )),
-            ElevatedButton.icon(
-                onPressed: () {},
-                label: Text("Login with Google"),
-                icon: Icon(Icons.g_mobiledata)),
-          ],
+
+                    if (!validEmail) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: "Warning",
+                          message: "Invalid Email Address",
+                          contentType: ContentType.help,
+                        ),
+                      ));
+                      return;
+                    }
+
+                    try {
+                      auth.login(email, password);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: "Error",
+                          message: e.toString(),
+                          contentType: ContentType.failure,
+                        ),
+                      ));
+                    }
+                  },
+                  child: Text('Login')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (ctx) => RegisterScreen()));
+                  },
+                  child: Text(
+                    "Don't have an account? Register here",
+                    style: mainTextTheme.displaySmall,
+                  )),
+              ElevatedButton.icon(
+                  onPressed: () {},
+                  label: Text("Login with Google"),
+                  icon: Icon(Icons.g_mobiledata)),
+            ],
+          ),
         ),
       ),
     );
