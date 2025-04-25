@@ -31,91 +31,93 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppbarWidget(),
-      body: Consumer<FlashcardViewModel>(
-        builder: (context, viewModel, child) {
-          final dynamic selectedDeck = widget.deck;
-          final cards = viewModel.flashcards;
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppbarWidget(),
+        body: Consumer<FlashcardViewModel>(
+          builder: (context, viewModel, child) {
+            final dynamic selectedDeck = widget.deck;
+            final cards = viewModel.flashcards;
 
-          if (viewModel.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+            if (viewModel.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-          if (cards.isEmpty) {
-            return Center(
-              child: Text(
-                'No flashcards available for this deck.',
-                style: TextStyle(fontSize: 18),
-              ),
-            );
-          }
-
-          return Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
+            if (cards.isEmpty) {
+              return Center(
                 child: Text(
-                  viewModel.getDeckTitle(selectedDeck),
-                  style: mainTextTheme.displayLarge,
+                  'No flashcards available for this deck.',
+                  style: TextStyle(fontSize: 18),
                 ),
-              ),
-              Expanded(
-                  child: GestureDetector(
-                onHorizontalDragStart: (_) {
-                  viewModel.isSwiping = true;
-                },
-                onHorizontalDragEnd: (_) {
-                  viewModel.isSwiping = false;
-                },
-                child: PageView.builder(
-                    controller:
-                        PageController(initialPage: viewModel.currentIndex),
-                    itemCount: viewModel.getDeckCardCount,
-                    onPageChanged: viewModel.updateCurrentIndex,
-                    itemBuilder: (context, index) {
-                      FlashcardModel currentCard = cards[index];
+              );
+            }
 
-                      return FlipCard(
-                        frontWidget: FlashcardWidget(
-                            content: currentCard.cardFront,
-                            img: currentCard.frontImgPath ??
-                                currentCard.frontImgUrl),
-                        backWidget: FlashcardWidget(
-                            content: currentCard.cardBack,
-                            img: currentCard.backImgPath ??
-                                currentCard.backImgUrl),
-                        controller: FlipCardController(),
-                        rotateSide: RotateSide.left,
-                        onTapFlipping: !viewModel.isSwiping,
-                        axis: FlipAxis.horizontal,
-                      );
-                    }),
-              )),
-              Padding(
-                padding: EdgeInsets.all(25),
-                child: Column(
-                  children: [
-                    Text(
-                        "${viewModel.currentIndex + 1} / ${viewModel.getDeckCardCount}",
-                        style: mainTextTheme.displaySmall),
-                    LinearProgressBar(
-                      maxSteps: viewModel.getDeckCardCount,
-                      currentStep: viewModel.currentIndex + 1,
-                      progressType: LinearProgressBar.progressTypeLinear,
-                      backgroundColor: Color(0xFF30253e),
-                      progressColor: Color(0xFFEEA83B),
-                      minHeight: 15,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ],
+            return Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    viewModel.getDeckTitle(selectedDeck),
+                    style: mainTextTheme.displayLarge,
+                  ),
                 ),
-              )
-            ],
-          );
-        },
+                Expanded(
+                    child: GestureDetector(
+                  onHorizontalDragStart: (_) {
+                    viewModel.isSwiping = true;
+                  },
+                  onHorizontalDragEnd: (_) {
+                    viewModel.isSwiping = false;
+                  },
+                  child: PageView.builder(
+                      controller:
+                          PageController(initialPage: viewModel.currentIndex),
+                      itemCount: viewModel.getDeckCardCount,
+                      onPageChanged: viewModel.updateCurrentIndex,
+                      itemBuilder: (context, index) {
+                        FlashcardModel currentCard = cards[index];
+
+                        return FlipCard(
+                          frontWidget: FlashcardWidget(
+                              content: currentCard.cardFront,
+                              img: currentCard.frontImgPath ??
+                                  currentCard.frontImgUrl),
+                          backWidget: FlashcardWidget(
+                              content: currentCard.cardBack,
+                              img: currentCard.backImgPath ??
+                                  currentCard.backImgUrl),
+                          controller: FlipCardController(),
+                          rotateSide: RotateSide.left,
+                          onTapFlipping: !viewModel.isSwiping,
+                          axis: FlipAxis.horizontal,
+                        );
+                      }),
+                )),
+                Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Column(
+                    children: [
+                      Text(
+                          "${viewModel.currentIndex + 1} / ${viewModel.getDeckCardCount}",
+                          style: mainTextTheme.displaySmall),
+                      LinearProgressBar(
+                        maxSteps: viewModel.getDeckCardCount,
+                        currentStep: viewModel.currentIndex + 1,
+                        progressType: LinearProgressBar.progressTypeLinear,
+                        backgroundColor: Color(0xFF30253e),
+                        progressColor: Color(0xFFEEA83B),
+                        minHeight: 15,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

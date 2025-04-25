@@ -16,22 +16,24 @@ class LandingScreen extends StatelessWidget {
       return DeckScreen();
     }
 
-    return Scaffold(
-      body: Column(
-        children: [
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) => LoginScreen()));
-              },
-              child: Text("Login")),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) => RegisterScreen()));
-              },
-              child: Text("Register")),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => LoginScreen()));
+                },
+                child: Text("Login")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (ctx) => RegisterScreen()));
+                },
+                child: Text("Register")),
+          ],
+        ),
       ),
     );
   }
