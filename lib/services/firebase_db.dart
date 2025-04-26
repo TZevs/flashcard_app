@@ -22,8 +22,7 @@ class FirebaseDb {
   }
 
   static Future<void> deletePublicDeck(String deckId) async {
-    final deckRef =
-        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    final deckRef = FirebaseFirestore.instance.collection('decks').doc(deckId);
     await deckRef.delete();
 
     await deckRef.collection('flashcards').get().then((snapshot) {
@@ -34,15 +33,13 @@ class FirebaseDb {
   }
 
   static Future<void> updateDeck(String deckId, String deckTitle) async {
-    final deckRef =
-        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    final deckRef = FirebaseFirestore.instance.collection('decks').doc(deckId);
     await deckRef.update({'title': deckTitle});
   }
 
   static Future<void> updateDeckCards(
       String deckId, List<FlashcardModel> cards, int count) async {
-    final deckRef =
-        await FirebaseFirestore.instance.collection('decks').doc(deckId);
+    final deckRef = FirebaseFirestore.instance.collection('decks').doc(deckId);
     await deckRef.update({'cardCount': count});
     final flashcardsRef = deckRef.collection('flashcards');
     await flashcardsRef.get().then((snapshot) {
@@ -99,8 +96,7 @@ class FirebaseDb {
   }
 
   static Future<void> removeSavedDeck(String userId, String deckId) async {
-    final userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userId);
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
 
     await userDoc.update({
       'savedDecks': FieldValue.arrayRemove([deckId])
@@ -158,6 +154,7 @@ class FirebaseDb {
           Filter('title', isEqualTo: query),
           Filter('title', whereIn: queryList),
         ))
+        .limit(10)
         .get()
         .then((snapshot) {
       for (var doc in snapshot.docs) {
@@ -170,8 +167,7 @@ class FirebaseDb {
   }
 
   static Future<String> setProfileImg(String userID, File img) async {
-    final userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID);
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(userID);
     final fileName = basename(img.path);
 
     final ref = FirebaseStorage.instance
@@ -186,8 +182,7 @@ class FirebaseDb {
   }
 
   static Future<void> setProfileBio(String userID, String bio) async {
-    final userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userID);
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(userID);
 
     await userDoc.set({'profileBio': bio});
   }

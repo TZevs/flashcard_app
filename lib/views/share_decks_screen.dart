@@ -1,6 +1,7 @@
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/share_decks_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,59 +17,194 @@ class ShareDecksScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppbarWidget(title: "Community"),
-        body: Column(
-          children: [
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: SearchBar(
-                leading: Icon(Icons.search),
-                hintText: 'Search Decks',
-                onSubmitted: (value) => viewModel.queryDecks(value),
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: Consumer<ShareDecksViewmodel>(
-                  builder: (context, viewModel, child) {
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: viewModel.getPublicDecks.length,
-                  itemBuilder: (context, index) {
-                    final deck = viewModel.getPublicDecks[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: ListTile(
-                        title: Text(deck.title),
-                        subtitle: Text("By ${deck.username}"),
-                        trailing: Stack(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  viewModel.saveDeck(deck.id, userID);
-                                },
-                                icon: Icon(viewModel.savedIDs.contains(deck.id)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border)),
-                            Container(
-                              height: 5,
-                              width: 5,
-                              alignment: Alignment.topRight,
-                              margin: EdgeInsets.all(2),
-                              child: Text(deck.savedCount.toString()),
-                            ),
-                          ],
+        appBar: AppbarWidget(title: "Share"),
+        body:
+            Consumer<ShareDecksViewmodel>(builder: (context, viewModel, child) {
+          final tags = ['History', 'Psychology'];
+
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: SearchBar(
+                    leading: Icon(Icons.search),
+                    hintText: 'Search Decks',
+                    onSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        viewModel.searchDecks(value.trim());
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: 20),
+                if (viewModel.isSearching || viewModel.selectedTag.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          viewModel.isSearching
+                              ? "Search Results"
+                              : "${viewModel.selectedTag} Decks",
+                          style: mainTextTheme.displayMedium,
                         ),
-                        onTap: () {},
-                      ),
+                        TextButton(
+                          onPressed: () => viewModel.clearFilterAndSearch(),
+                          child: Text("Clear"),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (viewModel.isSearching)
+                  ListView.builder(
+                      itemCount: viewModel.searchResults.length,
+                      itemBuilder: (context, index) {
+                        final deck = viewModel.searchResults[index];
+                        return ListTile(
+                          title: Text(deck.title),
+                          subtitle: Text("By ${deck.username}"),
+                          trailing: Stack(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    viewModel.toggleSavedDeck(deck.id, userID);
+                                  },
+                                  icon: Icon(
+                                      viewModel.savedIDs.contains(deck.id)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border)),
+                              Container(
+                                height: 3,
+                                width: 3,
+                                alignment: Alignment.topRight,
+                                margin: EdgeInsets.all(2),
+                                child: Text(deck.savedCount != null
+                                    ? deck.savedCount.toString()
+                                    : "0"),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                if (!viewModel.isSearching && viewModel.selectedTag.isNotEmpty)
+                  ListView.builder(
+                      itemCount: viewModel
+                          .getDecksForTag(viewModel.selectedTag)
+                          .length,
+                      itemBuilder: (context, index) {
+                        final deck = viewModel
+                            .getDecksForTag(viewModel.selectedTag)[index];
+                        return ListTile(
+                          title: Text(deck.title),
+                          subtitle: Text("By ${deck.username}"),
+                          trailing: Stack(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    viewModel.toggleSavedDeck(deck.id, userID);
+                                  },
+                                  icon: Icon(
+                                      viewModel.savedIDs.contains(deck.id)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border)),
+                              Container(
+                                height: 3,
+                                width: 3,
+                                alignment: Alignment.topRight,
+                                margin: EdgeInsets.all(2),
+                                child: Text(deck.savedCount != null
+                                    ? deck.savedCount.toString()
+                                    : "0"),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                if (!viewModel.isSearching && viewModel.selectedTag.isEmpty)
+                  ...tags.map((tag) {
+                    final decks = viewModel.getDecksForTag(tag);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                tag,
+                                style: mainTextTheme.displaySmall,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  viewModel.filterByTag(tag);
+                                },
+                                child: Text("View All"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: decks.length,
+                            itemBuilder: (context, index) {
+                              final deck = decks[index];
+                              return Container(
+                                width: 160,
+                                margin: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color(0xFFEEA83B),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        deck.title,
+                                        style: mainTextTheme.displayMedium,
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "By ${deck.username}",
+                                        style: mainTextTheme.displaySmall,
+                                      ),
+                                      Spacer(),
+                                      IconButton(
+                                        onPressed: () {
+                                          viewModel.toggleSavedDeck(
+                                            deck.id,
+                                            userID,
+                                          );
+                                        },
+                                        icon: Icon(
+                                            viewModel.savedIDs.contains(deck.id)
+                                                ? Icons.favorite
+                                                : Icons.favorite_border),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                      ],
                     );
-                  },
-                );
-              }),
-            )
-          ],
-        ),
+                  }),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
