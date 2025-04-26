@@ -38,17 +38,24 @@ class ProfileScreen extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xFFEEA83B),
+                        color: Color(0xFF30253e),
                       ),
                       width: 105,
                       height: 105,
                       alignment: Alignment.center,
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.transparent,
+                      child: ClipOval(
+                        child: viewModel.profileImg != null
+                            ? Image.network(viewModel.profileImg!,
+                                width: 95, height: 95, fit: BoxFit.cover)
+                            : Image.asset("imgs/profileDefaultImg.jpg",
+                                width: 95, height: 95, fit: BoxFit.cover),
                       ),
                     ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.add_a_photo))
+                    IconButton(
+                        onPressed: () {
+                          viewModel.galleryImg();
+                        },
+                        icon: Icon(Icons.add_a_photo, color: Color(0xFFEEA83B)))
                   ],
                 ),
                 Text(
