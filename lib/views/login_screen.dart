@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
+import 'package:flashcard_app/views/deck_screen.dart';
 import 'package:flashcard_app/views/register_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,26 @@ class LoginScreen extends StatelessWidget {
                     style: mainTextTheme.displaySmall,
                   )),
               ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool confirmed = await auth.signInWithGoogle();
+                    if (confirmed) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => DeckScreen()),
+                        (Route<dynamic> route) => false,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        content: AwesomeSnackbarContent(
+                          title: "Error",
+                          message: auth.errorMsg!,
+                          contentType: ContentType.failure,
+                        ),
+                      ));
+                    }
+                  },
                   label: Text("Login with Google"),
                   icon: Icon(Icons.g_mobiledata)),
             ],
