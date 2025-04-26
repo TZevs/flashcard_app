@@ -36,24 +36,26 @@ class ShareDecksViewmodel extends ChangeNotifier {
   List<String> get tags => _tags;
 
   Future<void> fetchPublicDecks() async {
-    _allDecks = await FirebaseDb.fetchDecks();
-
-    _groupByDecks();
-    notifyListeners();
+    if (_allDecks.isEmpty) {
+      _allDecks = await FirebaseDb.fetchDecks();
+      _groupByDecks();
+      notifyListeners();
+    }
   }
 
   Future<void> toggleSavedDeck(String deckId, String userId) async {
-    if (_savedIDs.contains(deckId)) {
-      await FirebaseDb.removeSavedDeck(userId, deckId);
-      _savedIDs.remove(deckId);
-    }
-
     if (!_savedIDs.contains(deckId)) {
       await FirebaseDb.addSavedDeck(userId, deckId);
-      _savedIDs.add(deckId);
+      await getSavedIDs(userId);
+      return;
     }
 
-    notifyListeners();
+    if (_savedIDs.contains(deckId)) {
+      _savedIDs.remove(deckId);
+      await FirebaseDb.removeSavedDeck(userId, _savedIDs, deckId);
+      await getSavedIDs(userId);
+      return;
+    }
   }
 
   Future<void> getSavedIDs(String userID) async {

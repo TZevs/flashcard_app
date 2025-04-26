@@ -39,88 +39,112 @@ class ShareDecksScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 if (viewModel.isSearching || viewModel.selectedTag.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          viewModel.isSearching
-                              ? "Search Results"
-                              : "${viewModel.selectedTag} Decks",
-                          style: mainTextTheme.displayMedium,
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            viewModel.isSearching
+                                ? "Search Results"
+                                : "${viewModel.selectedTag} Decks",
+                            style: mainTextTheme.displayMedium,
+                          ),
                         ),
                         TextButton(
-                          onPressed: () => viewModel.clearFilterAndSearch(),
-                          child: Text("Clear"),
+                          onPressed: () {
+                            viewModel.clearFilterAndSearch();
+                          },
+                          child:
+                              Text("Clear", style: mainTextTheme.displaySmall),
                         ),
                       ],
                     ),
                   ),
                 if (viewModel.isSearching)
                   ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: viewModel.searchResults.length,
                       itemBuilder: (context, index) {
                         final deck = viewModel.searchResults[index];
-                        return ListTile(
-                          title: Text(deck.title),
-                          subtitle: Text("By ${deck.username}"),
-                          trailing: Stack(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    viewModel.toggleSavedDeck(deck.id, userID);
-                                  },
-                                  icon: Icon(
-                                      viewModel.savedIDs.contains(deck.id)
-                                          ? Icons.favorite
-                                          : Icons.favorite_border)),
-                              Container(
-                                height: 3,
-                                width: 3,
-                                alignment: Alignment.topRight,
-                                margin: EdgeInsets.all(2),
-                                child: Text(deck.savedCount != null
-                                    ? deck.savedCount.toString()
-                                    : "0"),
-                              ),
-                            ],
+                        return Padding(
+                          padding: EdgeInsets.all(5),
+                          child: ListTile(
+                            title: Text(deck.title),
+                            subtitle: Text("By ${deck.username}"),
+                            trailing: Stack(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      viewModel.toggleSavedDeck(
+                                          deck.id, userID);
+                                    },
+                                    icon: Icon(
+                                        viewModel.savedIDs.contains(deck.id)
+                                            ? Icons.favorite
+                                            : Icons.favorite_border)),
+                                Container(
+                                  height: 3,
+                                  width: 3,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(2),
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    deck.savedCount != null
+                                        ? deck.savedCount.toString()
+                                        : "0",
+                                    style: mainTextTheme.displaySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }),
                 if (!viewModel.isSearching && viewModel.selectedTag.isNotEmpty)
                   ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: viewModel
                           .getDecksForTag(viewModel.selectedTag)
                           .length,
                       itemBuilder: (context, index) {
                         final deck = viewModel
                             .getDecksForTag(viewModel.selectedTag)[index];
-                        return ListTile(
-                          title: Text(deck.title),
-                          subtitle: Text("By ${deck.username}"),
-                          trailing: Stack(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    viewModel.toggleSavedDeck(deck.id, userID);
-                                  },
-                                  icon: Icon(
-                                      viewModel.savedIDs.contains(deck.id)
-                                          ? Icons.favorite
-                                          : Icons.favorite_border)),
-                              Container(
-                                height: 3,
-                                width: 3,
-                                alignment: Alignment.topRight,
-                                margin: EdgeInsets.all(2),
-                                child: Text(deck.savedCount != null
-                                    ? deck.savedCount.toString()
-                                    : "0"),
-                              ),
-                            ],
+                        return Padding(
+                          padding: EdgeInsets.all(5),
+                          child: ListTile(
+                            title: Text(deck.title),
+                            subtitle: Text("By ${deck.username}"),
+                            trailing: Stack(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      viewModel.toggleSavedDeck(
+                                          deck.id, userID);
+                                    },
+                                    icon: Icon(
+                                        viewModel.savedIDs.contains(deck.id)
+                                            ? Icons.favorite
+                                            : Icons.favorite_border)),
+                                Container(
+                                  height: 3,
+                                  width: 3,
+                                  alignment: Alignment.topRight,
+                                  margin: EdgeInsets.all(2),
+                                  child: Text(
+                                      deck.savedCount != null
+                                          ? deck.savedCount.toString()
+                                          : "0",
+                                      style: mainTextTheme.displaySmall),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }),
@@ -131,7 +155,7 @@ class ShareDecksScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -143,7 +167,8 @@ class ShareDecksScreen extends StatelessWidget {
                                 onPressed: () {
                                   viewModel.filterByTag(tag);
                                 },
-                                child: Text("View All"),
+                                child: Text("View All",
+                                    style: mainTextTheme.displaySmall),
                               ),
                             ],
                           ),
@@ -156,11 +181,11 @@ class ShareDecksScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final deck = decks[index];
                               return Container(
-                                width: 160,
+                                width: 300,
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Color(0xFFEEA83B),
+                                  color: Color(0xFF5c8966),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.all(8),
@@ -197,7 +222,6 @@ class ShareDecksScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        SizedBox(height: 15),
                       ],
                     );
                   }),

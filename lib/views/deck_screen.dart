@@ -125,9 +125,10 @@ class _DeckScreenState extends State<DeckScreen> {
                           title: Text(deck.title),
                           subtitle: Text("By ${deck.username}"),
                           trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () =>
-                                  viewModel.unSaveDeck(deck.id, userID!)),
+                            icon: Icon(Icons.delete),
+                            onPressed: () {},
+                            // viewModel.unSaveDeck(deck.id, userID!)
+                          ),
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(

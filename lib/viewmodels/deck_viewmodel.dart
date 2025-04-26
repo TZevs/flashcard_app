@@ -53,8 +53,8 @@ class DeckViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> unSaveDeck(String deckId, String userId) async {
-    await FirebaseDb.removeSavedDeck(userId, deckId);
-    notifyListeners();
-  }
+  // Future<void> unSaveDeck(String deckId, String userId) async {
+  //   await FirebaseDb.removeSavedDeck(userId, deckId);
+  //   notifyListeners();
+  // }
 }

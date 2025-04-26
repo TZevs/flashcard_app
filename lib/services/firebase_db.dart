@@ -86,16 +86,17 @@ class FirebaseDb {
   static Future<void> addSavedDeck(String userId, String deckID) async {
     final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
 
-    await userRef.set({
+    await userRef.update({
       'savedDecks': FieldValue.arrayUnion([deckID])
-    }, SetOptions(merge: true));
+    });
 
-    await FirebaseFirestore.instance.collection('decks').doc(deckID).set({
+    await FirebaseFirestore.instance.collection('decks').doc(deckID).update({
       'savedCount': FieldValue.increment(1),
-    }, SetOptions(merge: true));
+    });
   }
 
-  static Future<void> removeSavedDeck(String userId, String deckId) async {
+  static Future<void> removeSavedDeck(
+      String userId, List<String> decks, String deckId) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
 
     await userDoc.update({
@@ -103,7 +104,7 @@ class FirebaseDb {
     });
 
     await FirebaseFirestore.instance.collection('decks').doc(deckId).update({
-      'savedCount': FieldValue.increment(1),
+      'savedCount': FieldValue.increment(-1),
     });
   }
 
