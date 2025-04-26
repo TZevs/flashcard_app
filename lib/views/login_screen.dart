@@ -1,6 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
-import 'package:flashcard_app/views/deck_screen.dart';
 import 'package:flashcard_app/views/register_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
@@ -104,11 +103,24 @@ class LoginScreen extends StatelessWidget {
                   )),
               ElevatedButton.icon(
                   onPressed: () async {
-                    bool confirmed = await auth.signInWithGoogle();
-                    if (confirmed) {
-                      Navigator.pushAndRemoveUntil(
+                    bool isNewUser = await auth.signInWithGoogle();
+
+                    if (auth.errorMsg != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        content: AwesomeSnackbarContent(
+                          title: "Error",
+                          message: auth.errorMsg!,
+                          contentType: ContentType.failure,
+                        ),
+                      ));
+                    }
+
+                    if (!isNewUser) {
+                      Navigator.pushNamedAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => DeckScreen()),
+                        '/decks_screen',
                         (Route<dynamic> route) => false,
                       );
                     } else {
@@ -116,8 +128,9 @@ class LoginScreen extends StatelessWidget {
                         behavior: SnackBarBehavior.floating,
                         elevation: 0,
                         content: AwesomeSnackbarContent(
-                          title: "Error",
-                          message: auth.errorMsg!,
+                          title: "No Account Found",
+                          message:
+                              "Go to the Register page to create an Account.",
                           contentType: ContentType.failure,
                         ),
                       ));

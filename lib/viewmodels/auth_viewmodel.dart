@@ -33,8 +33,10 @@ class AuthViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> register(
+  Future<bool> register(
       String email, String password, String username, int dailyGoal) async {
+    _errorMsg = null;
+    notifyListeners();
     try {
       final newUser = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -49,21 +51,60 @@ class AuthViewModel extends ChangeNotifier {
         'dailyGoal': dailyGoal,
         'createdAt': FieldValue.serverTimestamp(),
       });
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        _errorMsg = "Account already exists. Please Login";
+      } else {
+        _errorMsg = "Registration failed. Please try again";
+      }
+      notifyListeners();
+      return false;
     } catch (e) {
-      rethrow;
+      _errorMsg = "Unable to Login";
+      notifyListeners();
+      return false;
     }
   }
 
-  Future<void> login(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
-    await getUsername();
+  Future<bool> login(String email, String password) async {
+    _errorMsg = null;
+    notifyListeners();
+
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await getUsername();
+      notifyListeners();
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        _errorMsg = "User Not Found";
+      } else if (e.code == 'wrong-password') {
+        _errorMsg = "Incorrect password. Please try again.";
+      } else {
+        _errorMsg = "Login Failed. Please Try Again.";
+      }
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _errorMsg = "Unable to Login";
+      notifyListeners();
+      return false;
+    }
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     try {
       await _auth.signOut();
+      _user = null;
+      _username = null;
+      notifyListeners();
+      return true;
     } catch (e) {
-      rethrow;
+      _errorMsg = "Failed to Logout";
+      notifyListeners();
+      return false;
     }
   }
 
@@ -92,8 +133,6 @@ class AuthViewModel extends ChangeNotifier {
       _user = userCredential.user;
       notifyListeners();
 
-      _errorMsg = "Account Already Exists";
-      notifyListeners();
       return userCredential.additionalUserInfo?.isNewUser ?? false;
     } catch (e) {
       _errorMsg = "Failed to Sign-In with Google";
@@ -111,7 +150,6 @@ class AuthViewModel extends ChangeNotifier {
       'dailyGoal': dailyGoal,
       'createdAt': FieldValue.serverTimestamp(),
     });
-    notifyListeners();
   }
 
   Future<void> getUsername() async {

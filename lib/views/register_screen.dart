@@ -231,10 +231,9 @@ class RegisterScreen extends StatelessWidget {
                   )),
               ElevatedButton.icon(
                   onPressed: () async {
-                    bool confirmed = await auth.signInWithGoogle();
-                    if (confirmed) {
-                      _forGoogleRegister(context, auth);
-                    } else {
+                    bool isNewUser = await auth.signInWithGoogle();
+
+                    if (auth.errorMsg != null) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
                         elevation: 0,
@@ -244,6 +243,23 @@ class RegisterScreen extends StatelessWidget {
                           contentType: ContentType.failure,
                         ),
                       ));
+                    }
+
+                    if (isNewUser) {
+                      _forGoogleRegister(context, auth);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        content: AwesomeSnackbarContent(
+                          title: "Account Exists",
+                          message: "Account Alreay Exists Please Login",
+                          contentType: ContentType.help,
+                        ),
+                      ));
+
+                      await Future.delayed(Duration(seconds: 3));
+                      Navigator.pop(context);
                     }
                   },
                   label: Text("Register with Google"),
