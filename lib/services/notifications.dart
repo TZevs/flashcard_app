@@ -13,12 +13,16 @@ class Notifications {
           channelName: "End of Deck",
           channelDescription: "Notification for reaching the end of a deck",
           playSound: true,
+          enableVibration: true,
+          importance: NotificationImportance.High,
         ),
         NotificationChannel(
           channelKey: "daily_reminder",
           channelName: "Daily Reminder",
           channelDescription: "Daily reminder to review decks.",
           enableVibration: true,
+          playSound: true,
+          importance: NotificationImportance.High,
         )
       ],
       debug: true,
@@ -55,12 +59,13 @@ class Notifications {
         notificationLayout: NotificationLayout.Default,
       ),
       schedule: NotificationCalendar(
-        hour: 17,
+        hour: 21,
         minute: 0,
         second: 0,
         millisecond: 0,
         repeats: true,
-        timeZone: await AwesomeNotifications.localTimeZoneIdentifier,
+        allowWhileIdle: true,
+        timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
       ),
     );
   }
