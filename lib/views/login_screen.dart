@@ -78,6 +78,11 @@ class LoginScreen extends StatelessWidget {
 
                     try {
                       auth.login(email, password);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/decks_screen',
+                        (Route<dynamic> route) => false,
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,

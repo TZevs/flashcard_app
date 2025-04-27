@@ -80,8 +80,8 @@ class ShareDecksScreen extends StatelessWidget {
                             trailing: Stack(
                               children: [
                                 Container(
-                                  height: 3,
-                                  width: 3,
+                                  height: 10,
+                                  width: 10,
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.all(2),
                                   padding: EdgeInsets.all(2),
