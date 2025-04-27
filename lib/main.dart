@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flashcard_app/services/notifications.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
@@ -14,8 +13,6 @@ import 'package:flashcard_app/views/landing_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
-// import 'package:flashcard_app/services/flashcard_db.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,17 +25,12 @@ void main() async {
   isAllowed = await AwesomeNotifications().isNotificationAllowed();
   if (isAllowed) {
     await Notifications.initializeNotification();
+    await Notifications.displayReminderNotification();
   }
 
   await Firebase.initializeApp();
-  // await FirebaseAuth.instance
-  //     .setSettings(appVerificationDisabledForTesting: true);
-  // await FirebaseAppCheck.instance.activate(
-  //   androidProvider: AndroidProvider.playIntegrity,
-  // );
 
   runApp(const MyFlashCardApp());
-  // await FlashcardDb.deleteDatabaseFile();
 }
 
 class MyFlashCardApp extends StatelessWidget {
@@ -60,6 +52,7 @@ class MyFlashCardApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         routes: {
           '/decks_screen': (context) => DeckScreen(),
+          '/landing_screen': (context) => LandingScreen(),
         },
         debugShowCheckedModeBanner: false,
         home: LandingScreen(),
