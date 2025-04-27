@@ -8,6 +8,7 @@ class ShareDecksViewmodel extends ChangeNotifier {
 
   Map<String, List<FirebaseDeckModel>> decksByTag = {};
 
+  bool _hasFetched = false;
   bool isSearching = false;
   String selectedTag = "";
   List<FirebaseDeckModel> searchResults = [];
@@ -36,11 +37,12 @@ class ShareDecksViewmodel extends ChangeNotifier {
   List<String> get tags => _tags;
 
   Future<void> fetchPublicDecks() async {
-    if (_allDecks.isEmpty) {
-      _allDecks = await FirebaseDb.fetchDecks();
-      _groupByDecks();
-      notifyListeners();
-    }
+    if (_hasFetched) return;
+    _hasFetched = true;
+
+    _allDecks = await FirebaseDb.fetchDecks();
+    _groupByDecks();
+    notifyListeners();
   }
 
   Future<void> toggleSavedDeck(String deckId, String userId) async {
