@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileViewmodel extends ChangeNotifier {
-  late String userID;
-
   String? _profileImg;
   String? get profileImg => _profileImg;
 
-  Future<void> updateProfileImg(File img) async {
+  String _bio = "";
+  String get bio => _bio;
+
+  Future<void> updateProfileImg(File img, String userID) async {
     _profileImg = await FirebaseDb.setProfileImg(userID, img);
     notifyListeners();
   }
 
-  Future<void> galleryImg() async {
+  Future<void> galleryImg(String userID) async {
     final XFile? pickedImg =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -23,7 +24,17 @@ class ProfileViewmodel extends ChangeNotifier {
 
     final img = File(pickedImg.path);
 
-    await updateProfileImg(img);
+    await updateProfileImg(img, userID);
+    notifyListeners();
+  }
+
+  Future<void> saveNewBio(String bio, String userID) async {
+    await FirebaseDb.setProfileBio(userID, bio);
+    await getBio(userID);
+  }
+
+  Future<void> getBio(String userID) async {
+    _bio = await FirebaseDb.fetchBio(userID);
     notifyListeners();
   }
 }

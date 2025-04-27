@@ -45,8 +45,8 @@ class FlashcardViewModel extends ChangeNotifier {
       _currentIndex = index;
       notifyListeners();
     }
-    if (index == flashcards.length) {
-      await Future.delayed(Duration(seconds: 40));
+    if (index == flashcards.length - 1) {
+      await Future.delayed(Duration(seconds: 10));
       await Notifications.displayEndOfDeckNotification(
         notificationTitle: "Congratulations! You reached the end",
         notificationBody: "Click here to go back to the decks screen",

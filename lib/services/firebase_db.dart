@@ -187,4 +187,10 @@ class FirebaseDb {
 
     await userDoc.set({'profileBio': bio});
   }
+
+  static Future<String> fetchBio(String userID) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(userID).get();
+    return doc.data()?['profileBio'];
+  }
 }
