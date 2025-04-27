@@ -79,15 +79,6 @@ class ShareDecksScreen extends StatelessWidget {
                             subtitle: Text("By ${deck.username}"),
                             trailing: Stack(
                               children: [
-                                IconButton(
-                                    onPressed: () {
-                                      viewModel.toggleSavedDeck(
-                                          deck.id, userID);
-                                    },
-                                    icon: Icon(
-                                        viewModel.savedIDs.contains(deck.id)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border)),
                                 Container(
                                   height: 3,
                                   width: 3,
@@ -101,6 +92,15 @@ class ShareDecksScreen extends StatelessWidget {
                                     style: mainTextTheme.displaySmall,
                                   ),
                                 ),
+                                IconButton(
+                                    onPressed: () {
+                                      viewModel.toggleSavedDeck(
+                                          deck.id, userID);
+                                    },
+                                    icon: Icon(
+                                        viewModel.savedIDs.contains(deck.id)
+                                            ? Icons.favorite
+                                            : Icons.favorite_border)),
                               ],
                             ),
                           ),
