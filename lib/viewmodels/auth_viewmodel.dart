@@ -48,6 +48,7 @@ class AuthViewModel extends ChangeNotifier {
         'username': username,
         'email': email,
         'profileBio': "",
+        'profilePic': "",
         'createdAt': FieldValue.serverTimestamp(),
       });
 
@@ -147,6 +148,7 @@ class AuthViewModel extends ChangeNotifier {
       'username': username,
       'email': _user!.email ?? '',
       'profileBio': "",
+      'profilePic': "",
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
