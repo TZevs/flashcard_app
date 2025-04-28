@@ -20,8 +20,7 @@ class ShareDecksScreen extends StatelessWidget {
         appBar: AppbarWidget(title: "Share"),
         body:
             Consumer<ShareDecksViewmodel>(builder: (context, viewModel, child) {
-          final tags = ['History', 'Psychology'];
-
+          final topTags = viewModel.getTopTags();
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,6 +38,51 @@ class ShareDecksScreen extends StatelessWidget {
                     },
                   ),
                 ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: SizedBox(
+                      height: 40,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: viewModel.tags.length,
+                          itemBuilder: (context, index) {
+                            final tag = viewModel.tags[index];
+                            final isSelected = viewModel.selectedTag == tag;
+
+                            return GestureDetector(
+                              onTap: () {
+                                viewModel.filterByTag(tag);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 6),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? Color(0xFFEEA83B)
+                                      : Color(0xFF30253e),
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        offset: Offset(2, 2)),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    tag,
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Color(0xFF30253e)
+                                          : Color(0xFFEEA83B),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    )),
                 SizedBox(height: 10),
                 if (viewModel.isSearching || viewModel.selectedTag.isNotEmpty)
                   Padding(
@@ -78,29 +122,30 @@ class ShareDecksScreen extends StatelessWidget {
                             title: Text(deck.title),
                             subtitle: Text("By ${deck.username}"),
                             trailing: Stack(
+                              alignment: AlignmentDirectional.center,
                               children: [
-                                Container(
-                                  height: 10,
-                                  width: 10,
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.all(2),
-                                  padding: EdgeInsets.all(2),
-                                  child: Text(
-                                    deck.savedCount != null
-                                        ? deck.savedCount.toString()
-                                        : "0",
-                                    style: mainTextTheme.displaySmall,
+                                IconButton(
+                                  onPressed: () {
+                                    viewModel.toggleSavedDeck(
+                                      deck.id,
+                                      userID,
+                                    );
+                                  },
+                                  icon: Icon(
+                                    viewModel.savedIDs.contains(deck.id)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    size: 40,
                                   ),
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      viewModel.toggleSavedDeck(
-                                          deck.id, userID);
-                                    },
-                                    icon: Icon(
-                                        viewModel.savedIDs.contains(deck.id)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border)),
+                                Text(
+                                  "${deck.savedCount}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -122,26 +167,29 @@ class ShareDecksScreen extends StatelessWidget {
                             title: Text(deck.title),
                             subtitle: Text("By ${deck.username}"),
                             trailing: Stack(
+                              alignment: AlignmentDirectional.center,
                               children: [
                                 IconButton(
-                                    onPressed: () {
-                                      viewModel.toggleSavedDeck(
-                                          deck.id, userID);
-                                    },
-                                    icon: Icon(
-                                        viewModel.savedIDs.contains(deck.id)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border)),
-                                Container(
-                                  height: 3,
-                                  width: 3,
-                                  alignment: Alignment.topRight,
-                                  margin: EdgeInsets.all(2),
-                                  child: Text(
-                                      deck.savedCount != null
-                                          ? deck.savedCount.toString()
-                                          : "0",
-                                      style: mainTextTheme.displaySmall),
+                                  onPressed: () {
+                                    viewModel.toggleSavedDeck(
+                                      deck.id,
+                                      userID,
+                                    );
+                                  },
+                                  icon: Icon(
+                                    viewModel.savedIDs.contains(deck.id)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    size: 40,
+                                  ),
+                                ),
+                                Text(
+                                  "${deck.savedCount}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ],
                             ),
@@ -149,7 +197,7 @@ class ShareDecksScreen extends StatelessWidget {
                         );
                       }),
                 if (!viewModel.isSearching && viewModel.selectedTag.isEmpty)
-                  ...tags.map((tag) {
+                  ...topTags.map((tag) {
                     final decks = viewModel.getDecksForTag(tag);
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,28 +215,34 @@ class ShareDecksScreen extends StatelessWidget {
                                 onPressed: () {
                                   viewModel.filterByTag(tag);
                                 },
-                                child: Text("View All",
-                                    style: mainTextTheme.displaySmall),
+                                child: Text(
+                                  "View All",
+                                  style: TextStyle(
+                                    color: Color(0xFFEEA83B),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: 200,
+                          height: 180,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: decks.length,
                             itemBuilder: (context, index) {
                               final deck = decks[index];
                               return Container(
-                                width: 300,
-                                margin: EdgeInsets.all(8),
+                                width: 350,
+                                margin: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: Color(0xFF5c8966),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(20),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -197,24 +251,42 @@ class ShareDecksScreen extends StatelessWidget {
                                         deck.title,
                                         style: mainTextTheme.displayMedium,
                                       ),
-                                      SizedBox(height: 5),
+                                      SizedBox(height: 3),
                                       Text(
                                         "By ${deck.username}",
                                         style: mainTextTheme.displaySmall,
                                       ),
-                                      Spacer(),
-                                      IconButton(
-                                        onPressed: () {
-                                          viewModel.toggleSavedDeck(
-                                            deck.id,
-                                            userID,
-                                          );
-                                        },
-                                        icon: Icon(
-                                            viewModel.savedIDs.contains(deck.id)
-                                                ? Icons.favorite
-                                                : Icons.favorite_border),
-                                      ),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Stack(
+                                              alignment:
+                                                  AlignmentDirectional.center,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    viewModel.toggleSavedDeck(
+                                                      deck.id,
+                                                      userID,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    viewModel.savedIDs
+                                                            .contains(deck.id)
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    size: 40,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${deck.savedCount}",
+                                                  style: mainTextTheme
+                                                      .displaySmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ]),
                                     ],
                                   ),
                                 ),
