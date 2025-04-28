@@ -78,6 +78,12 @@ class ShareDecksViewmodel extends ChangeNotifier {
     }
   }
 
+  List<String> getTopTags() {
+    final sortedTags = decksByTag.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+    return sortedTags.take(3).map((e) => e.key).toList();
+  }
+
   List<FirebaseDeckModel> getDecksForTag(String tag) {
     return decksByTag[tag]?.take(10).toList() ?? [];
   }
