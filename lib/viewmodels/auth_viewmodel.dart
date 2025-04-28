@@ -33,8 +33,7 @@ class AuthViewModel extends ChangeNotifier {
     });
   }
 
-  Future<bool> register(
-      String email, String password, String username, int dailyGoal) async {
+  Future<bool> register(String email, String password, String username) async {
     _errorMsg = null;
     notifyListeners();
     try {
@@ -48,7 +47,6 @@ class AuthViewModel extends ChangeNotifier {
       await _firestore.collection('users').doc(user).set({
         'username': username,
         'email': email,
-        'dailyGoal': dailyGoal,
         'profileBio': "",
         'createdAt': FieldValue.serverTimestamp(),
       });
@@ -148,7 +146,6 @@ class AuthViewModel extends ChangeNotifier {
     await _firestore.collection('users').doc(_user?.uid).set({
       'username': username,
       'email': _user!.email ?? '',
-      'dailyGoal': dailyGoal,
       'profileBio': "",
       'createdAt': FieldValue.serverTimestamp(),
     });
