@@ -39,7 +39,10 @@ class ProfileScreen extends StatelessWidget {
                         viewModel.saveNewBio(_bioController.text, uid);
                         Navigator.pop(context);
                       },
-                      child: Text("Update"))
+                      child: Text(
+                        "Update",
+                        style: mainTextTheme.displaySmall,
+                      )),
                 ],
               ),
             ));
