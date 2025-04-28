@@ -28,12 +28,4 @@ class DeckModel {
         isPublic: deck['isPublic'] == 0 ? false : true,
         cardCount: deck['cardCount']);
   }
-
-  // factory DeckModel.fromFirestore(Map<String, dynamic> deck) {
-  //   return DeckModel(
-  //       id: deck['id'],
-  //       title: deck['title'],
-  //       isPublic: deck['isPublic'],
-  //       cardCount: deck['cardCount']);
-  // }
 }
