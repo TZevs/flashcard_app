@@ -178,14 +178,14 @@ class FirebaseDb {
     await ref.putFile(img);
     final url = await ref.getDownloadURL();
 
-    await userDoc.set({'profilePic': url});
+    await userDoc.update({'profilePic': url});
     return url;
   }
 
   static Future<void> setProfileBio(String userID, String bio) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(userID);
 
-    await userDoc.set({'profileBio': bio});
+    await userDoc.update({'profileBio': bio});
   }
 
   static Future<String> fetchBio(String userID) async {
