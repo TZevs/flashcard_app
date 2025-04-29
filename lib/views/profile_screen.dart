@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/profile_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
@@ -136,6 +137,25 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ],
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final email = authViewModel.userEmail;
+
+                    if (email != null) {
+                      await authViewModel.sendPasswordReset(email);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        elevation: 0,
+                        content: AwesomeSnackbarContent(
+                          title: "Success",
+                          message: "Password Reset Email Sent",
+                          contentType: ContentType.success,
+                        ),
+                      ));
+                    }
+                  },
+                  child: Text("Reset Password"),
                 ),
               ],
             );

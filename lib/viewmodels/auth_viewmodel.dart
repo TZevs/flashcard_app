@@ -52,6 +52,8 @@ class AuthViewModel extends ChangeNotifier {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
+      await sendVerifyEmail();
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -129,7 +131,7 @@ class AuthViewModel extends ChangeNotifier {
       );
 
       final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);
       _user = userCredential.user;
       notifyListeners();
 
@@ -151,10 +153,23 @@ class AuthViewModel extends ChangeNotifier {
       'profilePic': "",
       'createdAt': FieldValue.serverTimestamp(),
     });
+
+    await sendVerifyEmail();
   }
 
   Future<void> getUsername() async {
     _username = await FirebaseDb.fetchUsername(userId!);
     notifyListeners();
+  }
+
+  Future<void> sendPasswordReset(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> sendVerifyEmail() async {
+    final user = _auth.currentUser;
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+    }
   }
 }
