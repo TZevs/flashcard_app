@@ -139,6 +139,11 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Color(0xFFEEA83B)),
+                    foregroundColor: WidgetStatePropertyAll(Color(0xFF30253e)),
+                    elevation: WidgetStatePropertyAll(10),
+                  ),
                   onPressed: () async {
                     final email = authViewModel.userEmail;
 
