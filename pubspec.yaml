@@ -51,6 +51,7 @@ dependencies:
   awesome_notifications: ^0.10.1
   awesome_snackbar_content: ^0.1.1
   firebase_app_check: ^0.3.2+5
+  flutter_slidable: ^4.0.0
 
 dev_dependencies:
   flutter_test:
