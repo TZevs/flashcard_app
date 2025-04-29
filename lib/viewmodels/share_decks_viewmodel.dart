@@ -58,6 +58,7 @@ class ShareDecksViewmodel extends ChangeNotifier {
       await getSavedIDs(userId);
       return;
     }
+    notifyListeners();
   }
 
   Future<void> getSavedIDs(String userID) async {
