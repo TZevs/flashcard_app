@@ -15,7 +15,9 @@ class DeckViewModel extends ChangeNotifier {
 
   List<FirebaseDeckModel> _savedDecks = [];
   List<FirebaseDeckModel> get savedDecks => _savedDecks;
-  bool _savedDecksFetched = false;
+  // bool _savedDecksFetched = false;
+
+  List<String> _savedIDs = [];
 
   Future<void> fetchDecks() async {
     _decks = await FlashcardDb.getDecks();
@@ -33,9 +35,11 @@ class DeckViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchSavedDecks(String userId) async {
-    if (_savedDecksFetched) return;
+    // if (_savedDecksFetched) return;
     _savedDecks = await FirebaseDb.fetchSavedDecks(userId);
-    _savedDecksFetched = true;
+    _savedIDs = await FirebaseDb.getSavedDeckIDs(userId);
+
+    // _savedDecksFetched = true;
     notifyListeners();
   }
 
@@ -53,8 +57,8 @@ class DeckViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> unSaveDeck(String deckId, String userId) async {
-  //   await FirebaseDb.removeSavedDeck(userId, deckId);
-  //   notifyListeners();
-  // }
+  Future<void> unSaveDeck(String deckId, String userId) async {
+    await FirebaseDb.removeSavedDeck(userId, _savedIDs, deckId);
+    notifyListeners();
+  }
 }
