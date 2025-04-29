@@ -143,7 +143,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> completeGoogleRegister(String username, int dailyGoal) async {
+  Future<void> completeGoogleRegister(String username) async {
     if (_user == null) return;
 
     await _firestore.collection('users').doc(_user?.uid).set({

@@ -37,7 +37,6 @@ class RegisterScreen extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () {
-                  int? dailyGoal;
                   final username = _usernameController.text.trim();
 
                   if (username.isEmpty) {
@@ -54,8 +53,8 @@ class RegisterScreen extends StatelessWidget {
                     return;
                   }
 
-                  viewModel.completeGoogleRegister(
-                      _usernameController.text.trim(), dailyGoal!);
+                  viewModel
+                      .completeGoogleRegister(_usernameController.text.trim());
 
                   Navigator.pop(context);
                 },
