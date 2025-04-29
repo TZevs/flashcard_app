@@ -62,12 +62,6 @@ class ShareDecksScreen extends StatelessWidget {
                                       ? Color(0xFFEEA83B)
                                       : Color(0xFF30253e),
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 4,
-                                        offset: Offset(2, 2)),
-                                  ],
                                 ),
                                 child: Center(
                                   child: Text(
@@ -260,31 +254,20 @@ class ShareDecksScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Stack(
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () {
-                                                    viewModel.toggleSavedDeck(
-                                                      deck.id,
-                                                      userID,
-                                                    );
-                                                  },
-                                                  icon: Icon(
-                                                    viewModel.savedIDs
-                                                            .contains(deck.id)
-                                                        ? Icons.favorite
-                                                        : Icons.favorite_border,
-                                                    size: 40,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${deck.savedCount}",
-                                                  style: mainTextTheme
-                                                      .displaySmall,
-                                                ),
-                                              ],
+                                            IconButton(
+                                              onPressed: () {
+                                                viewModel.toggleSavedDeck(
+                                                  deck.id,
+                                                  userID,
+                                                );
+                                              },
+                                              icon: Icon(
+                                                viewModel.savedIDs
+                                                        .contains(deck.id)
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_border,
+                                                size: 40,
+                                              ),
                                             ),
                                           ]),
                                     ],
