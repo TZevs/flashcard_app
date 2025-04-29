@@ -1,9 +1,9 @@
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
-import 'package:flashcard_app/views/edit_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/deck_widget.dart';
 import 'package:flashcard_app/widgets/navbar_widget.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
@@ -68,41 +68,22 @@ class _DeckScreenState extends State<DeckScreen> {
                     itemBuilder: (context, index) {
                       final deck = viewModel.decks[index];
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: ListTile(
-                          leading: deck.isPublic
-                              ? Icon(Icons.public)
-                              : Icon(Icons.lock_outline),
-                          title: Text(deck.title),
-                          subtitle: Text("${deck.cardCount} Cards"),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () async {
-                                    final updated = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (ctx) =>
-                                              EditDeckScreen(deck: deck)),
-                                    );
-                                    if (updated == true) {
-                                      viewModel.fetchDecks();
-                                    }
-                                  }),
-                              IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () => viewModel.removeDeck(index)),
-                            ],
-                          ),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (ctx) =>
-                                      FlashcardScreen(deck: deck))),
-                        ),
-                      );
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: DeckWidget(
+                              deckListTile: ListTile(
+                                leading: deck.isPublic
+                                    ? Icon(Icons.public)
+                                    : Icon(Icons.lock_outline),
+                                title: Text(deck.title),
+                                subtitle: Text("${deck.cardCount} Cards"),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) =>
+                                            FlashcardScreen(deck: deck))),
+                              ),
+                              deck: deck,
+                              deckIndex: index));
                     });
               } else {
                 if (viewModel.savedDecks.isEmpty) {
@@ -126,8 +107,10 @@ class _DeckScreenState extends State<DeckScreen> {
                           subtitle: Text("By ${deck.username}"),
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
-                            onPressed: () {},
-                            // viewModel.unSaveDeck(deck.id, userID!)
+                            onPressed: () {
+                              viewModel.unSaveDeck(deck.id, userID!);
+                              viewModel.fetchSavedDecks(userID);
+                            },
                           ),
                           onTap: () => Navigator.push(
                               context,
