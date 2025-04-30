@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
@@ -17,6 +18,8 @@ class FirebaseDb {
     final flashcardsRef = deckRef.collection('flashcards');
     for (var card in cards) {
       Map<String, dynamic> cardData = card.toMap();
+      final user = <String, String>{'userId': userId};
+      cardData.addEntries(user.entries);
       await flashcardsRef.add(cardData);
     }
   }
@@ -49,6 +52,10 @@ class FirebaseDb {
     });
     for (var card in cards) {
       Map<String, dynamic> cardData = card.toMap();
+      final user = <String, String>{
+        'userId': FirebaseAuth.instance.currentUser!.uid
+      };
+      cardData.addEntries(user.entries);
       await flashcardsRef.add(cardData);
     }
   }
