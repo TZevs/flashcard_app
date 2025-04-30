@@ -24,6 +24,7 @@ class FirebaseDeckModel {
     this.tags,
   });
 
+  // Converting Firestore document snapshot to a FirebaseDeckModel
   factory FirebaseDeckModel.fromFirestore(
       QueryDocumentSnapshot<Map<String, dynamic>> deckSnapshot) {
     final data = deckSnapshot.data();
@@ -40,6 +41,7 @@ class FirebaseDeckModel {
     );
   }
 
+  // Converting a DeckModel to a FirebaseDeckModel - Deck going from private to public
   factory FirebaseDeckModel.fromLocal(
       DeckModel local, String userId, String userName) {
     return FirebaseDeckModel(
@@ -53,6 +55,7 @@ class FirebaseDeckModel {
     );
   }
 
+  // Converting FirebaseDeckModel to a map for Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'id': id,

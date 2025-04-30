@@ -10,7 +10,7 @@ class DeckModel {
       required this.isPublic,
       required this.cardCount});
 
-  // Converts Deck obejct to map
+  // Converts Deck object to map for db
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -20,7 +20,7 @@ class DeckModel {
     };
   }
 
-  // Converts map to a Deck object
+  // Converts map from db to a Deck object
   factory DeckModel.fromMap(Map<String, dynamic> deck) {
     return DeckModel(
         id: deck['id'],

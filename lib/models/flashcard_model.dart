@@ -18,7 +18,7 @@ class FlashcardModel {
       this.frontImgUrl,
       this.backImgUrl});
 
-  // Converts Flashcard object to a map for sqflite
+  // Converts Flashcard object to a map for databases
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -30,18 +30,7 @@ class FlashcardModel {
     };
   }
 
-  // Map<String, dynamic> toFirestoreMap() {
-  //   return {
-  //     'id': id,
-  //     'deckId': deckId,
-  //     'cardFront': cardFront,
-  //     'cardBack': cardBack,
-  //     'frontImgUrl': frontImgUrl,
-  //     'backImgUrl': backImgUrl,
-  //   };
-  // }
-
-  // Converts map to a Flashcard object
+  // Converts map to a Flashcard object for SQFlite
   factory FlashcardModel.fromMap(Map<String, dynamic> card) {
     return FlashcardModel(
         id: card['id'],
