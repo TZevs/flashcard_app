@@ -145,28 +145,6 @@ class FirebaseDb {
     return deckIds;
   }
 
-  static Future<List<FirebaseDeckModel>> getQueriedDecks(String query) async {
-    final decksRef = FirebaseFirestore.instance.collection('decks');
-    List<FirebaseDeckModel> queriedDecks = [];
-    List<String> queryList = query.split(' ');
-
-    await decksRef
-        .where(Filter.or(
-          Filter('title', isEqualTo: query),
-          Filter('title', whereIn: queryList),
-        ))
-        .limit(10)
-        .get()
-        .then((snapshot) {
-      for (var doc in snapshot.docs) {
-        FirebaseDeckModel deck = FirebaseDeckModel.fromFirestore(doc);
-        queriedDecks.add(deck);
-      }
-    });
-
-    return queriedDecks;
-  }
-
   static Future<String> setProfileImg(String userID, File img) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(userID);
     final fileName = basename(img.path);

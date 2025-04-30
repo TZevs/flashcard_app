@@ -40,27 +40,6 @@ class FlashcardDb {
     ''');
   }
 
-  static Future<void> deleteDatabaseFile() async {
-    final databasePath = await getDatabasesPath();
-    final databaseFile = join(databasePath, 'flashcardDatabase.db');
-    await deleteDatabase(databaseFile);
-  }
-
-  static Future<void> getAllCards() async {
-    final db = await _openDatabase();
-    final cards = await db.query('flashcards');
-    print("Flashcards: $cards");
-    print(cards.length);
-  }
-
-  static Future<void> getAllDecks() async {
-    final db = await _openDatabase();
-    final decks = await db.query('decks');
-    print("Decks: $decks");
-    print(decks.length);
-    print(decks[0]['cardCount']);
-  }
-
   static Future<List<DeckModel>> getDecks() async {
     final db = await _openDatabase();
     final List<Map<String, dynamic>> decks = await db.query('decks');
