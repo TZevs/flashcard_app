@@ -12,6 +12,7 @@ class ShareDecksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
     final viewModel = Provider.of<ShareDecksViewmodel>(context);
+    viewModel.clearFilterAndSearch();
     viewModel.getSavedIDs(userID!);
     viewModel.fetchPublicDecks();
 
@@ -119,32 +120,19 @@ class ShareDecksScreen extends StatelessWidget {
                           child: ListTile(
                             title: Text(deck.title),
                             subtitle: Text("By ${deck.username}"),
-                            trailing: Stack(
-                              alignment: AlignmentDirectional.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    viewModel.toggleSavedDeck(
-                                      deck.id,
-                                      userID,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    viewModel.savedIDs.contains(deck.id)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    size: 40,
-                                  ),
-                                ),
-                                Text(
-                                  "${deck.savedCount}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
+                            trailing: IconButton(
+                              onPressed: () {
+                                viewModel.toggleSavedDeck(
+                                  deck.id,
+                                  userID,
+                                );
+                              },
+                              icon: Icon(
+                                viewModel.savedIDs.contains(deck.id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 40,
+                              ),
                             ),
                           ),
                         );
@@ -226,7 +214,7 @@ class ShareDecksScreen extends StatelessWidget {
                                   margin: EdgeInsets.all(7.5),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Color(0xFF5c8966),
+                                    color: Color(0xFF2e8b57),
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(20),
