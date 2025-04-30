@@ -168,7 +168,7 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> sendVerifyEmail() async {
     final user = _auth.currentUser;
-    if (user != null && !user.emailVerified) {
+    if (user != null && user.emailVerified) {
       await user.sendEmailVerification();
     }
   }
