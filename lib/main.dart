@@ -10,6 +10,7 @@ import 'package:flashcard_app/viewmodels/profile_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/share_decks_viewmodel.dart';
 import 'package:flashcard_app/views/deck_screen.dart';
 import 'package:flashcard_app/views/landing_screen.dart';
+import 'package:flashcard_app/views/login_screen.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,7 @@ class MyFlashCardApp extends StatelessWidget {
         routes: {
           '/decks_screen': (context) => DeckScreen(),
           '/landing_screen': (context) => LandingScreen(),
+          '/login_screen': (context) => LoginScreen(),
         },
         debugShowCheckedModeBanner: false,
         home: LandingScreen(),
