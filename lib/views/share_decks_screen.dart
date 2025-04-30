@@ -54,13 +54,13 @@ class ShareDecksScreen extends StatelessWidget {
                                 viewModel.filterByTag(tag);
                               },
                               child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 6),
+                                margin: EdgeInsets.symmetric(horizontal: 10),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? Color(0xFFEEA83B)
-                                      : Color(0xFF30253e),
+                                      ? Color(0xFF30253e)
+                                      : Color(0xFFEEA83B),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
@@ -68,8 +68,8 @@ class ShareDecksScreen extends StatelessWidget {
                                     tag,
                                     style: TextStyle(
                                       color: isSelected
-                                          ? Color(0xFF30253e)
-                                          : Color(0xFFEEA83B),
+                                          ? Color(0xFFEEA83B)
+                                          : Color(0xFF30253e),
                                     ),
                                   ),
                                 ),
