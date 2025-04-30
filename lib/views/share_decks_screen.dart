@@ -26,18 +26,21 @@ class ShareDecksScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: SearchBar(
-                    leading: Icon(Icons.search),
-                    hintText: 'Search Decks',
-                    onSubmitted: (value) {
-                      if (value.trim().isNotEmpty) {
-                        viewModel.searchDecks(value.trim());
-                      }
-                    },
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: SearchBar(
+                      leading: Icon(Icons.search),
+                      hintText: 'Search Decks',
+                      onSubmitted: (value) {
+                        if (value.trim().isNotEmpty) {
+                          viewModel.searchDecks(value.trim());
+                        }
+                      },
+                    ),
                   ),
                 ),
+                SizedBox(height: 10),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: SizedBox(
@@ -54,7 +57,7 @@ class ShareDecksScreen extends StatelessWidget {
                                 viewModel.filterByTag(tag);
                               },
                               child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: EdgeInsets.symmetric(horizontal: 7.5),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
@@ -67,6 +70,7 @@ class ShareDecksScreen extends StatelessWidget {
                                   child: Text(
                                     tag,
                                     style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                       color: isSelected
                                           ? Color(0xFFEEA83B)
                                           : Color(0xFF30253e),
@@ -160,32 +164,19 @@ class ShareDecksScreen extends StatelessWidget {
                           child: ListTile(
                             title: Text(deck.title),
                             subtitle: Text("By ${deck.username}"),
-                            trailing: Stack(
-                              alignment: AlignmentDirectional.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    viewModel.toggleSavedDeck(
-                                      deck.id,
-                                      userID,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    viewModel.savedIDs.contains(deck.id)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    size: 40,
-                                  ),
-                                ),
-                                Text(
-                                  "${deck.savedCount}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
+                            trailing: IconButton(
+                              onPressed: () {
+                                viewModel.toggleSavedDeck(
+                                  deck.id,
+                                  userID,
+                                );
+                              },
+                              icon: Icon(
+                                viewModel.savedIDs.contains(deck.id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 40,
+                              ),
                             ),
                           ),
                         );
@@ -223,58 +214,61 @@ class ShareDecksScreen extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 180,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: decks.length,
-                            itemBuilder: (context, index) {
-                              final deck = decks[index];
-                              return Container(
-                                width: 350,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Color(0xFF5c8966),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        deck.title,
-                                        style: mainTextTheme.displayMedium,
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        "By ${deck.username}",
-                                        style: mainTextTheme.displaySmall,
-                                      ),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                viewModel.toggleSavedDeck(
-                                                  deck.id,
-                                                  userID,
-                                                );
-                                              },
-                                              icon: Icon(
-                                                viewModel.savedIDs
-                                                        .contains(deck.id)
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_border,
-                                                size: 40,
-                                              ),
-                                            ),
-                                          ]),
-                                    ],
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 15, left: 15),
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: decks.length,
+                              itemBuilder: (context, index) {
+                                final deck = decks[index];
+                                return Container(
+                                  width: 350,
+                                  margin: EdgeInsets.all(7.5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Color(0xFF5c8966),
                                   ),
-                                ),
-                              );
-                            },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          deck.title,
+                                          style: mainTextTheme.displayMedium,
+                                        ),
+                                        SizedBox(height: 3),
+                                        Text(
+                                          "By ${deck.username}",
+                                          style: mainTextTheme.displaySmall,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  viewModel.toggleSavedDeck(
+                                                    deck.id,
+                                                    userID,
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  viewModel.savedIDs
+                                                          .contains(deck.id)
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_border,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                            ]),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
