@@ -83,7 +83,6 @@ class AuthViewModel extends ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       await getUsername();
       notifyListeners();
-      await sendVerifyEmail();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
