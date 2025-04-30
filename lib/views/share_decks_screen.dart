@@ -12,7 +12,6 @@ class ShareDecksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
     final viewModel = Provider.of<ShareDecksViewmodel>(context);
-    viewModel.clearFilterAndSearch();
     viewModel.getSavedIDs(userID!);
     viewModel.fetchPublicDecks();
 
