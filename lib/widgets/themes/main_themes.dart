@@ -4,9 +4,9 @@ final ThemeData globalTheme = ThemeData(
   textTheme: mainTextTheme,
   primaryColor: Color(0xFF2D4B48),
   listTileTheme: ListTileThemeData(
-    tileColor: Color(0xFF5c8966),
+    tileColor: Color(0xFF2e8b57),
     textColor: Color(0xFFEBE4C2),
-    iconColor: Color(0xFFEBE4C2),
+    iconColor: Color(0xFF30253e),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     titleTextStyle: TextStyle(
       fontSize: 20,
@@ -25,9 +25,9 @@ final ThemeData globalTheme = ThemeData(
       iconTheme: IconThemeData(color: Color(0xFFEBE4C2), weight: 20),
       titleTextStyle: TextStyle(
           color: Color(0xFFEBE4C2), fontSize: 35, fontWeight: FontWeight.bold)),
-  scaffoldBackgroundColor: Color(0xFF2D4B48),
+  scaffoldBackgroundColor: Color(0xFF2E3C3F),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFEEA83B),
+      backgroundColor: Color(0xFFF9A825),
       foregroundColor: Color(0xFF30253e),
       iconSize: 40),
   cardTheme: CardTheme(
