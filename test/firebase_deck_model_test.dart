@@ -81,6 +81,7 @@ void main() {
   test('Convert a Firebase QueryDocumentSnapshot to a FirebaseDeckModel',
       () async {
     // Arrange
+    // Mock Firebase object
     final FakeFirebaseFirestore fakeFirebaseFirestore = FakeFirebaseFirestore();
     final Map<String, dynamic> fakeDocData = {
       'id': "123",
@@ -93,13 +94,15 @@ void main() {
       'savedCount': 3,
       'tags': [],
     };
-
+    // Storing the mock data
     await fakeFirebaseFirestore.collection("decks").add(fakeDocData);
 
+    // Fetching the mock data, getting the first and only doc.
     final documentSnapshot =
         await fakeFirebaseFirestore.collection("decks").get();
     final queryDocSnapshot = documentSnapshot.docs.first;
 
+    // The expected outcome of the fromFirestore factory method
     final expected = FirebaseDeckModel(
       id: "123",
       title: "TestingQueryDoc",
