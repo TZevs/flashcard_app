@@ -24,9 +24,17 @@ class RegisterScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Email: ${viewModel.userEmail}"),
-            SizedBox(height: 10),
+            Text(
+              "Email: ",
+              style: mainTextTheme.displayMedium,
+            ),
+            Text(
+              "${viewModel.userEmail}",
+              style: mainTextTheme.displaySmall,
+            ),
+            SizedBox(height: 20),
             TextField(
               style: TextStyle(color: Color(0xFFEBE4C2)),
               controller: _usernameController,
@@ -36,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final username = _usernameController.text.trim();
 
                   if (username.isEmpty) {
@@ -53,10 +61,16 @@ class RegisterScreen extends StatelessWidget {
                     return;
                   }
 
-                  viewModel
-                      .completeGoogleRegister(_usernameController.text.trim());
+                  if (username.isNotEmpty) {
+                    await viewModel.completeGoogleRegister(
+                        _usernameController.text.trim());
 
-                  Navigator.pop(context);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/landing_screen',
+                      (Route<dynamic> route) => false,
+                    );
+                  }
                 },
                 child: Text("SignIn")),
           ],
@@ -207,7 +221,11 @@ class RegisterScreen extends StatelessWidget {
                       ));
 
                       await Future.delayed(Duration(seconds: 3));
-                      Navigator.pop(context);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/landing_screen',
+                        (Route<dynamic> route) => false,
+                      );
                     }
                   },
                   label: Text("Register with Google"),
