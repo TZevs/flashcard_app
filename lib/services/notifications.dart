@@ -18,10 +18,18 @@ class Notifications {
         NotificationChannel(
           channelKey: "daily_reminder",
           channelName: "Daily Reminder",
-          channelDescription: "Daily reminder to review decks.",
+          channelDescription:
+              "Notification for a daily reminder to review decks.",
           playSound: true,
           importance: NotificationImportance.High,
-        )
+        ),
+        NotificationChannel(
+          channelKey: "user_registered",
+          channelName: "User Registered",
+          channelDescription: "Notification to take user to login page.",
+          playSound: true,
+          importance: NotificationImportance.High,
+        ),
       ],
       debug: true,
     );
@@ -42,7 +50,6 @@ class Notifications {
         title: notificationTitle,
         body: notificationBody,
         notificationLayout: NotificationLayout.Default,
-        payload: {'navigate': 'decks_screen'},
       ),
     );
   }
@@ -69,6 +76,21 @@ class Notifications {
     );
   }
 
+  static Future<void> displayUserRegisteredNotification({
+    required String notificationTitle,
+    required String notificationBody,
+  }) async {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 3,
+        channelKey: "user_registered",
+        title: notificationTitle,
+        body: notificationBody,
+        notificationLayout: NotificationLayout.Default,
+      ),
+    );
+  }
+
   static Future<void> onActionReceivedMethod(
     ReceivedAction action,
   ) async {
@@ -76,9 +98,9 @@ class Notifications {
 
     switch (channelKey) {
       case "end_of_deck":
-        if (action.payload?['navigate'] == 'decks_screen') {
-          navigatorKey.currentState?.pushNamed('/decks_screen');
-        }
+        navigatorKey.currentState?.pushNamed('/decks_screen');
+      case "user_registered":
+        navigatorKey.currentState?.pushNamed('/login_screen');
       default:
         break;
     }

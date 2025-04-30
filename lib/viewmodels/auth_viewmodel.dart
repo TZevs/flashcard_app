@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
+import 'package:flashcard_app/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -54,6 +55,10 @@ class AuthViewModel extends ChangeNotifier {
 
       await sendVerifyEmail();
 
+      await Notifications.displayUserRegisteredNotification(
+          notificationTitle: "Congrats $username you are a registered user!",
+          notificationBody: "Click here to got to the login page");
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -78,6 +83,7 @@ class AuthViewModel extends ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       await getUsername();
       notifyListeners();
+      await sendVerifyEmail();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -155,6 +161,9 @@ class AuthViewModel extends ChangeNotifier {
     });
 
     await sendVerifyEmail();
+    await Notifications.displayUserRegisteredNotification(
+        notificationTitle: "Congrats $username you are a registered user!",
+        notificationBody: "Click here to got to the login page");
   }
 
   Future<void> getUsername() async {
