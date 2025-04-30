@@ -15,7 +15,6 @@ class DeckViewModel extends ChangeNotifier {
 
   List<FirebaseDeckModel> _savedDecks = [];
   List<FirebaseDeckModel> get savedDecks => _savedDecks;
-  // bool _savedDecksFetched = false;
 
   List<String> _savedIDs = [];
 
@@ -35,11 +34,9 @@ class DeckViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchSavedDecks(String userId) async {
-    // if (_savedDecksFetched) return;
     _savedDecks = await FirebaseDb.fetchSavedDecks(userId);
     _savedIDs = await FirebaseDb.getSavedDeckIDs(userId);
 
-    // _savedDecksFetched = true;
     notifyListeners();
   }
 
