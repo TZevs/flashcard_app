@@ -94,6 +94,7 @@ class _DeckScreenState extends State<DeckScreen> {
                     ),
                   );
                 }
+                viewModel.fetchSavedDecks(userID!);
                 return ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: viewModel.savedDecks.length,
@@ -102,13 +103,21 @@ class _DeckScreenState extends State<DeckScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: ListTile(
-                          leading: Text("${deck.cardCount}"),
                           title: Text(deck.title),
-                          subtitle: Text("By ${deck.username}"),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 5),
+                              Text("By ${deck.username}"),
+                              SizedBox(height: 3),
+                              Text("${deck.cardCount} Cards"),
+                            ],
+                          ),
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              viewModel.unSaveDeck(deck.id, userID!);
+                              viewModel.unSaveDeck(deck.id, userID);
                               viewModel.fetchSavedDecks(userID);
                             },
                           ),
