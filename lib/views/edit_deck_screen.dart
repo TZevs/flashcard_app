@@ -294,6 +294,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                         }),
                     SizedBox(height: 10),
                     TextField(
+                      style: TextStyle(color: Color(0xFFEBE4C2)),
                       controller: _cardFrontController,
                       decoration: InputDecoration(
                         labelText: "Card Front",
