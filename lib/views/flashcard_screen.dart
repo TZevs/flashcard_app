@@ -26,6 +26,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       final viewModel = Provider.of<FlashcardViewModel>(context, listen: false);
       viewModel.deck = widget.deck;
       viewModel.fetchDeckFlashcards(widget.deck.id);
+      viewModel.fetchSavedFlashcards(widget.deck.id);
     });
   }
 

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FlashcardModel {
   final int? id;
   final String deckId;
@@ -39,5 +41,19 @@ class FlashcardModel {
         cardBack: card['cardBack'],
         frontImgPath: card['frontImgPath'],
         backImgPath: card['backImgPath']);
+  }
+
+  // Converting Firestore document snapshot to a FlashcardModel
+  factory FlashcardModel.fromFirestore(
+      QueryDocumentSnapshot<Map<String, dynamic>> cardSnapshot) {
+    final data = cardSnapshot.data();
+    return FlashcardModel(
+      id: data['id'],
+      deckId: data['deckId'],
+      cardFront: data['cardFront'],
+      cardBack: data['cardBack'],
+      frontImgPath: data['frontImgPath'],
+      backImgPath: data['backImgPath'],
+    );
   }
 }

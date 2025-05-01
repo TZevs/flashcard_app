@@ -60,6 +60,24 @@ class FirebaseDb {
     }
   }
 
+  static Future<List<FlashcardModel>> fetchDeckCards(String deckId) async {
+    final cardsRef = FirebaseFirestore.instance
+        .collection('decks')
+        .doc(deckId)
+        .collection('flashcards');
+
+    List<FlashcardModel> cards = [];
+
+    await cardsRef.get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        FlashcardModel card = FlashcardModel.fromFirestore(doc);
+        cards.add(card);
+      }
+    });
+
+    return cards;
+  }
+
   static Future<String> uploadImgToFirebase(File imgFile, String userId) async {
     final fileName = basename(imgFile.path);
 

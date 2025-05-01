@@ -1,3 +1,4 @@
+import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
 import 'package:flashcard_app/services/notifications.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,18 @@ class FlashcardViewModel extends ChangeNotifier {
 
     await Future.delayed(Duration(seconds: 1));
     _fetchedFlashcards = await FlashcardDb.getDeckFlashcards(deckID);
+
+    _currentIndex = 0;
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> fetchSavedFlashcards(String deckID) async {
+    _isLoading = true;
+    notifyListeners();
+
+    await Future.delayed(Duration(seconds: 1));
+    _fetchedFlashcards = await FirebaseDb.fetchDeckCards(deckID);
 
     _currentIndex = 0;
     _isLoading = false;
