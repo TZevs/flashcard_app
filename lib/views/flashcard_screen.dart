@@ -50,7 +50,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               return Center(
                 child: Text(
                   'No flashcards available for this deck.',
-                  style: TextStyle(fontSize: 18),
+                  style: mainTextTheme.displaySmall,
                 ),
               );
             }

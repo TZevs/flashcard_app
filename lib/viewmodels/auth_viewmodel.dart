@@ -50,6 +50,7 @@ class AuthViewModel extends ChangeNotifier {
         'email': email,
         'profileBio': "",
         'profilePic': "",
+        'savedDecks': [],
         'createdAt': FieldValue.serverTimestamp(),
       });
 
@@ -156,6 +157,7 @@ class AuthViewModel extends ChangeNotifier {
       'email': _user!.email ?? '',
       'profileBio': "",
       'profilePic': "",
+      'savedDecks': [],
       'createdAt': FieldValue.serverTimestamp(),
     });
 

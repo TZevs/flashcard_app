@@ -68,9 +68,31 @@ class FirebaseDb {
 
     List<FlashcardModel> cards = [];
 
-    await cardsRef.get().then((snapshot) {
+    await cardsRef.get().then((snapshot) async {
       for (var doc in snapshot.docs) {
         FlashcardModel card = FlashcardModel.fromFirestore(doc);
+
+        if (card.frontImgPath != null && card.frontImgPath!.isNotEmpty) {
+          try {
+            final ref =
+                FirebaseStorage.instance.ref().child(card.frontImgPath!);
+            String downloadUrl = await ref.getDownloadURL();
+            card.frontImgPath = downloadUrl;
+          } catch (e) {
+            print('Failed to fetch image for ${card.frontImgPath}: $e');
+          }
+        }
+
+        if (card.backImgPath != null && card.backImgPath!.isNotEmpty) {
+          try {
+            final ref = FirebaseStorage.instance.ref().child(card.backImgPath!);
+            String downloadUrl = await ref.getDownloadURL();
+            card.backImgPath = downloadUrl;
+          } catch (e) {
+            print('Failed to fetch image for ${card.backImgPath}: $e');
+          }
+        }
+
         cards.add(card);
       }
     });
@@ -80,13 +102,13 @@ class FirebaseDb {
 
   static Future<String> uploadImgToFirebase(File imgFile, String userId) async {
     final fileName = basename(imgFile.path);
+    final path = 'flashcardImages/$userId/$fileName';
 
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('flashcardImages/$userId/$fileName');
+    final ref = FirebaseStorage.instance.ref().child(path);
 
     await ref.putFile(imgFile);
-    return await ref.getDownloadURL();
+    return path;
+    // return await ref.getDownloadURL();
   }
 
   static Future<List<FirebaseDeckModel>> fetchDecks() async {
