@@ -1,9 +1,8 @@
-import 'dart:io';
-
-import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/edit_box_widget.dart';
+import 'package:flashcard_app/widgets/preview_box_widget.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,154 +18,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _cardFrontController = TextEditingController();
   final TextEditingController _cardBackController = TextEditingController();
-
-  void _showEditBox(BuildContext context, int index, FlashcardModel card,
-      NewDeckViewmodel viewModel) {
-    _cardFrontController.text = card.cardFront ?? '';
-    _cardBackController.text = card.cardBack ?? '';
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                "Edit Flashcard",
-                style: mainTextTheme.displayMedium,
-              ),
-              icon: IconButton(
-                  color: Color(0xFFEBE4C2),
-                  alignment: Alignment.topRight,
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    _cardFrontController.clear();
-                    _cardBackController.clear();
-                    Navigator.pop(context);
-                  }),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    style: TextStyle(color: Color(0xFFEBE4C2)),
-                    controller: _cardFrontController,
-                    decoration: InputDecoration(
-                      labelText: "Card Front",
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    color: Color(0xFF5c8966),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                            color: Color(0xFFEEA83B),
-                            onPressed: () {
-                              viewModel.captureImg(isFront: true);
-                            },
-                            icon: Icon(Icons.camera_alt)),
-                        IconButton(
-                            color: Color(0xFFEEA83B),
-                            onPressed: () {
-                              viewModel.galleryImg(isFront: true);
-                            },
-                            icon: Icon(Icons.image)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    style: TextStyle(color: Color(0xFFEBE4C2)),
-                    controller: _cardBackController,
-                    decoration: InputDecoration(
-                      labelText: "Card Back",
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    color: Color(0xFF5c8966),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                            color: Color(0xFFEEA83B),
-                            onPressed: () {
-                              viewModel.captureImg(isFront: false);
-                            },
-                            icon: Icon(Icons.camera_alt)),
-                        IconButton(
-                            color: Color(0xFFEEA83B),
-                            onPressed: () {
-                              viewModel.galleryImg(isFront: false);
-                            },
-                            icon: Icon(Icons.image)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextButton(
-                      onPressed: () {
-                        viewModel.editFlashcard(
-                            index,
-                            _cardFrontController.text,
-                            _cardBackController.text);
-
-                        _cardFrontController.clear();
-                        _cardBackController.clear();
-                        Navigator.pop(context);
-                      },
-                      child: Text("Save"))
-                ],
-              ),
-            ));
-  }
-
-  void _ShowPreview(
-      BuildContext context, FlashcardModel card, NewDeckViewmodel viewModel) {
-    showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                "Preview",
-                style: mainTextTheme.displayMedium,
-                textAlign: TextAlign.center,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Card(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: card.frontImgPath != null
-                              ? Image.file(File(card.frontImgPath!),
-                                  width: 200, height: 200)
-                              : Container(),
-                        ),
-                        Text(card.cardFront ?? '',
-                            style: mainTextTheme.displaySmall),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Card(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: card.backImgPath != null
-                              ? Image.file(File(card.backImgPath!),
-                                  width: 200, height: 200)
-                              : Container(),
-                        ),
-                        Text(card.cardBack ?? '',
-                            style: mainTextTheme.displaySmall),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ));
-  }
 
   void _addTags(BuildContext context, NewDeckViewmodel viewModel) {
     showDialog(
@@ -413,7 +264,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                   onTap: () =>
-                                      _ShowPreview(context, item, viewModel),
+                                      PreviewBoxWidget(card: item),
                                   leading: Icon(item.frontImgPath != null ||
                                           item.backImgPath != null
                                       ? Icons.image_outlined
@@ -425,8 +276,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                                     children: [
                                       IconButton(
                                           icon: Icon(Icons.edit),
-                                          onPressed: () => _showEditBox(
-                                              context, index, item, viewModel)),
+                                          onPressed: () => EditDialog(index: index, card: item, newVM: viewModel)),
                                       IconButton(
                                           icon: Icon(Icons.delete),
                                           onPressed: () =>
