@@ -10,7 +10,12 @@ class EditDialog extends StatefulWidget {
   final FlashcardModel card;
   final NewDeckViewmodel? newVM;
   final EditDeckViewmodel? editVM;
-  const EditDialog({super.key, required this.index, required this.card, this.newVM, this.editVM});
+  const EditDialog(
+      {super.key,
+      required this.index,
+      required this.card,
+      this.newVM,
+      this.editVM});
 
   @override
   State<EditDialog> createState() => _EditDialogState();
@@ -32,8 +37,7 @@ class _EditDialogState extends State<EditDialog> {
     final viewModel;
     if (widget.newVM != null) {
       viewModel = Provider.of<NewDeckViewmodel>(context, listen: false);
-    }
-    else {
+    } else {
       viewModel = Provider.of<EditDeckViewmodel>(context, listen: false);
     }
 
@@ -46,15 +50,14 @@ class _EditDialogState extends State<EditDialog> {
         style: mainTextTheme.displayMedium,
       ),
       icon: IconButton(
-        color: Color(0xFFEBE4C2),
-        alignment: Alignment.topRight,
-        icon: Icon(Icons.close),
-        onPressed: () {
-          _cardFrontController.clear();
-          _cardBackController.clear();
-          Navigator.pop(context);
-        }
-      ),
+          color: Color(0xFFEBE4C2),
+          alignment: Alignment.topRight,
+          icon: Icon(Icons.close),
+          onPressed: () {
+            _cardFrontController.clear();
+            _cardBackController.clear();
+            Navigator.pop(context);
+          }),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -72,17 +75,17 @@ class _EditDialogState extends State<EditDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  color: Color(0xFFEEA83B),
-                  onPressed: () {
-                    viewModel.captureImg(isFront: true);
-                  },
-                  icon: Icon(Icons.camera_alt)),
+                    color: Color(0xFFEEA83B),
+                    onPressed: () {
+                      viewModel.captureImg(isFront: true);
+                    },
+                    icon: Icon(Icons.camera_alt)),
                 IconButton(
-                  color: Color(0xFFEEA83B),
-                  onPressed: () {
-                    viewModel.galleryImg(isFront: true);
-                  },
-                  icon: Icon(Icons.image)),
+                    color: Color(0xFFEEA83B),
+                    onPressed: () {
+                      viewModel.galleryImg(isFront: true);
+                    },
+                    icon: Icon(Icons.image)),
               ],
             ),
           ),
@@ -101,37 +104,33 @@ class _EditDialogState extends State<EditDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  color: Color(0xFFEEA83B),
-                  onPressed: () {
-                    viewModel.captureImg(isFront: false);
-                  },
-                  icon: Icon(Icons.camera_alt)),
+                    color: Color(0xFFEEA83B),
+                    onPressed: () {
+                      viewModel.captureImg(isFront: false);
+                    },
+                    icon: Icon(Icons.camera_alt)),
                 IconButton(
-                  color: Color(0xFFEEA83B),
-                  onPressed: () {
-                    viewModel.galleryImg(isFront: false);
-                  },
-                  icon: Icon(Icons.image)),
+                    color: Color(0xFFEEA83B),
+                    onPressed: () {
+                      viewModel.galleryImg(isFront: false);
+                    },
+                    icon: Icon(Icons.image)),
               ],
             ),
           ),
           SizedBox(height: 10),
           TextButton(
-            onPressed: () {
-              viewModel.editFlashcard(
-                widget.index,
-                _cardFrontController.text,
-                _cardBackController.text
-              );
+              onPressed: () {
+                viewModel.editFlashcard(widget.index, _cardFrontController.text,
+                    _cardBackController.text);
 
-              _cardFrontController.clear();
-              _cardBackController.clear();
-              Navigator.pop(context);
-            },
-            child: Text("Save"))
+                _cardFrontController.clear();
+                _cardBackController.clear();
+                Navigator.pop(context);
+              },
+              child: Text("Save"))
         ],
       ),
     );
-    
   }
 }
