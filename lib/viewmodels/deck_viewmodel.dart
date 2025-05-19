@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 enum DeckCategory { myDecks, savedDecks }
 
 class DeckViewModel extends ChangeNotifier {
+  late final User user;
+
   DeckCategory _currentCategory = DeckCategory.myDecks;
   DeckCategory get currentCategory => _currentCategory;
 
@@ -16,10 +19,16 @@ class DeckViewModel extends ChangeNotifier {
   List<FirebaseDeckModel> _savedDecks = [];
   List<FirebaseDeckModel> get savedDecks => _savedDecks;
 
-  List<String> _savedIDs = [];
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   Future<void> fetchDecks() async {
+    _isLoading = true;
+    notifyListeners();
+
     _decks = await FlashcardDb.getDecks();
+
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -33,29 +42,30 @@ class DeckViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchSavedDecks(String userId) async {
-    _savedDecks = await FirebaseDb.fetchSavedDecks(userId);
-    _savedIDs = await FirebaseDb.getSavedDeckIDs(userId);
+  Future<void> fetchSavedDecks() async {
+    _isLoading = true;
+    notifyListeners();
 
+    _savedDecks = await FirebaseDb.fetchSavedDecks(user.uid);
+
+    _isLoading = false;
     notifyListeners();
   }
 
-  void switchCategory(DeckCategory category, {String? userId}) async {
+  void switchCategory(DeckCategory category) async {
     _currentCategory = category;
 
     if (category == DeckCategory.myDecks && decks.isEmpty) {
       await fetchDecks();
-    } else if (category == DeckCategory.savedDecks &&
-        userId != null &&
-        savedDecks.isEmpty) {
-      await fetchSavedDecks(userId);
+    } else if (category == DeckCategory.savedDecks && savedDecks.isEmpty) {
+      await fetchSavedDecks();
     }
 
     notifyListeners();
   }
 
-  Future<void> unSaveDeck(String deckId, String userId) async {
-    await FirebaseDb.removeSavedDeck(userId, _savedIDs, deckId);
+  Future<void> unSaveDeck(String deckId) async {
+    await FirebaseDb.removeSavedDeck(user.uid, deckId);
     notifyListeners();
   }
 }
