@@ -20,13 +20,22 @@ class _DeckScreenState extends State<DeckScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+    final vm = Provider.of<DeckViewModel>(context, listen: false);
+    vm.fetchDecks();
+
+    final auth = Provider.of<AuthViewModel>(context, listen: false);
+
+    if (auth.isLoggedIn) {
+      vm.user = auth.user!;
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login_screen', (Route<dynamic> route) => false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<DeckViewModel>(context);
-    final userID = Provider.of<AuthViewModel>(context, listen: false).userId;
+    final viewModel = Provider.of<DeckViewModel>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
@@ -44,7 +53,6 @@ class _DeckScreenState extends State<DeckScreen> {
                 onChanged: (value) {
                   viewModel.switchCategory(
                     value ? DeckCategory.savedDecks : DeckCategory.myDecks,
-                    userId: userID,
                   );
                 })
           ],
@@ -94,7 +102,7 @@ class _DeckScreenState extends State<DeckScreen> {
                     ),
                   );
                 }
-                viewModel.fetchSavedDecks(userID!);
+                viewModel.fetchSavedDecks();
                 return ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: viewModel.savedDecks.length,
@@ -117,8 +125,8 @@ class _DeckScreenState extends State<DeckScreen> {
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              viewModel.unSaveDeck(deck.id, userID);
-                              viewModel.fetchSavedDecks(userID);
+                              viewModel.unSaveDeck(deck.id);
+                              viewModel.fetchSavedDecks();
                             },
                           ),
                           onTap: () => Navigator.push(
