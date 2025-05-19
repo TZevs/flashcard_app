@@ -37,7 +37,6 @@ class NewDeckViewmodel extends ChangeNotifier {
   List<dynamic> get selectedTags => _selectedTags;
 
   List<FlashcardModel> _newFlashcards = [];
-  String deckTitle = "";
   bool isPublic = false;
   String publicOrPrivateLabel = "Make Public?";
   File? _frontImg;
@@ -46,11 +45,6 @@ class NewDeckViewmodel extends ChangeNotifier {
   List<FlashcardModel> get flashcards => _newFlashcards;
   File? get frontImg => _frontImg;
   File? get backImg => _backImg;
-
-  void setDeckTitle(String title) {
-    deckTitle = title;
-    notifyListeners();
-  }
 
   void setIsPublic(bool value) {
     isPublic = value;
@@ -176,10 +170,10 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addNewDeck(String id, String username) async {
+  Future<void> addNewDeck(String id, String username, String title) async {
     DeckModel newDeck = DeckModel(
         id: theDeckId,
-        title: deckTitle,
+        title: title,
         isPublic: isPublic,
         cardCount: _newFlashcards.length);
 
@@ -209,7 +203,7 @@ class NewDeckViewmodel extends ChangeNotifier {
       }
       if (card.backImgPath != null) {
         String backUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.frontImgPath!), userId);
+            File(card.backImgPath!), userId);
         card.frontImgUrl = backUrl;
       }
 
@@ -223,7 +217,6 @@ class NewDeckViewmodel extends ChangeNotifier {
   void reset() {
     theDeckId = uuid.v4();
     _newFlashcards = [];
-    deckTitle = "";
     isPublic = false;
     notifyListeners();
   }

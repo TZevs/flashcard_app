@@ -1,7 +1,6 @@
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
-import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,93 +43,78 @@ class _EditDialogState extends State<EditDialog> {
     _cardFrontController.text = widget.card.cardFront ?? '';
     _cardBackController.text = widget.card.cardBack ?? '';
 
-    return AlertDialog(
-      title: Text(
-        "Edit Flashcard",
-        style: mainTextTheme.displayMedium,
-      ),
-      icon: IconButton(
-          color: Color(0xFFEBE4C2),
-          alignment: Alignment.topRight,
-          icon: Icon(Icons.close),
-          onPressed: () {
-            _cardFrontController.clear();
-            _cardBackController.clear();
-            Navigator.pop(context);
-          }),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            style: TextStyle(color: Color(0xFFEBE4C2)),
-            controller: _cardFrontController,
-            decoration: InputDecoration(
-              labelText: "Card Front",
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          style: TextStyle(color: Color(0xFFEBE4C2)),
+          controller: _cardFrontController,
+          decoration: InputDecoration(
+            labelText: "Card Front",
           ),
-          SizedBox(height: 10),
-          Container(
-            color: Color(0xFF5c8966),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                    color: Color(0xFFEEA83B),
-                    onPressed: () {
-                      viewModel.captureImg(isFront: true);
-                    },
-                    icon: Icon(Icons.camera_alt)),
-                IconButton(
-                    color: Color(0xFFEEA83B),
-                    onPressed: () {
-                      viewModel.galleryImg(isFront: true);
-                    },
-                    icon: Icon(Icons.image)),
-              ],
-            ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          color: Color(0xFF5c8966),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  color: Color(0xFFEEA83B),
+                  onPressed: () {
+                    viewModel.captureImg(isFront: true);
+                  },
+                  icon: Icon(Icons.camera_alt)),
+              IconButton(
+                  color: Color(0xFFEEA83B),
+                  onPressed: () {
+                    viewModel.galleryImg(isFront: true);
+                  },
+                  icon: Icon(Icons.image)),
+            ],
           ),
-          SizedBox(height: 10),
-          TextField(
-            style: TextStyle(color: Color(0xFFEBE4C2)),
-            controller: _cardBackController,
-            decoration: InputDecoration(
-              labelText: "Card Back",
-            ),
+        ),
+        SizedBox(height: 10),
+        TextField(
+          style: TextStyle(color: Color(0xFFEBE4C2)),
+          controller: _cardBackController,
+          decoration: InputDecoration(
+            labelText: "Card Back",
           ),
-          SizedBox(height: 10),
-          Container(
-            color: Color(0xFF5c8966),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                    color: Color(0xFFEEA83B),
-                    onPressed: () {
-                      viewModel.captureImg(isFront: false);
-                    },
-                    icon: Icon(Icons.camera_alt)),
-                IconButton(
-                    color: Color(0xFFEEA83B),
-                    onPressed: () {
-                      viewModel.galleryImg(isFront: false);
-                    },
-                    icon: Icon(Icons.image)),
-              ],
-            ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          color: Color(0xFF5c8966),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  color: Color(0xFFEEA83B),
+                  onPressed: () {
+                    viewModel.captureImg(isFront: false);
+                  },
+                  icon: Icon(Icons.camera_alt)),
+              IconButton(
+                  color: Color(0xFFEEA83B),
+                  onPressed: () {
+                    viewModel.galleryImg(isFront: false);
+                  },
+                  icon: Icon(Icons.image)),
+            ],
           ),
-          SizedBox(height: 10),
-          TextButton(
-              onPressed: () {
-                viewModel.editFlashcard(widget.index, _cardFrontController.text,
-                    _cardBackController.text);
+        ),
+        SizedBox(height: 10),
+        TextButton(
+            onPressed: () {
+              viewModel.editFlashcard(widget.index, _cardFrontController.text,
+                  _cardBackController.text);
 
-                _cardFrontController.clear();
-                _cardBackController.clear();
-                Navigator.pop(context);
-              },
-              child: Text("Save"))
-        ],
-      ),
+              _cardFrontController.clear();
+              _cardBackController.clear();
+              Navigator.pop(context);
+            },
+            child: Text("Save"))
+      ],
     );
   }
 }

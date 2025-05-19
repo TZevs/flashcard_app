@@ -10,48 +10,23 @@ class PreviewBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        "Preview",
-        style: mainTextTheme.displayMedium,
-        textAlign: TextAlign.center,
-      ),
-      content: Column(
+    return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Card(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                  child: card.frontImgPath != null
-                      ? Image.file(File(card.frontImgPath!),
-                          width: 200, height: 200)
-                      : Container(),
-                ),
-                Text(card.cardFront ?? '', style: mainTextTheme.displaySmall),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Card(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                  child: card.backImgPath != null
-                      ? Image.file(File(card.backImgPath!),
-                          width: 200, height: 200)
-                      : Container(),
-                ),
-                Text(card.cardBack ?? '', style: mainTextTheme.displaySmall),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+          if (card.frontImgPath != null || card.frontImgUrl != null) 
+            Image.file(File(card.frontImgPath ?? '')),
+            
+          Text("Front:", style: mainTextTheme.displayMedium),
+          Text(card.cardFront ?? ''),
+
+          SizedBox(height: 10),
+
+          if (card.backImgPath != null || card.backImgUrl != null) 
+            Image.file(File(card.backImgPath ?? '')),
+            
+          Text("Back:", style: mainTextTheme.displayMedium),
+          Text(card.cardBack ?? ''),
+        ]
+      );
   }
 }

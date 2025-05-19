@@ -86,7 +86,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
   Widget build(BuildContext context) {
     final userID = Provider.of<AuthViewModel>(context).userId;
     final userName = Provider.of<AuthViewModel>(context).username;
-    final viewModel = Provider.of<NewDeckViewmodel>(context);
+    final viewModel = Provider.of<NewDeckViewmodel>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
@@ -105,7 +105,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                         style: TextStyle(color: Color(0xFFEBE4C2)),
                         controller: _titleController,
                         decoration: InputDecoration(labelText: "Deck Title"),
-                        onChanged: viewModel.setDeckTitle,
                       ),
                       SizedBox(height: 10),
                       SwitchListTile(
@@ -253,40 +252,48 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                       Consumer<NewDeckViewmodel>(
                           builder: (context, viewModel, child) {
                         return Column(
-                          children: [
-                            ...viewModel.flashcards.map((item) {
-                              int index = viewModel.flashcards.indexOf(item);
-                              return Padding(
-                                padding: const EdgeInsets.all(7.5),
-                                child: ListTile(
-                                  subtitleTextStyle: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  onTap: () =>
-                                      PreviewBoxWidget(card: item),
-                                  leading: Icon(item.frontImgPath != null ||
-                                          item.backImgPath != null
-                                      ? Icons.image_outlined
-                                      : Icons.hide_image_outlined),
-                                  title: Text(item.cardFront ?? ''),
-                                  subtitle: Text(item.cardBack ?? ''),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                          icon: Icon(Icons.edit),
-                                          onPressed: () => EditDialog(index: index, card: item, newVM: viewModel)),
-                                      IconButton(
-                                          icon: Icon(Icons.delete),
-                                          onPressed: () =>
-                                              viewModel.removeFlashcard(index)),
-                                    ],
-                                  ),
+                          children: viewModel.flashcards.map((item) {
+                            int index = viewModel.flashcards.indexOf(item);
+                            return Padding(
+                              padding: const EdgeInsets.all(7.5),
+                              child: ListTile(
+                                subtitleTextStyle: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              );
-                            }),
-                          ],
+                                onTap: () => showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          content: PreviewBoxWidget(card: item),
+                                        )),
+                                leading: Icon(item.frontImgPath != null ||
+                                        item.backImgPath != null
+                                    ? Icons.image_outlined
+                                    : Icons.hide_image_outlined),
+                                title: Text(item.cardFront ?? ''),
+                                subtitle: Text(item.cardBack ?? ''),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () => showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (_) => EditDialog(
+                                                index: index,
+                                                card: item,
+                                                newVM: viewModel))),
+                                    IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () =>
+                                            viewModel.removeFlashcard(index)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         );
                       }),
                       SizedBox(height: 80),
@@ -299,7 +306,8 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               padding: const EdgeInsets.all(15),
               child: ElevatedButton(
                 onPressed: () async {
-                  await viewModel.addNewDeck(userID!, userName!);
+                  await viewModel.addNewDeck(
+                      userID!, userName!, _titleController.text);
                   viewModel.reset();
                   Navigator.pop(context);
                 },
