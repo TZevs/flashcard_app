@@ -16,7 +16,7 @@ class ShareDecksViewmodel extends ChangeNotifier {
   List<String> _savedIDs = [];
   List<String> get savedIDs => _savedIDs;
 
-  List<String> _tags = [
+  final List<String> _tags = [
     "Maths",
     "History",
     "Literature",
@@ -54,7 +54,7 @@ class ShareDecksViewmodel extends ChangeNotifier {
 
     if (_savedIDs.contains(deckId)) {
       _savedIDs.remove(deckId);
-      await FirebaseDb.removeSavedDeck(userId, _savedIDs, deckId);
+      await FirebaseDb.removeSavedDeck(userId, deckId);
       await getSavedIDs(userId);
       return;
     }
