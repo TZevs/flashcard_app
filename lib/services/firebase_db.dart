@@ -142,8 +142,7 @@ class FirebaseDb {
     });
   }
 
-  static Future<void> removeSavedDeck(
-      String userId, List<String> decks, String deckId) async {
+  static Future<void> removeSavedDeck(String userId, String deckId) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
 
     await userDoc.update({
