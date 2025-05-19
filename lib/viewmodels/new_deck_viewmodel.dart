@@ -37,12 +37,13 @@ class NewDeckViewmodel extends ChangeNotifier {
   List<dynamic> get selectedTags => _selectedTags;
 
   List<FlashcardModel> _newFlashcards = [];
+  List<FlashcardModel> get flashcards => _newFlashcards;
+
   bool isPublic = false;
   String publicOrPrivateLabel = "Make Public?";
+  
   File? _frontImg;
   File? _backImg;
-
-  List<FlashcardModel> get flashcards => _newFlashcards;
   File? get frontImg => _frontImg;
   File? get backImg => _backImg;
 
