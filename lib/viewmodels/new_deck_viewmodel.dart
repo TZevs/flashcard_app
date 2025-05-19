@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
@@ -13,6 +14,8 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class NewDeckViewmodel extends ChangeNotifier {
+  late final User user;
+
   String theDeckId = uuid.v4();
 
   List<String> topics = [
@@ -41,7 +44,7 @@ class NewDeckViewmodel extends ChangeNotifier {
 
   bool isPublic = false;
   String publicOrPrivateLabel = "Make Public?";
-  
+
   File? _frontImg;
   File? _backImg;
   File? get frontImg => _frontImg;
@@ -179,7 +182,7 @@ class NewDeckViewmodel extends ChangeNotifier {
         cardCount: _newFlashcards.length);
 
     if (newDeck.isPublic) {
-      await _setPublicDeck(newDeck, id, username);
+      await _setPublicDeck(newDeck, username);
     }
 
     await FlashcardDb.addDeck(newDeck);
@@ -187,10 +190,9 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _setPublicDeck(
-      DeckModel deck, String userId, String username) async {
+  Future<void> _setPublicDeck(DeckModel deck, String username) async {
     FirebaseDeckModel newDeck =
-        FirebaseDeckModel.fromLocal(deck, userId, username);
+        FirebaseDeckModel.fromLocal(deck, user.uid, username);
 
     newDeck.tags = _selectedTags;
 
@@ -199,19 +201,19 @@ class NewDeckViewmodel extends ChangeNotifier {
     for (var card in _newFlashcards) {
       if (card.frontImgPath != null) {
         String frontUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.frontImgPath!), userId);
+            File(card.frontImgPath!), user.uid);
         card.frontImgUrl = frontUrl;
       }
       if (card.backImgPath != null) {
         String backUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.backImgPath!), userId);
+            File(card.backImgPath!), user.uid);
         card.frontImgUrl = backUrl;
       }
 
       _updatedFlashcards.add(card);
     }
 
-    await FirebaseDb.addPublicDeck(newDeck, userId, _updatedFlashcards);
+    await FirebaseDb.addPublicDeck(newDeck, user.uid, _updatedFlashcards);
     notifyListeners();
   }
 
