@@ -36,16 +36,16 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<bool> register(String email, String password, String username) async {
     _errorMsg = null;
-    notifyListeners();
+
     try {
       final newUser = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final user = newUser.user!.uid;
+      final userId = newUser.user?.uid;
 
-      await _firestore.collection('users').doc(user).set({
+      await _firestore.collection('users').doc(userId).set({
         'username': username,
         'email': email,
         'profileBio': "",
