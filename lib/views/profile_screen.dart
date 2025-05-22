@@ -6,12 +6,17 @@ import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
-  void _editBio(BuildContext context, ProfileViewmodel viewModel, String uid) {
-    final TextEditingController _bioController = TextEditingController();
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState extends State<ProfileScreen> {
+  final TextEditingController _bioController = TextEditingController();
+
+  void _editBio(BuildContext context, ProfileViewmodel vm, String id) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -37,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   TextButton(
                       onPressed: () {
-                        viewModel.saveNewBio(_bioController.text, uid);
+                        vm.saveNewBio(_bioController.text, id);
                         Navigator.pop(context);
                       },
                       child: Text(
