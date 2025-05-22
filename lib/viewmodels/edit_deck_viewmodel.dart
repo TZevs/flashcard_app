@@ -5,11 +5,19 @@ import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
+import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EditDeckViewmodel extends ChangeNotifier {
+  late AuthViewModel _auth;
+
+  void updateAuth(AuthViewModel auth) {
+    _auth = auth;
+    notifyListeners(); // Could add a question about the login status in views.
+  }
+
   List<FlashcardModel> _flashcards = [];
   List<FlashcardModel> get getFlashcards => _flashcards;
   List<FlashcardModel> _newFlashcards = [];
