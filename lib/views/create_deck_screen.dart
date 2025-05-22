@@ -1,4 +1,3 @@
-import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/edit_box_widget.dart';
@@ -84,8 +83,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userID = Provider.of<AuthViewModel>(context).userId;
-    final userName = Provider.of<AuthViewModel>(context).username;
     final viewModel = Provider.of<NewDeckViewmodel>(context, listen: false);
 
     return SafeArea(
@@ -306,8 +303,7 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
               padding: const EdgeInsets.all(15),
               child: ElevatedButton(
                 onPressed: () async {
-                  await viewModel.addNewDeck(
-                      userID!, userName!, _titleController.text);
+                  await viewModel.addNewDeck(_titleController.text);
                   viewModel.reset();
                   Navigator.pop(context);
                 },

@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
 import 'package:flashcard_app/services/flashcard_db.dart';
+import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +14,15 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class NewDeckViewmodel extends ChangeNotifier {
-  late final User user;
+  late AuthViewModel _auth;
+
+  void updateAuth(AuthViewModel auth) {
+    _auth = auth;
+    notifyListeners(); // Could add a question about the login status in views.
+  }
+
+  String? get userId => _auth.userId;
+  String? get username => _auth.username;
 
   String theDeckId = uuid.v4();
 
@@ -174,7 +182,7 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addNewDeck(String id, String username, String title) async {
+  Future<void> addNewDeck(String title) async {
     DeckModel newDeck = DeckModel(
         id: theDeckId,
         title: title,
@@ -182,7 +190,7 @@ class NewDeckViewmodel extends ChangeNotifier {
         cardCount: _newFlashcards.length);
 
     if (newDeck.isPublic) {
-      await _setPublicDeck(newDeck, username);
+      await _setPublicDeck(newDeck);
     }
 
     await FlashcardDb.addDeck(newDeck);
@@ -190,9 +198,9 @@ class NewDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _setPublicDeck(DeckModel deck, String username) async {
+  Future<void> _setPublicDeck(DeckModel deck) async {
     FirebaseDeckModel newDeck =
-        FirebaseDeckModel.fromLocal(deck, user.uid, username);
+        FirebaseDeckModel.fromLocal(deck, userId!, username!);
 
     newDeck.tags = _selectedTags;
 
@@ -201,19 +209,19 @@ class NewDeckViewmodel extends ChangeNotifier {
     for (var card in _newFlashcards) {
       if (card.frontImgPath != null) {
         String frontUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.frontImgPath!), user.uid);
+            File(card.frontImgPath!), userId!);
         card.frontImgUrl = frontUrl;
       }
       if (card.backImgPath != null) {
         String backUrl = await FirebaseDb.uploadImgToFirebase(
-            File(card.backImgPath!), user.uid);
+            File(card.backImgPath!), userId!);
         card.frontImgUrl = backUrl;
       }
 
       _updatedFlashcards.add(card);
     }
 
-    await FirebaseDb.addPublicDeck(newDeck, user.uid, _updatedFlashcards);
+    await FirebaseDb.addPublicDeck(newDeck, userId!, _updatedFlashcards);
     notifyListeners();
   }
 
