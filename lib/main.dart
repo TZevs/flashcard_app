@@ -42,12 +42,22 @@ class MyFlashCardApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthViewModel()),
-        ChangeNotifierProvider(create: (context) => NewDeckViewmodel()),
+        // ChangeNotifierProvider(create: (context) => NewDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => FlashcardViewModel()),
         ChangeNotifierProvider(create: (context) => DeckViewModel()),
         ChangeNotifierProvider(create: (context) => EditDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => ShareDecksViewmodel()),
         ChangeNotifierProvider(create: (context) => ProfileViewmodel()),
+
+        // The following viewmodels depend on authVM for the user info.
+        ChangeNotifierProxyProvider<AuthViewModel, NewDeckViewmodel>(
+          create: (_) => NewDeckViewmodel(),
+          update: (_, authVm, newDeckVM) => newDeckVM!..updateAuth(authVm),
+        ),
+        ChangeNotifierProxyProvider<AuthViewModel, EditDeckViewmodel>(
+          create: (_) => EditDeckViewmodel(),
+          update: (_, authVM, editDeckVM) => editDeckVM!..updateAuth(authVM),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
