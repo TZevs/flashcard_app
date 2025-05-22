@@ -44,8 +44,8 @@ class MyFlashCardApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthViewModel()),
         // ChangeNotifierProvider(create: (context) => NewDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => FlashcardViewModel()),
-        ChangeNotifierProvider(create: (context) => DeckViewModel()),
-        ChangeNotifierProvider(create: (context) => EditDeckViewmodel()),
+        // ChangeNotifierProvider(create: (context) => DeckViewModel()),
+        // ChangeNotifierProvider(create: (context) => EditDeckViewmodel()),
         ChangeNotifierProvider(create: (context) => ShareDecksViewmodel()),
         ChangeNotifierProvider(create: (context) => ProfileViewmodel()),
 
