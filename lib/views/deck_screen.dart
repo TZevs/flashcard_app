@@ -19,15 +19,7 @@ class _DeckScreenState extends State<DeckScreen> {
   @override
   void initState() {
     super.initState();
-    final vm = Provider.of<DeckViewModel>(context, listen: false);
-    vm.fetchDecks();
-
-    // if (auth.isLoggedIn) {
-    //   vm.user = auth.user!;
-    // } else {
-    //   Navigator.pushNamedAndRemoveUntil(
-    //       context, '/login_screen', (Route<dynamic> route) => false);
-    // }
+    Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
   }
 
   @override
