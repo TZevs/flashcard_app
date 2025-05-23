@@ -2,6 +2,7 @@ import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/edit_box_widget.dart';
 import 'package:flashcard_app/widgets/preview_box_widget.dart';
+import 'package:flashcard_app/widgets/tags_widget.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,61 +18,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _cardFrontController = TextEditingController();
   final TextEditingController _cardBackController = TextEditingController();
-
-  void _addTags(BuildContext context, NewDeckViewmodel viewModel) {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Select Tags",
-                  style: mainTextTheme.displayMedium,
-                  textAlign: TextAlign.center),
-              content: Consumer<NewDeckViewmodel>(
-                  builder: (context, viewModel, child) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Wrap(
-                      spacing: 8,
-                      children: viewModel.topics.map((tag) {
-                        return ChoiceChip(
-                          label: Text(tag),
-                          selected: viewModel.selectedTags.contains(tag),
-                          selectedColor: Color(0xFFEEA83B),
-                          disabledColor: Color(0xFFEBE4C2),
-                          onSelected: (isSelected) {
-                            if (isSelected) {
-                              viewModel.addTag(tag);
-                            } else {
-                              viewModel.removeTag(tag);
-                            }
-                          },
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              viewModel.clearTags();
-                            },
-                            child: Text("Clear")),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Done")),
-                      ],
-                    ),
-                  ],
-                );
-              }),
-            ));
-  }
 
   @override
   void dispose() {
@@ -117,7 +63,9 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                           onChanged: (bool value) async {
                             viewModel.setIsPublic(value);
                             if (viewModel.isPublic) {
-                              _addTags(context, viewModel);
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => TagsWidget(newVM: viewModel));
                             }
                           }),
                       SizedBox(height: 10),

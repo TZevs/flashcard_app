@@ -1,6 +1,7 @@
 import 'package:flashcard_app/models/flashcard_model.dart';
 import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
+import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,13 @@ class _EditDialogState extends State<EditDialog> {
   final TextEditingController _cardBackController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _cardFrontController.text = widget.card.cardFront ?? '';
+    _cardBackController.text = widget.card.cardBack ?? '';
+  }
+      
+  @override
   void dispose() {
     _cardFrontController.dispose();
     _cardBackController.dispose();
@@ -33,16 +41,25 @@ class _EditDialogState extends State<EditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel;
-    if (widget.newVM != null) {
-      viewModel = Provider.of<NewDeckViewmodel>(context, listen: false);
-    } else {
-      viewModel = Provider.of<EditDeckViewmodel>(context, listen: false);
-    }
+    final isNew = widget.newVM != null;
 
-    _cardFrontController.text = widget.card.cardFront ?? '';
-    _cardBackController.text = widget.card.cardBack ?? '';
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("Edit Flashcard:", style: mainTextTheme.displayMedium),
+        SizedBox(height: 2),
+        isNew
+            ? Consumer<NewDeckViewmodel>(
+                builder: (context, viewModel, child) =>
+                    _buildEditCardContent(viewModel))
+            : Consumer<EditDeckViewmodel>(
+                builder: (context, viewModel, child) =>
+                    _buildEditCardContent(viewModel)),
+      ],
+    );
+  }
 
+  Widget _buildEditCardContent(dynamic viewModel) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
