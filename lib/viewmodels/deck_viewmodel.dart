@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard_app/models/deck_model.dart';
 import 'package:flashcard_app/models/firebase_deck_model.dart';
 import 'package:flashcard_app/services/firebase_db.dart';
@@ -9,13 +8,15 @@ import 'package:flutter/material.dart';
 enum DeckCategory { myDecks, savedDecks }
 
 class DeckViewModel extends ChangeNotifier {
-  late final User user;
   late AuthViewModel _auth;
 
   void updateAuth(AuthViewModel auth) {
     _auth = auth;
     notifyListeners(); // Could add a question about the login status in views.
   }
+
+  String? get userId => _auth.userId;
+  String? get username => _auth.username;
 
   DeckCategory _currentCategory = DeckCategory.myDecks;
   DeckCategory get currentCategory => _currentCategory;
@@ -53,7 +54,7 @@ class DeckViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    _savedDecks = await FirebaseDb.fetchSavedDecks(user.uid);
+    _savedDecks = await FirebaseDb.fetchSavedDecks(userId!);
 
     _isLoading = false;
     notifyListeners();
@@ -72,7 +73,7 @@ class DeckViewModel extends ChangeNotifier {
   }
 
   Future<void> unSaveDeck(String deckId) async {
-    await FirebaseDb.removeSavedDeck(user.uid, deckId);
+    await FirebaseDb.removeSavedDeck(userId!, deckId);
     notifyListeners();
   }
 }

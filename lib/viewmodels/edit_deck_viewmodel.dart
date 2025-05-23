@@ -18,6 +18,9 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners(); // Could add a question about the login status in views.
   }
 
+  String? get userId => _auth.userId;
+  String? get username => _auth.username;
+
   List<FlashcardModel> _flashcards = [];
   List<FlashcardModel> get getFlashcards => _flashcards;
   List<FlashcardModel> _newFlashcards = [];
@@ -58,7 +61,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateDeck(String id, String username) async {
+  Future<void> updateDeck() async {
     DeckModel newDeck = DeckModel(
       id: deckToEdit.id,
       title: deckTitle,
@@ -67,7 +70,7 @@ class EditDeckViewmodel extends ChangeNotifier {
     );
 
     if (!deckToEdit.isPublic && isPublic) {
-      await newPublicDeck(newDeck, id, username);
+      await newPublicDeck(newDeck, userId!, username!);
     }
     if (deckToEdit.isPublic && isPublic == false) {
       await FirebaseDb.deletePublicDeck(newDeck.id);

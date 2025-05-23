@@ -1,4 +1,3 @@
-import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
@@ -23,14 +22,12 @@ class _DeckScreenState extends State<DeckScreen> {
     final vm = Provider.of<DeckViewModel>(context, listen: false);
     vm.fetchDecks();
 
-    final auth = Provider.of<AuthViewModel>(context, listen: false);
-
-    if (auth.isLoggedIn) {
-      vm.user = auth.user!;
-    } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/login_screen', (Route<dynamic> route) => false);
-    }
+    // if (auth.isLoggedIn) {
+    //   vm.user = auth.user!;
+    // } else {
+    //   Navigator.pushNamedAndRemoveUntil(
+    //       context, '/login_screen', (Route<dynamic> route) => false);
+    // }
   }
 
   @override

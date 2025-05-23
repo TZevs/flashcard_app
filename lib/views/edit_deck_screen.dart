@@ -1,5 +1,4 @@
 import 'package:flashcard_app/models/deck_model.dart';
-import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/edit_deck_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
 import 'package:flashcard_app/widgets/edit_box_widget.dart';
@@ -97,8 +96,6 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userID = Provider.of<AuthViewModel>(context).userId;
-    final userName = Provider.of<AuthViewModel>(context).username;
     final viewModel = Provider.of<EditDeckViewmodel>(context);
 
     return SafeArea(
@@ -316,7 +313,7 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
               padding: const EdgeInsets.all(15),
               child: ElevatedButton(
                   onPressed: () async {
-                    await viewModel.updateDeck(userID!, userName!);
+                    await viewModel.updateDeck();
                     viewModel.reset();
                     Navigator.pop(context, true);
                   },
