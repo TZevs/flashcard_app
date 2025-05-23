@@ -8,6 +8,7 @@ import 'package:flashcard_app/viewmodels/flashcard_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/new_deck_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/profile_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/share_decks_viewmodel.dart';
+import 'package:flashcard_app/views/auth_wrapper.dart';
 import 'package:flashcard_app/views/deck_screen.dart';
 import 'package:flashcard_app/views/landing_screen.dart';
 import 'package:flashcard_app/views/login_screen.dart';
@@ -71,7 +72,7 @@ class MyFlashCardApp extends StatelessWidget {
           '/login_screen': (context) => LoginScreen(),
         },
         debugShowCheckedModeBanner: false,
-        home: LandingScreen(),
+        home: AuthWrapper(),
         theme: globalTheme,
       ),
     );
