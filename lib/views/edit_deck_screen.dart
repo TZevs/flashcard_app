@@ -279,7 +279,6 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 onTap: () => showDialog(
-                                    barrierDismissible: true,
                                     context: context,
                                     builder: (_) => AlertDialog(
                                           content: PreviewBoxWidget(card: item),

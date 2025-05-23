@@ -259,7 +259,6 @@ class _CreateDeckScreenState extends State<CreateDeckScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 onTap: () => showDialog(
-                                    barrierDismissible: true,
                                     context: context,
                                     builder: (_) => AlertDialog(
                                           content: PreviewBoxWidget(card: item),
