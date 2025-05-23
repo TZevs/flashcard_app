@@ -63,6 +63,10 @@ class MyFlashCardApp extends StatelessWidget {
           create: (_) => DeckViewModel(),
           update: (_, authVM, deckVM) => deckVM!..updateAuth(authVM),
         ),
+        ChangeNotifierProxyProvider<AuthViewModel, ProfileViewmodel>(
+          create: (_) => ProfileViewmodel(),
+          update: (_, authVM, profileVM) => profileVM!..updateAuth(authVM),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

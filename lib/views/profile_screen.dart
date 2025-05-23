@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/profile_viewmodel.dart';
 import 'package:flashcard_app/widgets/appbar_widget.dart';
+import 'package:flashcard_app/widgets/bio_edit_box.dart';
 import 'package:flashcard_app/widgets/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,46 +15,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController _bioController = TextEditingController();
-
-  void _editBio(BuildContext context, ProfileViewmodel vm, String id) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Edit Bio", style: mainTextTheme.displayMedium),
-              icon: IconButton(
-                  color: Color(0xFFEBE4C2),
-                  alignment: Alignment.topRight,
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    _bioController.clear();
-                    Navigator.pop(context);
-                  }),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    style: TextStyle(color: Color(0xFFEBE4C2)),
-                    controller: _bioController,
-                    decoration: InputDecoration(
-                      labelText: "Bio",
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextButton(
-                      onPressed: () {
-                        vm.saveNewBio(_bioController.text, id);
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "Update",
-                        style: mainTextTheme.displaySmall,
-                      )),
-                ],
-              ),
-            ));
-  }
-
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -113,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             IconButton(
                                 onPressed: () {
-                                  viewModel.galleryImg(authViewModel.userId!);
+                                  viewModel.galleryImg();
                                 },
                                 icon: Icon(Icons.add_a_photo,
                                     color: Color(0xFFEEA83B)))
@@ -131,10 +92,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 viewModel.bio != "" ? viewModel.bio : "Add Bio",
                                 style: mainTextTheme.displaySmall),
                             IconButton(
-                                onPressed: () {
-                                  _editBio(context, viewModel,
-                                      authViewModel.userId!);
-                                },
+                                onPressed: () => showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (_) => BioEditBox(vm: viewModel)),
                                 icon:
                                     Icon(Icons.edit, color: Color(0xFFEEA83B)))
                           ],
