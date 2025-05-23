@@ -278,8 +278,12 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                onTap: () =>
-                                    PreviewBoxWidget(card: item),
+                                onTap: () => showDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          content: PreviewBoxWidget(card: item),
+                                        )),
                                 leading: Icon(item.frontImgPath != null ||
                                         item.backImgPath != null
                                     ? Icons.image_outlined
@@ -291,7 +295,13 @@ class _EditDeckScreenState extends State<EditDeckScreen> {
                                   children: [
                                     IconButton(
                                         icon: Icon(Icons.edit),
-                                        onPressed: () => EditDialog(index: index, card: item, editVM: viewModel)),
+                                        onPressed: () => showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (_) => EditDialog(
+                                                index: index,
+                                                card: item,
+                                                editVM: viewModel))),
                                     IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () =>
