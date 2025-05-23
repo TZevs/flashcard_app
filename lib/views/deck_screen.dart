@@ -19,7 +19,7 @@ class _DeckScreenState extends State<DeckScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+    Provider.of<DeckViewModel>(context).fetchDecks();
   }
 
   @override
@@ -134,8 +134,7 @@ class _DeckScreenState extends State<DeckScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) => CreateDeckScreen()))
-                .then((_) => viewModel.fetchDecks());
+                MaterialPageRoute(builder: (ctx) => CreateDeckScreen()));
           },
           child: Icon(Icons.add),
         ),
