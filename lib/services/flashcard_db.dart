@@ -24,7 +24,7 @@ class FlashcardDb {
         title TEXT NOT NULL,
         isPublic BOOLEAN NOT NULL,
         cardCount INTEGER NOT NULL,
-        ownerId TEXT NOT NULL,
+        ownerId TEXT NOT NULL
       )
     ''');
 

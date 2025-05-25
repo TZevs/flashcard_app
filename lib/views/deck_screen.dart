@@ -16,10 +16,17 @@ class DeckScreen extends StatefulWidget {
 }
 
 class _DeckScreenState extends State<DeckScreen> {
+  bool _isInit = true;
+
   @override
-  void initState() {
-    super.initState();
-    Provider.of<DeckViewModel>(context).fetchDecks();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      _isInit = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+      });
+    }
   }
 
   @override
@@ -133,8 +140,12 @@ class _DeckScreenState extends State<DeckScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (ctx) => CreateDeckScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => CreateDeckScreen()),
+            ).then((_) {
+              Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+            });
           },
           child: Icon(Icons.add),
         ),
