@@ -1,6 +1,6 @@
 # Flashcard App
 
-A mobile application that allows users to create, manage, and review flashcard decks for efficient learning. Users can also browse and use decks shared by others in the community.
+I got the idea of this app from seeing my sister using flashcards to revise for her ALevels and saw how inconvenient it was to organise her different decks of flashcards. I thought that developing app that would allow her to store her cards and review them from her phone was the perfect way to help, and the idea also fit the criteria for my mobile development assignment. 
 
 ## ✨ Features:
 
