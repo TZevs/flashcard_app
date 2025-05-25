@@ -1,3 +1,4 @@
+import 'package:flashcard_app/viewmodels/auth_viewmodel.dart';
 import 'package:flashcard_app/viewmodels/deck_viewmodel.dart';
 import 'package:flashcard_app/views/create_deck_screen.dart';
 import 'package:flashcard_app/views/flashcard_screen.dart';
@@ -23,15 +24,22 @@ class _DeckScreenState extends State<DeckScreen> {
     super.didChangeDependencies();
     if (_isInit) {
       _isInit = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final authVm = Provider.of<AuthViewModel>(context, listen: false);
+      await authVm.waitUntilLoaded(); // wait for user & username to be ready
+
+      Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
+    });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DeckViewModel>(context, listen: false);
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWideScreen = screenWidth > 600;
+    final crossAxisCount = isWideScreen ? 2 : 1;
 
     return SafeArea(
       child: Scaffold(
@@ -66,28 +74,31 @@ class _DeckScreenState extends State<DeckScreen> {
                     ),
                   );
                 }
-                return ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: isWideScreen ? 3.5 : 2.8,
+                    ),
                     itemCount: viewModel.decks.length,
                     itemBuilder: (context, index) {
                       final deck = viewModel.decks[index];
-                      return Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: DeckWidget(
-                              deckListTile: ListTile(
-                                leading: deck.isPublic
-                                    ? Icon(Icons.public)
-                                    : Icon(Icons.lock_outline),
-                                title: Text(deck.title),
-                                subtitle: Text("${deck.cardCount} Cards"),
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) =>
-                                            FlashcardScreen(deck: deck))),
-                              ),
-                              deck: deck,
-                              deckIndex: index));
+                      return DeckWidget(
+                          deckListTile: ListTile(
+                            leading: deck.isPublic
+                                ? Icon(Icons.public)
+                                : Icon(Icons.lock_outline),
+                            title: Text(deck.title),
+                            subtitle: Text("${deck.cardCount} Cards"),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        FlashcardScreen(deck: deck))),
+                          ),
+                          deck: deck,
+                          deckIndex: index);
                     });
               } else {
                 if (viewModel.savedDecks.isEmpty) {
@@ -99,9 +110,13 @@ class _DeckScreenState extends State<DeckScreen> {
                   );
                 }
                 viewModel.fetchSavedDecks();
-                return ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: viewModel.savedDecks.length,
+                return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: isWideScreen ? 3.5 : 2.8,
+                    ),
                     itemBuilder: (context, index) {
                       final deck = viewModel.savedDecks[index];
                       return Padding(

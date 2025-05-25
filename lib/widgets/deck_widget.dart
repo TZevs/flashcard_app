@@ -28,15 +28,13 @@ class DeckWidget extends StatelessWidget {
             spacing: 2,
             onPressed: (context) async {
               final updated = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (ctx) => EditDeckScreen(deck: deck)),
-              ).then((_) {
-                Provider.of<DeckViewModel>(context, listen: false).fetchDecks();
-              });
+                  context,
+                  MaterialPageRoute(
+                      builder: (ctx) => EditDeckScreen(deck: deck)));
 
-              // if (updated == true) {
-              //   viewModel.fetchDecks();
-              // }
+              if (updated == true) {
+                viewModel.fetchDecks();
+              }
             },
             icon: Icons.edit,
           ),

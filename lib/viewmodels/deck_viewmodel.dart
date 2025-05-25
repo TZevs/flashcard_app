@@ -12,7 +12,7 @@ class DeckViewModel extends ChangeNotifier {
 
   void updateAuth(AuthViewModel auth) {
     _auth = auth;
-    notifyListeners(); // Could add a question about the login status in views.
+    notifyListeners();
   }
 
   String? get userId => _auth.userId;

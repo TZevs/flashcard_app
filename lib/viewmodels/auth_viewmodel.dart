@@ -82,8 +82,7 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      await getUsername();
-      notifyListeners();
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -168,6 +167,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> getUsername() async {
+    if (userId == null) return;
     _username = await FirebaseDb.fetchUsername(userId!);
     notifyListeners();
   }
@@ -182,4 +182,11 @@ class AuthViewModel extends ChangeNotifier {
       await user.sendEmailVerification();
     }
   }
+
+  Future<void> waitUntilLoaded() async {
+  while (_user == null || _username == null) {
+    await Future.delayed(Duration(milliseconds: 100));
+  }
 }
+}
+

@@ -15,7 +15,12 @@ class EditDeckViewmodel extends ChangeNotifier {
 
   void updateAuth(AuthViewModel auth) {
     _auth = auth;
-    notifyListeners(); // Could add a question about the login status in views.
+    _auth.addListener(_onAuthUpdated); // Subscribe to changes
+    _onAuthUpdated(); // Trigger manually to set initial state
+  }
+
+  void _onAuthUpdated() {
+    notifyListeners();
   }
 
   String? get userId => _auth.userId;
