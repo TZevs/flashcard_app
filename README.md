@@ -78,6 +78,7 @@ Or open `lib/main.dart` in your editor and press Run.
 - Platforms other than the one I tested on, Windows, have not been verified.
 
 **Lesson learned:** check cross-platform compatibility at the start of a project, not at the end.
+**Lesson learned:** write documentation for the project throughout development, a year later I can't remember how it works.
 
 ---
 ## 🤝 Credits
