@@ -46,3 +46,4 @@ app.*.map.json
 
 # Platform configuration
 .android/
+/android/
